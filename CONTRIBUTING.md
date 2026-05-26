@@ -15,10 +15,17 @@ Merci de votre interet pour RINA AI. Voici comment participer.
 3. Faire les modifications
 4. Verifier la CI localement :
    ```bash
-   pip install ruff==0.5.0
+   pip install ruff==0.5.0 pytest
    ruff check .
    ruff format --check .
    python -m compileall -q .
+   pytest -q
+   ```
+
+   Ou, plus simple : installer `pre-commit` une fois et laisser les hooks faire le travail :
+   ```bash
+   pip install pre-commit
+   pre-commit install
    ```
 5. Commit avec un message clair (anglais ou francais, peu importe)
 6. Ouvrir une Pull Request vers `main`
