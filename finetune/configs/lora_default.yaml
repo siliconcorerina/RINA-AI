@@ -5,8 +5,8 @@ model:
   trust_remote_code: false
 
 data:
-  train_file: finetune/data/sample_train.jsonl
-  eval_file: finetune/data/sample_eval.jsonl
+  train_file: finetune/data/train.jsonl
+  eval_file: finetune/data/eval.jsonl
   max_length: 2048
 
 lora:

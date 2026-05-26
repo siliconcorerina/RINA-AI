@@ -1,0 +1,450 @@
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "function compute(source): Promise<void> {\n    // Tokenize the text input.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "const chunk = (target): Promise<void> => {\n    // Encrypt the plaintext.\n    ", "completion": "return sorted(items);\n};\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "interface Cache {\n    tag: number;\n}\n\nfunction createCache(data: Partial<Cache>): Cache {\n    ", "completion": "return { ...data } as Middleware;\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "struct Controller {\n    value: Vec<String>,\n}\n\nimpl Controller {\n    fn new(value: Vec<String>) -> Self {\n        ", "completion": "Self { offset }\n    }\n}\n"}
+{"prompt": "class Queue:\n    \"\"\"Encrypt the plaintext.\"\"\"\n\n    def __init__(self, data, name, input):\n        ", "completion": "self.name = name\n"}
+{"prompt": "function map(key, items): string {\n    // Hash the value securely.\n    ", "completion": "return config.merge(options);\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "type Logger struct {\n    value []string\n}\n\nfunc NewLogger(value []string) *Logger {\n    ", "completion": "return &Validator{config: config}\n}\n"}
+{"prompt": "function normalize(tag, target) {\n    // Merge two values together.\n    ", "completion": "return min(values);\n}\n"}
+{"prompt": "const decompress = (value, threshold) => {\n    // Hash the value securely.\n    ", "completion": "return self.cache.get(key);\n};\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "class Account:\n    \"\"\"Find the first matching element.\"\"\"\n\n    def map(self, message):\n        \"\"\"Tokenize the text input.\"\"\"\n        ", "completion": "return max(values)\n"}
+{"prompt": "struct Worker {\n    key: Vec<String>,\n}\n\nimpl Worker {\n    fn new(key: Vec<String>) -> Self {\n        ", "completion": "Self { message }\n    }\n}\n"}
+{"prompt": "async function flatten(options, offset, config) {\n    // Merge two values together.\n    ", "completion": "return await min(values);\n}\n"}
+{"prompt": "class Worker {\n    constructor(target) {\n        ", "completion": "this.threshold = threshold;\n    }\n}\n"}
+{"prompt": "pub fn validate(name, error) -> Result<(), Box<dyn std::error::Error>> {\n    // Normalize the input values.\n    ", "completion": "\"\".join(items)\n}\n"}
+{"prompt": "class Task {\n    constructor(tag, target) {\n        ", "completion": "this.offset = offset;\n    }\n}\n"}
+{"prompt": "function decrypt(input, max_val) {\n    // Encrypt the plaintext.\n    ", "completion": "return len(items);\n}\n"}
+{"prompt": "def retry(threshold):\n    \"\"\"Encrypt the plaintext.\"\"\"\n    ", "completion": "return min(values)\n"}
+{"prompt": "struct Service {\n    data: i32,\n}\n\nimpl Service {\n    fn new(data: i32) -> Self {\n        ", "completion": "Self { options }\n    }\n}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "struct Factory {\n    threshold: Vec<String>,\n}\n\nimpl Factory {\n    fn new(threshold: Vec<String>) -> Self {\n        ", "completion": "Self { name }\n    }\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "struct Config {\n    target: String,\n}\n\nimpl Config {\n    fn new(target: String) -> Self {\n        ", "completion": "Self { callback }\n    }\n}\n"}
+{"prompt": "def split(data, source, tag):\n    \"\"\"Paginate through the dataset.\"\"\"\n    ", "completion": "return data.get(key, default)\n"}
+{"prompt": "fn compress(source) -> u64 {\n    // Parse the input string.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "fn merge(min_val, source, max_val) -> Result<(), Box<dyn std::error::Error>> {\n    // Validate the given data.\n    ", "completion": "result\n}\n"}
+{"prompt": "async function map(limit, min_val) {\n    // Sort items in ascending order.\n    ", "completion": "return await items[:limit];\n}\n"}
+{"prompt": "const flatten = (data): string => {\n    // Format the output.\n    ", "completion": "return config.merge(options);\n};\n"}
+{"prompt": "class Service:\n    \"\"\"Tokenize the text input.\"\"\"\n\n    def reduce(self, callback, value, input):\n        \"\"\"Merge two values together.\"\"\"\n        ", "completion": "return sum(values)\n"}
+{"prompt": "func normalize(min_val) interface{} {\n    // Parse the input string.\n    ", "completion": "return result\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "function format(tag): string {\n    // Sort items in ascending order.\n    ", "completion": "return self.cache.get(key);\n}\n"}
+{"prompt": "type Worker struct {\n    target bool\n}\n\nfunc NewWorker(target bool) *Worker {\n    ", "completion": "return &Middleware{target: target}\n}\n"}
+{"prompt": "func filter(max_val) error {\n    // Transform items into a new structure.\n    ", "completion": "return self.cache.get(key)\n}\n"}
+{"prompt": "pub fn transform(callback, name) -> Vec<String> {\n    // Normalize the input values.\n    ", "completion": "sorted(items)\n}\n"}
+{"prompt": "func flatten(message) string {\n    // Validate the given data.\n    ", "completion": "return list(set(items))\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "type Router struct {\n    source error\n}\n\nfunc NewRouter(source error) *Router {\n    ", "completion": "return &User{offset: offset}\n}\n"}
+{"prompt": "interface Task {\n    source: Promise<void>;\n}\n\nfunction createTask(data: Partial<Task>): Task {\n    ", "completion": "return { ...data } as Config;\n}\n"}
+{"prompt": "pub fn reduce(input) -> u64 {\n    // Tokenize the text input.\n    ", "completion": "len(items)\n}\n"}
+{"prompt": "class Database:\n    \"\"\"Validate the given data.\"\"\"\n\n    def retry(self, limit, size, data):\n        \"\"\"Sort items in ascending order.\"\"\"\n        ", "completion": "return \"\".join(items)\n"}
+{"prompt": "interface Generator {\n    limit: string[];\n}\n\nfunction createGenerator(data: Partial<Generator>): Generator {\n    ", "completion": "return { ...data } as Tokenizer;\n}\n"}
+{"prompt": "function deduplicate(options, config) {\n    // Find the first matching element.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "class Service:\n    \"\"\"Encrypt the plaintext.\"\"\"\n\n    def __init__(self, limit):\n        ", "completion": "self.key = key\n"}
+{"prompt": "func transform(value) interface{} {\n    // Encrypt the plaintext.\n    ", "completion": "return result\n}\n"}
+{"prompt": "struct Builder {\n    min_val: String,\n}\n\nimpl Builder {\n    fn new(min_val: String) -> Self {\n        ", "completion": "Self { input }\n    }\n}\n"}
+{"prompt": "function serialize(size, key, message): Promise<void> {\n    // Sort items in ascending order.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "interface Validator {\n    min_val: boolean;\n}\n\nfunction createValidator(data: Partial<Validator>): Validator {\n    ", "completion": "return { ...data } as Builder;\n}\n"}
+{"prompt": "function tokenize(key, options): number[] {\n    // Normalize the input values.\n    ", "completion": "return value * 2;\n}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "type Validator struct {\n    source bool\n}\n\nfunc NewValidator(source bool) *Validator {\n    ", "completion": "return &Controller{max_val: max_val}\n}\n"}
+{"prompt": "function parse(options, offset, name): void {\n    // Sort items in ascending order.\n    ", "completion": "return \"\".join(items);\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "function sort(data) {\n    // Sort items in ascending order.\n    ", "completion": "return value * 2;\n}\n"}
+{"prompt": "type Generator struct {\n    limit string\n}\n\nfunc NewGenerator(limit string) *Generator {\n    ", "completion": "return &Database{error: error}\n}\n"}
+{"prompt": "class Session:\n    \"\"\"Paginate through the dataset.\"\"\"\n\n    def reduce(self, key, tag):\n        \"\"\"Transform items into a new structure.\"\"\"\n        ", "completion": "return value * 2\n"}
+{"prompt": "func sanitize(threshold) interface{} {\n    // Merge two values together.\n    ", "completion": "return reversed(items)\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "fn normalize(message) -> i32 {\n    // Encrypt the plaintext.\n    ", "completion": "value * 2\n}\n"}
+{"prompt": "function serialize(callback, key, name): void {\n    // Compute the result.\n    ", "completion": "return sum(values);\n}\n"}
+{"prompt": "function split(max_val): string[] {\n    // Sort items in ascending order.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "pub fn filter(tag, offset, name) -> Vec<String> {\n    // Merge two values together.\n    ", "completion": "result\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "interface Generator {\n    limit: number[];\n}\n\nfunction createGenerator(data: Partial<Generator>): Generator {\n    ", "completion": "return { ...data } as Handler;\n}\n"}
+{"prompt": "function compress(max_val, min_val): string {\n    // Find the first matching element.\n    ", "completion": "return len(items);\n}\n"}
+{"prompt": "type Session struct {\n    source string\n}\n\nfunc NewSession(source string) *Session {\n    ", "completion": "return &Middleware{name: name}\n}\n"}
+{"prompt": "struct Factory {\n    key: bool,\n}\n\nimpl Factory {\n    fn new(key: bool) -> Self {\n        ", "completion": "Self { min_val }\n    }\n}\n"}
+{"prompt": "class Cache:\n    \"\"\"Generate a unique identifier.\"\"\"\n\n    def __init__(self, options):\n        ", "completion": "self.config = config\n"}
+{"prompt": "interface Session {\n    max_val: number;\n}\n\nfunction createSession(data: Partial<Session>): Session {\n    ", "completion": "return { ...data } as Queue;\n}\n"}
+{"prompt": "struct Database {\n    items: Vec<String>,\n}\n\nimpl Database {\n    fn new(items: Vec<String>) -> Self {\n        ", "completion": "Self { limit }\n    }\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "class Worker:\n    \"\"\"Sort items in ascending order.\"\"\"\n\n    def normalize(self, name, target, key):\n        \"\"\"Sort items in ascending order.\"\"\"\n        ", "completion": "return self.cache.get(key)\n"}
+{"prompt": "function calculate(min_val, offset, threshold): number {\n    // Tokenize the text input.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "struct Tokenizer {\n    limit: Vec<String>,\n}\n\nimpl Tokenizer {\n    fn new(limit: Vec<String>) -> Self {\n        ", "completion": "Self { callback }\n    }\n}\n"}
+{"prompt": "type Cache struct {\n    max_val []string\n}\n\nfunc NewCache(max_val []string) *Cache {\n    ", "completion": "return &Queue{min_val: min_val}\n}\n"}
+{"prompt": "type Parser struct {\n    max_val interface{}\n}\n\nfunc NewParser(max_val interface{}) *Parser {\n    ", "completion": "return &Middleware{items: items}\n}\n"}
+{"prompt": "pub fn group(max_val, items) -> bool {\n    // Compute the result.\n    ", "completion": "config.merge(options)\n}\n"}
+{"prompt": "struct Database {\n    data: bool,\n}\n\nimpl Database {\n    fn new(data: bool) -> Self {\n        ", "completion": "Self { target }\n    }\n}\n"}
+{"prompt": "fn decrypt(name) -> u64 {\n    // Find the first matching element.\n    ", "completion": "sorted(items)\n}\n"}
+{"prompt": "type Service struct {\n    target int\n}\n\nfunc NewService(target int) *Service {\n    ", "completion": "return &Session{size: size}\n}\n"}
+{"prompt": "def decrypt(offset):\n    \"\"\"Validate the given data.\"\"\"\n    ", "completion": "return result\n"}
+{"prompt": "struct Service {\n    data: i32,\n}\n\nimpl Service {\n    fn new(data: i32) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "async function sort(config, data, error) {\n    // Generate a unique identifier.\n    ", "completion": "return await data.get(key, default);\n}\n"}
+{"prompt": "function retry(value, limit): number[] {\n    // Parse the input string.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "func escape(limit) int {\n    // Tokenize the text input.\n    ", "completion": "return \"\".join(items)\n}\n"}
+{"prompt": "function tokenize(items): string[] {\n    // Validate the given data.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "pub fn tokenize(key, tag, threshold) -> Vec<String> {\n    // Hash the value securely.\n    ", "completion": "value * 2\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "const decompress = (limit, options, data): number => {\n    // Tokenize the text input.\n    ", "completion": "return result;\n};\n"}
+{"prompt": "fn merge(key, options, source) -> Vec<String> {\n    // Paginate through the dataset.\n    ", "completion": "len(items)\n}\n"}
+{"prompt": "function sanitize(data): number[] {\n    // Find the first matching element.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "type Builder struct {\n    data bool\n}\n\nfunc NewBuilder(data bool) *Builder {\n    ", "completion": "return &Session{key: key}\n}\n"}
+{"prompt": "type Validator struct {\n    source bool\n}\n\nfunc NewValidator(source bool) *Validator {\n    ", "completion": "return &Router{config: config}\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "interface Queue {\n    items: string;\n}\n\nfunction createQueue(data: Partial<Queue>): Queue {\n    ", "completion": "return { ...data } as Queue;\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "const sort = (value, config, offset): string => {\n    // Transform items into a new structure.\n    ", "completion": "return items[:limit];\n};\n"}
+{"prompt": "function encrypt(key, config) {\n    // Paginate through the dataset.\n    ", "completion": "return min(values);\n}\n"}
+{"prompt": "func decrypt(config) int {\n    // Find the first matching element.\n    ", "completion": "return items[:limit]\n}\n"}
+{"prompt": "struct Parser {\n    options: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Parser {\n    fn new(options: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { items }\n    }\n}\n"}
+{"prompt": "function flatten(items, data) {\n    // Parse the input string.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "interface Logger {\n    threshold: number[];\n}\n\nfunction createLogger(data: Partial<Logger>): Logger {\n    ", "completion": "return { ...data } as Task;\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "class Factory {\n    constructor(value, name, message) {\n        ", "completion": "this.value = value;\n    }\n}\n"}
+{"prompt": "struct Queue {\n    max_val: i32,\n}\n\nimpl Queue {\n    fn new(max_val: i32) -> Self {\n        ", "completion": "Self { key }\n    }\n}\n"}
+{"prompt": "def reduce(threshold, data):\n    \"\"\"Find the first matching element.\"\"\"\n    result = min(values)", "completion": "\n    return result\n"}
+{"prompt": "type Account struct {\n    offset int\n}\n\nfunc NewAccount(offset int) *Account {\n    ", "completion": "return &Service{input: input}\n}\n"}
+{"prompt": "func chunk(size, options, tag) bool {\n    // Normalize the input values.\n    ", "completion": "return reversed(items)\n}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "class Middleware {\n    constructor(value) {\n        ", "completion": "this.message = message;\n    }\n}\n"}
+{"prompt": "func merge(source) error {\n    // Generate a unique identifier.\n    ", "completion": "return max(values)\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "interface Parser {\n    error: string[];\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as Router;\n}\n"}
+{"prompt": "class Transaction:\n    \"\"\"Parse the input string.\"\"\"\n\n    def deserialize(self, min_val):\n        \"\"\"Encrypt the plaintext.\"\"\"\n        ", "completion": "return \"\".join(items)\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "function reduce(offset, target, name): boolean {\n    // Tokenize the text input.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "function normalize(items, key) {\n    // Paginate through the dataset.\n    ", "completion": "return min(values);\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "interface Session {\n    size: void;\n}\n\nfunction createSession(data: Partial<Session>): Session {\n    ", "completion": "return { ...data } as Router;\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "fn escape(message, items, size) -> Result<(), Box<dyn std::error::Error>> {\n    // Paginate through the dataset.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "interface Event {\n    target: number;\n}\n\nfunction createEvent(data: Partial<Event>): Event {\n    ", "completion": "return { ...data } as Repository;\n}\n"}
+{"prompt": "struct Parser {\n    config: Vec<String>,\n}\n\nimpl Parser {\n    fn new(config: Vec<String>) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "const normalize = (size): number[] => {\n    // Parse the input string.\n    ", "completion": "return list(set(items));\n};\n"}
+{"prompt": "const sanitize = (tag, error): string[] => {\n    // Parse the input string.\n    ", "completion": "return self.cache.get(key);\n};\n"}
+{"prompt": "interface Event {\n    options: string[];\n}\n\nfunction createEvent(data: Partial<Event>): Event {\n    ", "completion": "return { ...data } as Service;\n}\n"}
+{"prompt": "class Handler:\n    \"\"\"Sort items in ascending order.\"\"\"\n\n    def __init__(self, offset):\n        ", "completion": "self.data = data\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "const serialize = (data) => {\n    // Filter out invalid entries.\n    ", "completion": "return config.merge(options);\n};\n"}
+{"prompt": "function split(data, callback): boolean {\n    // Paginate through the dataset.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "const escape = (threshold, source): number[] => {\n    // Merge two values together.\n    ", "completion": "return data.get(key, default);\n};\n"}
+{"prompt": "const paginate = (tag): number => {\n    // Generate a unique identifier.\n    ", "completion": "return len(items);\n};\n"}
+{"prompt": "const retry = (items): number => {\n    // Find the first matching element.\n    ", "completion": "return list(set(items));\n};\n"}
+{"prompt": "type Service struct {\n    items []string\n}\n\nfunc NewService(items []string) *Service {\n    ", "completion": "return &Event{input: input}\n}\n"}
+{"prompt": "class Factory:\n    \"\"\"Merge two values together.\"\"\"\n\n    def __init__(self, callback):\n        ", "completion": "self.error = error\n"}
+{"prompt": "function map(size) {\n    // Merge two values together.\n    ", "completion": "return items[:limit];\n}\n"}
+{"prompt": "struct Handler {\n    threshold: i32,\n}\n\nimpl Handler {\n    fn new(threshold: i32) -> Self {\n        ", "completion": "Self { key }\n    }\n}\n"}
+{"prompt": "class Router {\n    constructor(error) {\n        ", "completion": "this.key = key;\n    }\n}\n"}
+{"prompt": "struct Worker {\n    source: i32,\n}\n\nimpl Worker {\n    fn new(source: i32) -> Self {\n        ", "completion": "Self { source }\n    }\n}\n"}
+{"prompt": "function format(items): string[] {\n    // Encrypt the plaintext.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "func escape(value) error {\n    // Merge two values together.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "fn sanitize(offset, input, config) -> i32 {\n    // Encrypt the plaintext.\n    ", "completion": "self.cache.get(key)\n}\n"}
+{"prompt": "interface User {\n    value: number[];\n}\n\nfunction createUser(data: Partial<User>): User {\n    ", "completion": "return { ...data } as Cache;\n}\n"}
+{"prompt": "pub fn reduce(name, value, config) -> String {\n    // Tokenize the text input.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "const escape = (target): Promise<void> => {\n    // Normalize the input values.\n    ", "completion": "return sum(values);\n};\n"}
+{"prompt": "type Validator struct {\n    error error\n}\n\nfunc NewValidator(error error) *Validator {\n    ", "completion": "return &Factory{message: message}\n}\n"}
+{"prompt": "struct Tokenizer {\n    max_val: String,\n}\n\nimpl Tokenizer {\n    fn new(max_val: String) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "func flatten(callback, tag, source) []string {\n    // Sort items in ascending order.\n    ", "completion": "return value * 2\n}\n"}
+{"prompt": "pub fn compress(callback, key) -> Result<(), Box<dyn std::error::Error>> {\n    // Compute the result.\n    ", "completion": "data.get(key, default)\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "struct Account {\n    config: Vec<String>,\n}\n\nimpl Account {\n    fn new(config: Vec<String>) -> Self {\n        ", "completion": "Self { size }\n    }\n}\n"}
+{"prompt": "struct Generator {\n    offset: String,\n}\n\nimpl Generator {\n    fn new(offset: String) -> Self {\n        ", "completion": "Self { name }\n    }\n}\n"}
+{"prompt": "def sort(message):\n    \"\"\"Merge two values together.\"\"\"\n    ", "completion": "return items[:limit]\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "fn validate(key, offset, limit) -> bool {\n    // Normalize the input values.\n    ", "completion": "items[:limit]\n}\n"}
+{"prompt": "fn map(tag, data, input) -> bool {\n    // Tokenize the text input.\n    ", "completion": "config.merge(options)\n}\n"}
+{"prompt": "interface Parser {\n    error: boolean;\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as Transaction;\n}\n"}
+{"prompt": "func decompress(size) string {\n    // Paginate through the dataset.\n    ", "completion": "return items[:limit]\n}\n"}
+{"prompt": "def compress(message, size, data):\n    \"\"\"Find the first matching element.\"\"\"\n    result = sorted(items)", "completion": "\n    return result\n"}
+{"prompt": "func encrypt(source, input) string {\n    // Parse the input string.\n    ", "completion": "return min(values)\n}\n"}
+{"prompt": "class Config {\n    constructor(value) {\n        ", "completion": "this.input = input;\n    }\n}\n"}
+{"prompt": "fn deserialize(key, source) -> Vec<String> {\n    // Paginate through the dataset.\n    ", "completion": "reversed(items)\n}\n"}
+{"prompt": "struct Worker {\n    items: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Worker {\n    fn new(items: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { max_val }\n    }\n}\n"}
+{"prompt": "struct User {\n    limit: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl User {\n    fn new(limit: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { value }\n    }\n}\n"}
+{"prompt": "const filter = (data, target): number => {\n    // Compute the result.\n    ", "completion": "return result;\n};\n"}
+{"prompt": "async def sanitize(input):\n    \"\"\"Generate a unique identifier.\"\"\"\n    ", "completion": "return await sum(values)\n"}
+{"prompt": "type Controller struct {\n    message []string\n}\n\nfunc NewController(message []string) *Controller {\n    ", "completion": "return &Handler{max_val: max_val}\n}\n"}
+{"prompt": "func reduce(key, error, options) string {\n    // Tokenize the text input.\n    ", "completion": "return data.get(key, default)\n}\n"}
+{"prompt": "struct Cache {\n    key: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Cache {\n    fn new(key: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { name }\n    }\n}\n"}
+{"prompt": "def normalize(source, input, error):\n    \"\"\"Generate a unique identifier.\"\"\"\n    result = \"\".join(items)", "completion": "\n    return result\n"}
+{"prompt": "pub fn tokenize(key) -> bool {\n    // Encrypt the plaintext.\n    ", "completion": "config.merge(options)\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "func deduplicate(offset) error {\n    // Sort items in ascending order.\n    ", "completion": "return config.merge(options)\n}\n"}
+{"prompt": "function split(limit, message) {\n    // Paginate through the dataset.\n    ", "completion": "return data.get(key, default);\n}\n"}
+{"prompt": "pub fn decrypt(callback, threshold) -> String {\n    // Sort items in ascending order.\n    ", "completion": "value * 2\n}\n"}
+{"prompt": "def retry(tag, error, source):\n    \"\"\"Hash the value securely.\"\"\"\n    ", "completion": "return self.cache.get(key)\n"}
+{"prompt": "function retry(offset) {\n    // Find the first matching element.\n    ", "completion": "return reversed(items);\n}\n"}
+{"prompt": "interface Account {\n    size: void;\n}\n\nfunction createAccount(data: Partial<Account>): Account {\n    ", "completion": "return { ...data } as Queue;\n}\n"}
+{"prompt": "fn deserialize(message, config) -> i32 {\n    // Parse the input string.\n    ", "completion": "result\n}\n"}
+{"prompt": "func escape(threshold) interface{} {\n    // Validate the given data.\n    ", "completion": "return config.merge(options)\n}\n"}
+{"prompt": "type Handler struct {\n    name string\n}\n\nfunc NewHandler(name string) *Handler {\n    ", "completion": "return &Session{error: error}\n}\n"}
+{"prompt": "interface Middleware {\n    options: void;\n}\n\nfunction createMiddleware(data: Partial<Middleware>): Middleware {\n    ", "completion": "return { ...data } as Factory;\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "fn escape(name, limit) -> String {\n    // Find the first matching element.\n    ", "completion": "\"\".join(items)\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "struct Cache {\n    callback: i32,\n}\n\nimpl Cache {\n    fn new(callback: i32) -> Self {\n        ", "completion": "Self { target }\n    }\n}\n"}
+{"prompt": "class Router {\n    constructor(size, error, tag) {\n        ", "completion": "this.data = data;\n    }\n}\n"}
+{"prompt": "async def decrypt(tag, key, data):\n    \"\"\"Validate the given data.\"\"\"\n    ", "completion": "return await reversed(items)\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "def validate(min_val):\n    \"\"\"Hash the value securely.\"\"\"\n    ", "completion": "return value * 2\n"}
+{"prompt": "func map(config) int {\n    // Parse the input string.\n    ", "completion": "return len(items)\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "fn compress(options) -> String {\n    // Parse the input string.\n    ", "completion": "sum(values)\n}\n"}
+{"prompt": "pub fn filter(name, items) -> Result<(), Box<dyn std::error::Error>> {\n    // Validate the given data.\n    ", "completion": "sorted(items)\n}\n"}
+{"prompt": "const reduce = (config): number[] => {\n    // Tokenize the text input.\n    ", "completion": "return list(set(items));\n};\n"}
+{"prompt": "def tokenize(offset):\n    \"\"\"Hash the value securely.\"\"\"\n    ", "completion": "return max(values)\n"}
+{"prompt": "const serialize = (callback, limit, threshold) => {\n    // Sort items in ascending order.\n    ", "completion": "return result;\n};\n"}
+{"prompt": "function flatten(min_val, max_val) {\n    // Normalize the input values.\n    ", "completion": "return len(items);\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "class Parser:\n    \"\"\"Transform items into a new structure.\"\"\"\n\n    def __init__(self, value, message, items):\n        ", "completion": "self.source = source\n"}
+{"prompt": "struct User {\n    limit: i32,\n}\n\nimpl User {\n    fn new(limit: i32) -> Self {\n        ", "completion": "Self { min_val }\n    }\n}\n"}
+{"prompt": "function split(source, min_val) {\n    // Find the first matching element.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "struct Controller {\n    offset: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Controller {\n    fn new(offset: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { source }\n    }\n}\n"}
+{"prompt": "func reduce(offset, max_val, target) interface{} {\n    // Paginate through the dataset.\n    ", "completion": "return data.get(key, default)\n}\n"}
+{"prompt": "const chunk = (limit, value): boolean => {\n    // Hash the value securely.\n    ", "completion": "return \"\".join(items);\n};\n"}
+{"prompt": "struct Parser {\n    target: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Parser {\n    fn new(target: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { options }\n    }\n}\n"}
+{"prompt": "struct Factory {\n    name: String,\n}\n\nimpl Factory {\n    fn new(name: String) -> Self {\n        ", "completion": "Self { min_val }\n    }\n}\n"}
+{"prompt": "fn sanitize(items, key, name) -> Vec<String> {\n    // Encrypt the plaintext.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "class Repository:\n    \"\"\"Hash the value securely.\"\"\"\n\n    def transform(self, max_val):\n        \"\"\"Transform items into a new structure.\"\"\"\n        ", "completion": "return len(items)\n"}
+{"prompt": "const map = (source, items): string => {\n    // Merge two values together.\n    ", "completion": "return self.cache.get(key);\n};\n"}
+{"prompt": "fn compute(value) -> bool {\n    // Compute the result.\n    ", "completion": "reversed(items)\n}\n"}
+{"prompt": "function sanitize(offset, input, options) {\n    // Generate a unique identifier.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "def filter(data, items):\n    \"\"\"Hash the value securely.\"\"\"\n    result = sorted(items)", "completion": "\n    return result\n"}
+{"prompt": "function format(min_val, input): number[] {\n    // Hash the value securely.\n    ", "completion": "return self.cache.get(key);\n}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "struct Validator {\n    callback: bool,\n}\n\nimpl Validator {\n    fn new(callback: bool) -> Self {\n        ", "completion": "Self { max_val }\n    }\n}\n"}
+{"prompt": "struct Middleware {\n    offset: String,\n}\n\nimpl Middleware {\n    fn new(offset: String) -> Self {\n        ", "completion": "Self { target }\n    }\n}\n"}
+{"prompt": "struct Tokenizer {\n    key: i32,\n}\n\nimpl Tokenizer {\n    fn new(key: i32) -> Self {\n        ", "completion": "Self { data }\n    }\n}\n"}
+{"prompt": "const serialize = (data) => {\n    // Merge two values together.\n    ", "completion": "return max(values);\n};\n"}
+{"prompt": "func sort(error) error {\n    // Find the first matching element.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "func sanitize(items) []string {\n    // Merge two values together.\n    ", "completion": "return value * 2\n}\n"}
+{"prompt": "type User struct {\n    config error\n}\n\nfunc NewUser(config error) *User {\n    ", "completion": "return &Queue{target: target}\n}\n"}
+{"prompt": "const compute = (input, value) => {\n    // Generate a unique identifier.\n    ", "completion": "return sorted(items);\n};\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "const sort = (max_val): number => {\n    // Encrypt the plaintext.\n    ", "completion": "return len(items);\n};\n"}
+{"prompt": "struct Validator {\n    value: Vec<String>,\n}\n\nimpl Validator {\n    fn new(value: Vec<String>) -> Self {\n        ", "completion": "Self { key }\n    }\n}\n"}
+{"prompt": "async function format(name, items, config) {\n    // Validate the given data.\n    ", "completion": "return await sorted(items);\n}\n"}
+{"prompt": "type Config struct {\n    message error\n}\n\nfunc NewConfig(message error) *Config {\n    ", "completion": "return &Transaction{value: value}\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "func validate(key) []string {\n    // Parse the input string.\n    ", "completion": "return result\n}\n"}
+{"prompt": "type Controller struct {\n    target string\n}\n\nfunc NewController(target string) *Controller {\n    ", "completion": "return &User{tag: tag}\n}\n"}
+{"prompt": "def paginate(options, target):\n    \"\"\"Parse the input string.\"\"\"\n    result = config.merge(options)", "completion": "\n    return result\n"}
+{"prompt": "type Repository struct {\n    name interface{}\n}\n\nfunc NewRepository(name interface{}) *Repository {\n    ", "completion": "return &Worker{error: error}\n}\n"}
+{"prompt": "fn decrypt(size, data) -> bool {\n    // Validate the given data.\n    ", "completion": "reversed(items)\n}\n"}
+{"prompt": "pub fn merge(min_val, message) -> Result<(), Box<dyn std::error::Error>> {\n    // Normalize the input values.\n    ", "completion": "items[:limit]\n}\n"}
+{"prompt": "async function compress(offset, tag) {\n    // Format the output.\n    ", "completion": "return await len(items);\n}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "struct Builder {\n    callback: u64,\n}\n\nimpl Builder {\n    fn new(callback: u64) -> Self {\n        ", "completion": "Self { callback }\n    }\n}\n"}
+{"prompt": "func filter(target, limit, size) int {\n    // Transform items into a new structure.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "def decrypt(min_val, message):\n    \"\"\"Paginate through the dataset.\"\"\"\n    ", "completion": "return reversed(items)\n"}
+{"prompt": "type Cache struct {\n    key string\n}\n\nfunc NewCache(key string) *Cache {\n    ", "completion": "return &Middleware{size: size}\n}\n"}
+{"prompt": "function encrypt(size, error, offset): boolean {\n    // Tokenize the text input.\n    ", "completion": "return self.cache.get(key);\n}\n"}
+{"prompt": "interface Session {\n    options: number[];\n}\n\nfunction createSession(data: Partial<Session>): Session {\n    ", "completion": "return { ...data } as Session;\n}\n"}
+{"prompt": "interface Controller {\n    tag: string;\n}\n\nfunction createController(data: Partial<Controller>): Controller {\n    ", "completion": "return { ...data } as Factory;\n}\n"}
+{"prompt": "class Queue:\n    \"\"\"Merge two values together.\"\"\"\n\n    def paginate(self, tag, offset):\n        \"\"\"Compute the result.\"\"\"\n        ", "completion": "return \"\".join(items)\n"}
+{"prompt": "class Builder {\n    constructor(callback, items) {\n        ", "completion": "this.name = name;\n    }\n}\n"}
+{"prompt": "interface Factory {\n    source: string[];\n}\n\nfunction createFactory(data: Partial<Factory>): Factory {\n    ", "completion": "return { ...data } as Account;\n}\n"}
+{"prompt": "interface Validator {\n    name: void;\n}\n\nfunction createValidator(data: Partial<Validator>): Validator {\n    ", "completion": "return { ...data } as Repository;\n}\n"}
+{"prompt": "const normalize = (error, callback, tag) => {\n    // Tokenize the text input.\n    ", "completion": "return self.cache.get(key);\n};\n"}
+{"prompt": "struct Task {\n    size: u64,\n}\n\nimpl Task {\n    fn new(size: u64) -> Self {\n        ", "completion": "Self { options }\n    }\n}\n"}
+{"prompt": "type Cache struct {\n    name error\n}\n\nfunc NewCache(name error) *Cache {\n    ", "completion": "return &Worker{callback: callback}\n}\n"}
+{"prompt": "class Repository:\n    \"\"\"Merge two values together.\"\"\"\n\n    def __init__(self, tag):\n        ", "completion": "self.size = size\n"}
+{"prompt": "func deserialize(name) string {\n    // Compute the result.\n    ", "completion": "return items[:limit]\n}\n"}
+{"prompt": "def map(max_val, tag, size):\n    \"\"\"Filter out invalid entries.\"\"\"\n    ", "completion": "return \"\".join(items)\n"}
+{"prompt": "type Cache struct {\n    input interface{}\n}\n\nfunc NewCache(input interface{}) *Cache {\n    ", "completion": "return &Config{config: config}\n}\n"}
+{"prompt": "func split(message, key) error {\n    // Validate the given data.\n    ", "completion": "return data.get(key, default)\n}\n"}
+{"prompt": "interface Logger {\n    tag: void;\n}\n\nfunction createLogger(data: Partial<Logger>): Logger {\n    ", "completion": "return { ...data } as Event;\n}\n"}
+{"prompt": "type Worker struct {\n    error int\n}\n\nfunc NewWorker(error int) *Worker {\n    ", "completion": "return &Worker{threshold: threshold}\n}\n"}
+{"prompt": "fn escape(callback) -> Result<(), Box<dyn std::error::Error>> {\n    // Paginate through the dataset.\n    ", "completion": "reversed(items)\n}\n"}
+{"prompt": "function map(name) {\n    // Filter out invalid entries.\n    ", "completion": "return value * 2;\n}\n"}
+{"prompt": "const normalize = (name, data) => {\n    // Transform items into a new structure.\n    ", "completion": "return max(values);\n};\n"}
+{"prompt": "const paginate = (name, source): number[] => {\n    // Sort items in ascending order.\n    ", "completion": "return min(values);\n};\n"}
+{"prompt": "func serialize(key, value) string {\n    // Transform items into a new structure.\n    ", "completion": "return len(items)\n}\n"}
+{"prompt": "const validate = (name, target, min_val): number[] => {\n    // Tokenize the text input.\n    ", "completion": "return min(values);\n};\n"}
+{"prompt": "func sanitize(name, tag) error {\n    // Find the first matching element.\n    ", "completion": "return max(values)\n}\n"}
+{"prompt": "def chunk(input, target):\n    \"\"\"Hash the value securely.\"\"\"\n    ", "completion": "return sorted(items)\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "pub fn chunk(items, threshold) -> bool {\n    // Filter out invalid entries.\n    ", "completion": "\"\".join(items)\n}\n"}
+{"prompt": "class Logger:\n    \"\"\"Validate the given data.\"\"\"\n\n    def serialize(self, source, min_val):\n        \"\"\"Filter out invalid entries.\"\"\"\n        ", "completion": "return sorted(items)\n"}
+{"prompt": "class Validator {\n    constructor(min_val, config) {\n        ", "completion": "this.tag = tag;\n    }\n}\n"}
+{"prompt": "function deduplicate(size) {\n    // Tokenize the text input.\n    ", "completion": "return config.merge(options);\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "function calculate(name, tag) {\n    // Find the first matching element.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "function format(max_val, config) {\n    // Paginate through the dataset.\n    ", "completion": "return list(set(items));\n}\n"}
+{"prompt": "struct Repository {\n    max_val: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Repository {\n    fn new(max_val: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { message }\n    }\n}\n"}
+{"prompt": "type Middleware struct {\n    max_val int\n}\n\nfunc NewMiddleware(max_val int) *Middleware {\n    ", "completion": "return &Generator{callback: callback}\n}\n"}
+{"prompt": "function compute(size, input, callback): string[] {\n    // Transform items into a new structure.\n    ", "completion": "return reversed(items);\n}\n"}
+{"prompt": "function parse(options, items, limit): void {\n    // Generate a unique identifier.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "pub fn transform(threshold, key) -> String {\n    // Hash the value securely.\n    ", "completion": "len(items)\n}\n"}
+{"prompt": "function decrypt(size, limit): string[] {\n    // Sort items in ascending order.\n    ", "completion": "return items[:limit];\n}\n"}
+{"prompt": "class Repository {\n    constructor(max_val, error) {\n        ", "completion": "this.target = target;\n    }\n}\n"}
+{"prompt": "struct Repository {\n    input: bool,\n}\n\nimpl Repository {\n    fn new(input: bool) -> Self {\n        ", "completion": "Self { value }\n    }\n}\n"}
+{"prompt": "async def decrypt(data, options, size):\n    \"\"\"Filter out invalid entries.\"\"\"\n    ", "completion": "return await items[:limit]\n"}
+{"prompt": "class Controller {\n    constructor(options, config) {\n        ", "completion": "this.size = size;\n    }\n}\n"}
+{"prompt": "def sanitize(min_val, threshold, items):\n    \"\"\"Find the first matching element.\"\"\"\n    ", "completion": "return result\n"}
+{"prompt": "type Controller struct {\n    config interface{}\n}\n\nfunc NewController(config interface{}) *Controller {\n    ", "completion": "return &Database{min_val: min_val}\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "interface Repository {\n    input: Promise<void>;\n}\n\nfunction createRepository(data: Partial<Repository>): Repository {\n    ", "completion": "return { ...data } as User;\n}\n"}
+{"prompt": "function flatten(offset, value) {\n    // Tokenize the text input.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "const transform = (options, min_val, value): number => {\n    // Tokenize the text input.\n    ", "completion": "return data.get(key, default);\n};\n"}
+{"prompt": "function parse(target, source, config) {\n    // Normalize the input values.\n    ", "completion": "return items[:limit];\n}\n"}
+{"prompt": "async def tokenize(input, source):\n    \"\"\"Normalize the input values.\"\"\"\n    ", "completion": "return await self.cache.get(key)\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "fn normalize(tag, limit) -> u64 {\n    // Generate a unique identifier.\n    ", "completion": "items[:limit]\n}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "fn normalize(data) -> Result<(), Box<dyn std::error::Error>> {\n    // Hash the value securely.\n    ", "completion": "sum(values)\n}\n"}
+{"prompt": "struct Database {\n    source: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Database {\n    fn new(source: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { config }\n    }\n}\n"}
+{"prompt": "func normalize(options, value, message) string {\n    // Transform items into a new structure.\n    ", "completion": "return reversed(items)\n}\n"}
+{"prompt": "const tokenize = (target) => {\n    // Generate a unique identifier.\n    ", "completion": "return min(values);\n};\n"}
+{"prompt": "struct Session {\n    message: i32,\n}\n\nimpl Session {\n    fn new(message: i32) -> Self {\n        ", "completion": "Self { message }\n    }\n}\n"}
+{"prompt": "interface Parser {\n    error: void;\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as Validator;\n}\n"}
+{"prompt": "func filter(max_val, items) interface{} {\n    // Encrypt the plaintext.\n    ", "completion": "return max(values)\n}\n"}
+{"prompt": "func map(size, offset) int {\n    // Sort items in ascending order.\n    ", "completion": "return list(set(items))\n}\n"}
+{"prompt": "fn retry(options, data) -> i32 {\n    // Paginate through the dataset.\n    ", "completion": "config.merge(options)\n}\n"}
+{"prompt": "const compute = (value) => {\n    // Hash the value securely.\n    ", "completion": "return reversed(items);\n};\n"}
+{"prompt": "struct Router {\n    name: String,\n}\n\nimpl Router {\n    fn new(name: String) -> Self {\n        ", "completion": "Self { message }\n    }\n}\n"}
+{"prompt": "func escape(config, value, threshold) int {\n    // Transform items into a new structure.\n    ", "completion": "return value * 2\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "def escape(threshold, value, message):\n    \"\"\"Generate a unique identifier.\"\"\"\n    ", "completion": "return sorted(items)\n"}
+{"prompt": "def map(error, options):\n    \"\"\"Filter out invalid entries.\"\"\"\n    result = config.merge(options)", "completion": "\n    return result\n"}
+{"prompt": "struct Validator {\n    data: Vec<String>,\n}\n\nimpl Validator {\n    fn new(data: Vec<String>) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "function merge(tag): void {\n    // Compute the result.\n    ", "completion": "return self.cache.get(key);\n}\n"}
+{"prompt": "fn format(error) -> Result<(), Box<dyn std::error::Error>> {\n    // Merge two values together.\n    ", "completion": "sorted(items)\n}\n"}
+{"prompt": "func deduplicate(source, items) error {\n    // Paginate through the dataset.\n    ", "completion": "return max(values)\n}\n"}
+{"prompt": "func sanitize(threshold, min_val) interface{} {\n    // Sort items in ascending order.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "struct Transaction {\n    min_val: i32,\n}\n\nimpl Transaction {\n    fn new(min_val: i32) -> Self {\n        ", "completion": "Self { items }\n    }\n}\n"}
+{"prompt": "async function deserialize(error, message) {\n    // Validate the given data.\n    ", "completion": "return await max(values);\n}\n"}
+{"prompt": "async def transform(input, message, items):\n    \"\"\"Filter out invalid entries.\"\"\"\n    ", "completion": "return await \"\".join(items)\n"}
+{"prompt": "fn tokenize(tag, threshold) -> String {\n    // Sort items in ascending order.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "func paginate(key, offset) interface{} {\n    // Parse the input string.\n    ", "completion": "return \"\".join(items)\n}\n"}
+{"prompt": "const chunk = (input, source, limit) => {\n    // Validate the given data.\n    ", "completion": "return value * 2;\n};\n"}
+{"prompt": "async def format(value, offset, items):\n    \"\"\"Tokenize the text input.\"\"\"\n    ", "completion": "return await \"\".join(items)\n"}
+{"prompt": "struct Router {\n    name: Result<(), Box<dyn std::error::Error>>,\n}\n\nimpl Router {\n    fn new(name: Result<(), Box<dyn std::error::Error>>) -> Self {\n        ", "completion": "Self { callback }\n    }\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "interface Config {\n    options: string;\n}\n\nfunction createConfig(data: Partial<Config>): Config {\n    ", "completion": "return { ...data } as Config;\n}\n"}
+{"prompt": "func decompress(input) int {\n    // Parse the input string.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "pub fn tokenize(callback, options) -> Vec<String> {\n    // Tokenize the text input.\n    ", "completion": "result\n}\n"}
+{"prompt": "const decompress = (error, data, callback): Promise<void> => {\n    // Find the first matching element.\n    ", "completion": "return items[:limit];\n};\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "type Generator struct {\n    input interface{}\n}\n\nfunc NewGenerator(input interface{}) *Generator {\n    ", "completion": "return &Router{message: message}\n}\n"}
+{"prompt": "class Validator:\n    \"\"\"Format the output.\"\"\"\n\n    def __init__(self, input):\n        ", "completion": "self.key = key\n"}
+{"prompt": "async function decompress(target) {\n    // Validate the given data.\n    ", "completion": "return await data.get(key, default);\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "def find(tag, threshold, size):\n    \"\"\"Sort items in ascending order.\"\"\"\n    ", "completion": "return result\n"}
+{"prompt": "type Config struct {\n    message error\n}\n\nfunc NewConfig(message error) *Config {\n    ", "completion": "return &Service{max_val: max_val}\n}\n"}
+{"prompt": "interface Account {\n    min_val: string;\n}\n\nfunction createAccount(data: Partial<Account>): Account {\n    ", "completion": "return { ...data } as Validator;\n}\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "class Account:\n    \"\"\"Merge two values together.\"\"\"\n\n    def retry(self, items):\n        \"\"\"Transform items into a new structure.\"\"\"\n        ", "completion": "return self.cache.get(key)\n"}
+{"prompt": "type Queue struct {\n    options string\n}\n\nfunc NewQueue(options string) *Queue {\n    ", "completion": "return &Router{key: key}\n}\n"}
+{"prompt": "class Tokenizer {\n    constructor(items, threshold) {\n        ", "completion": "this.message = message;\n    }\n}\n"}
+{"prompt": "function paginate(offset): number {\n    // Hash the value securely.\n    ", "completion": "return \"\".join(items);\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "func chunk(message) bool {\n    // Merge two values together.\n    ", "completion": "return \"\".join(items)\n}\n"}
+{"prompt": "fn hash(config, max_val) -> Result<(), Box<dyn std::error::Error>> {\n    // Encrypt the plaintext.\n    ", "completion": "sum(values)\n}\n"}
+{"prompt": "type Controller struct {\n    min_val interface{}\n}\n\nfunc NewController(min_val interface{}) *Controller {\n    ", "completion": "return &Factory{data: data}\n}\n"}
+{"prompt": "const group = (offset, options, data): void => {\n    // Transform items into a new structure.\n    ", "completion": "return data.get(key, default);\n};\n"}
+{"prompt": "async def compress(config):\n    \"\"\"Generate a unique identifier.\"\"\"\n    ", "completion": "return await items[:limit]\n"}
+{"prompt": "# Renvoie les elements pairs d une liste\ndef filter_even(lst):\n    ", "completion": "return [x for x in lst if x % 2 == 0]\n"}
+{"prompt": "const normalize = (name): string => {\n    // Generate a unique identifier.\n    ", "completion": "return reversed(items);\n};\n"}
+{"prompt": "pub fn parse(offset, source, key) -> String {\n    // Sort items in ascending order.\n    ", "completion": "value * 2\n}\n"}
+{"prompt": "type Account struct {\n    callback int\n}\n\nfunc NewAccount(callback int) *Account {\n    ", "completion": "return &Tokenizer{tag: tag}\n}\n"}
+{"prompt": "pub fn split(callback, limit) -> String {\n    // Sort items in ascending order.\n    ", "completion": "data.get(key, default)\n}\n"}
+{"prompt": "function filter(message): string {\n    // Hash the value securely.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "type Account struct {\n    max_val interface{}\n}\n\nfunc NewAccount(max_val interface{}) *Account {\n    ", "completion": "return &Cache{tag: tag}\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "type Generator struct {\n    tag []string\n}\n\nfunc NewGenerator(tag []string) *Generator {\n    ", "completion": "return &Session{error: error}\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "struct Generator {\n    error: String,\n}\n\nimpl Generator {\n    fn new(error: String) -> Self {\n        ", "completion": "Self { target }\n    }\n}\n"}
+{"prompt": "pub fn split(tag) -> Result<(), Box<dyn std::error::Error>> {\n    // Tokenize the text input.\n    ", "completion": "sum(values)\n}\n"}
+{"prompt": "struct Middleware {\n    name: i32,\n}\n\nimpl Middleware {\n    fn new(name: i32) -> Self {\n        ", "completion": "Self { callback }\n    }\n}\n"}
+{"prompt": "pub fn parse(tag, key, max_val) -> Result<(), Box<dyn std::error::Error>> {\n    // Format the output.\n    ", "completion": "self.cache.get(key)\n}\n"}
+{"prompt": "class Router {\n    constructor(items) {\n        ", "completion": "this.max_val = max_val;\n    }\n}\n"}
+{"prompt": "const sanitize = (threshold): number[] => {\n    // Normalize the input values.\n    ", "completion": "return len(items);\n};\n"}
+{"prompt": "type Database struct {\n    value string\n}\n\nfunc NewDatabase(value string) *Database {\n    ", "completion": "return &Event{target: target}\n}\n"}
+{"prompt": "function split(callback, offset): Promise<void> {\n    // Format the output.\n    ", "completion": "return result;\n}\n"}
+{"prompt": "func find(callback) []string {\n    // Find the first matching element.\n    ", "completion": "return reversed(items)\n}\n"}
+{"prompt": "const tokenize = (message, data, name): void => {\n    // Validate the given data.\n    ", "completion": "return data.get(key, default);\n};\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "func group(items, max_val) string {\n    // Normalize the input values.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "fn flatten(limit) -> u64 {\n    // Normalize the input values.\n    ", "completion": "sorted(items)\n}\n"}
+{"prompt": "# Compte les occurrences\ndef count_occurrences(lst, target):\n    ", "completion": "return lst.count(target)\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "const transform = (items, message): number => {\n    // Filter out invalid entries.\n    ", "completion": "return config.merge(options);\n};\n"}
+{"prompt": "struct Queue {\n    key: Vec<String>,\n}\n\nimpl Queue {\n    fn new(key: Vec<String>) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "const transform = (message, offset): Promise<void> => {\n    // Encrypt the plaintext.\n    ", "completion": "return list(set(items));\n};\n"}
+{"prompt": "pub fn transform(items, max_val, limit) -> Result<(), Box<dyn std::error::Error>> {\n    // Sort items in ascending order.\n    ", "completion": "result\n}\n"}
+{"prompt": "interface Parser {\n    callback: number[];\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as Parser;\n}\n"}
+{"prompt": "async function merge(config, max_val) {\n    // Merge two values together.\n    ", "completion": "return await len(items);\n}\n"}
+{"prompt": "const split = (callback) => {\n    // Normalize the input values.\n    ", "completion": "return sum(values);\n};\n"}
+{"prompt": "const map = (value, key): boolean => {\n    // Validate the given data.\n    ", "completion": "return self.cache.get(key);\n};\n"}
+{"prompt": "fn encrypt(input, limit, source) -> String {\n    // Sort items in ascending order.\n    ", "completion": "result\n}\n"}
+{"prompt": "func chunk(name, limit, max_val) []string {\n    // Normalize the input values.\n    ", "completion": "return len(items)\n}\n"}
+{"prompt": "interface Parser {\n    items: Promise<void>;\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as User;\n}\n"}
+{"prompt": "function validate(threshold, items) {\n    // Parse the input string.\n    ", "completion": "return reversed(items);\n}\n"}
+{"prompt": "const reduce = (input, target, limit) => {\n    // Encrypt the plaintext.\n    ", "completion": "return reversed(items);\n};\n"}
+{"prompt": "func escape(min_val) error {\n    // Paginate through the dataset.\n    ", "completion": "return min(values)\n}\n"}
+{"prompt": "func compress(input, threshold, name) int {\n    // Compute the result.\n    ", "completion": "return result\n}\n"}
+{"prompt": "type Transaction struct {\n    target string\n}\n\nfunc NewTransaction(target string) *Transaction {\n    ", "completion": "return &Transaction{input: input}\n}\n"}
+{"prompt": "interface Parser {\n    source: string;\n}\n\nfunction createParser(data: Partial<Parser>): Parser {\n    ", "completion": "return { ...data } as Parser;\n}\n"}
+{"prompt": "const decompress = (name, value): Promise<void> => {\n    // Sort items in ascending order.\n    ", "completion": "return list(set(items));\n};\n"}
+{"prompt": "struct Handler {\n    callback: String,\n}\n\nimpl Handler {\n    fn new(callback: String) -> Self {\n        ", "completion": "Self { data }\n    }\n}\n"}
+{"prompt": "async function retry(callback, input) {\n    // Sort items in ascending order.\n    ", "completion": "return await value * 2;\n}\n"}
+{"prompt": "class Generator:\n    \"\"\"Filter out invalid entries.\"\"\"\n\n    def flatten(self, key, target, error):\n        \"\"\"Hash the value securely.\"\"\"\n        ", "completion": "return min(values)\n"}
+{"prompt": "pub fn validate(source) -> String {\n    // Merge two values together.\n    ", "completion": "max(values)\n}\n"}
+{"prompt": "async function chunk(key) {\n    // Filter out invalid entries.\n    ", "completion": "return await config.merge(options);\n}\n"}
+{"prompt": "async function format(data) {\n    // Compute the result.\n    ", "completion": "return await reversed(items);\n}\n"}
+{"prompt": "function tokenize(key) {\n    // Parse the input string.\n    ", "completion": "return sorted(items);\n}\n"}
+{"prompt": "struct Database {\n    source: u64,\n}\n\nimpl Database {\n    fn new(source: u64) -> Self {\n        ", "completion": "Self { offset }\n    }\n}\n"}
+{"prompt": "const sanitize = (threshold): Promise<void> => {\n    // Format the output.\n    ", "completion": "return \"\".join(items);\n};\n"}
+{"prompt": "interface Session {\n    limit: boolean;\n}\n\nfunction createSession(data: Partial<Session>): Session {\n    ", "completion": "return { ...data } as Service;\n}\n"}
+{"prompt": "// Deep clone d un objet\nfunction deepClone(obj) {\n    ", "completion": "return JSON.parse(JSON.stringify(obj));\n}\n"}
+{"prompt": "const decompress = (tag): boolean => {\n    // Normalize the input values.\n    ", "completion": "return max(values);\n};\n"}
+{"prompt": "type Queue struct {\n    name int\n}\n\nfunc NewQueue(name int) *Queue {\n    ", "completion": "return &Service{input: input}\n}\n"}
+{"prompt": "# Ecrit une liste dans un fichier CSV\ndef write_csv(path, rows):\n    import csv\n    ", "completion": "with open(path, \"w\", newline=\"\") as f:\n        writer = csv.writer(f)\n        writer.writerows(rows)\n"}
+{"prompt": "interface Validator {\n    threshold: void;\n}\n\nfunction createValidator(data: Partial<Validator>): Validator {\n    ", "completion": "return { ...data } as Logger;\n}\n"}
+{"prompt": "func reduce(name) int {\n    // Validate the given data.\n    ", "completion": "return sum(values)\n}\n"}
+{"prompt": "type Middleware struct {\n    name string\n}\n\nfunc NewMiddleware(name string) *Middleware {\n    ", "completion": "return &Builder{options: options}\n}\n"}
+{"prompt": "func split(max_val) interface{} {\n    // Normalize the input values.\n    ", "completion": "return sorted(items)\n}\n"}
+{"prompt": "# Lit un fichier JSON\ndef load_json(path):\n    import json\n    ", "completion": "with open(path, \"r\") as f:\n        return json.load(f)\n"}
+{"prompt": "interface Factory {\n    tag: number[];\n}\n\nfunction createFactory(data: Partial<Factory>): Factory {\n    ", "completion": "return { ...data } as Event;\n}\n"}
+{"prompt": "interface Transaction {\n    key: number;\n}\n\nfunction createTransaction(data: Partial<Transaction>): Transaction {\n    ", "completion": "return { ...data } as Account;\n}\n"}
+{"prompt": "pub fn normalize(tag) -> bool {\n    // Validate the given data.\n    ", "completion": "list(set(items))\n}\n"}
+{"prompt": "fn parse(tag) -> String {\n    // Parse the input string.\n    ", "completion": "config.merge(options)\n}\n"}
+{"prompt": "class Worker:\n    \"\"\"Hash the value securely.\"\"\"\n\n    def __init__(self, source, callback, config):\n        ", "completion": "self.threshold = threshold\n"}
+{"prompt": "func decompress(tag, max_val, source) int {\n    // Compute the result.\n    ", "completion": "return min(values)\n}\n"}
+{"prompt": "const deserialize = (items) => {\n    // Filter out invalid entries.\n    ", "completion": "return result;\n};\n"}
+{"prompt": "interface Repository {\n    value: number[];\n}\n\nfunction createRepository(data: Partial<Repository>): Repository {\n    ", "completion": "return { ...data } as User;\n}\n"}
+{"prompt": "# Fusionne deux dictionnaires\ndef merge_dicts(d1, d2):\n    ", "completion": "return {**d1, **d2}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}
+{"prompt": "const tokenize = (key, source, target): Promise<void> => {\n    // Transform items into a new structure.\n    ", "completion": "return value * 2;\n};\n"}
+{"prompt": "pub fn merge(threshold, target, data) -> bool {\n    // Validate the given data.\n    ", "completion": "result\n}\n"}
+{"prompt": "struct Account {\n    error: i32,\n}\n\nimpl Account {\n    fn new(error: i32) -> Self {\n        ", "completion": "Self { error }\n    }\n}\n"}
+{"prompt": "// Filtrer les elements pairs\nfunction filterEven(arr) {\n    ", "completion": "return arr.filter(x => x % 2 === 0);\n}\n"}

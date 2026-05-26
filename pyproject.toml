@@ -8,12 +8,12 @@ license = { file = "LICENSE" }
 authors = [{ name = "RINA AI", email = "hello@plateforme-rina.com" }]
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 target-version = "py310"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP"]
-ignore = []
+ignore = ["E501"]  # line-too-long: template strings are inherently long
 
 [tool.ruff.format]
 quote-style = "double"
