@@ -8,8 +8,18 @@
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": ["Programming Languages", "Machine Learning", "Other"],
-  "keywords": ["rina", "ai", "code", "llm", "assistant"],
+  "categories": [
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "rina",
+    "ai",
+    "code",
+    "llm",
+    "assistant"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/siliconcorerina/RINA-AI.git",
@@ -91,6 +101,7 @@
   "devDependencies": {
     "@types/node": "^20.11.0",
     "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^3.9.1",
     "typescript": "^5.4.0"
   }
 }
