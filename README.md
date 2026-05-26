@@ -86,7 +86,14 @@ Exemples de données dans [`finetune/data/`](finetune/data/).
 
 ## Extension VS Code
 
-Le bootstrap d'une extension VS Code RINA AI (explication, refactoring, génération) est dans [`vscode-extension/`](vscode-extension/).
+Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode-extension/`](vscode-extension/). Guides :
+- [`vscode-extension/README.md`](vscode-extension/README.md) — installation et usage
+- [`vscode-extension/PUBLISHING.md`](vscode-extension/PUBLISHING.md) — publication sur le Marketplace
+
+## Entraînement et publication du modèle
+
+- [`finetune/TRAINING_GUIDE.md`](finetune/TRAINING_GUIDE.md) — entraînement local ou Colab + upload HuggingFace
+- [`notebooks/train_and_upload.ipynb`](notebooks/train_and_upload.ipynb) — notebook Colab clé-en-main
 
 ## Feuille de route
 

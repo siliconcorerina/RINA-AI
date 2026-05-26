@@ -37,13 +37,17 @@ Ou ouvre les Settings (`Ctrl+,`) et cherche `RINA AI` pour ajuster :
 
 ## Publication
 
+Voir le guide complet : [`PUBLISHING.md`](PUBLISHING.md) — résumé :
+
 ```bash
-npm install -g @vscode/vsce
-vsce package
-vsce publish
+# Une fois : login avec un PAT Azure DevOps (scope Marketplace → Publish)
+npx vsce login siliconcorerina
+
+# Publier
+npx vsce publish --no-dependencies
 ```
 
-Voir [issue #7](https://github.com/siliconcorerina/RINA-AI/issues/7) pour le suivi.
+Suivi : [issue #7](https://github.com/siliconcorerina/RINA-AI/issues/7).
 
 ## Licence
 
