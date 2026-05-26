@@ -70,3 +70,9 @@ wandb/
 *.key
 *.pem
 .secrets/
+
+# Node / VS Code extension
+node_modules/
+out/
+*.vsix
+.vscode-test/

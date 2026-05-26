@@ -1,0 +1,25 @@
+# Image de developpement RINA AI
+# Build:   docker build -f Dockerfile.dev -t rina-ai-dev .
+# Run:     docker run -it --rm -v $PWD:/workspace rina-ai-dev bash
+
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    git \
+    curl \
+    ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /workspace
+
+COPY requirements.txt /tmp/requirements.txt
+RUN pip install --upgrade pip \
+    && pip install -r /tmp/requirements.txt \
+    && pip install ruff==0.5.0 pytest
+
+CMD ["bash"]

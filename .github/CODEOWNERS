@@ -1,0 +1,8 @@
+# Proprietaires par defaut de tout le depot
+* @ffranck12
+
+# Composants specifiques
+/evaluation/      @ffranck12
+/finetune/        @ffranck12
+/vscode-extension/ @ffranck12
+/.github/         @ffranck12
