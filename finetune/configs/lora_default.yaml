@@ -1,0 +1,37 @@
+# Configuration d'exemple — fine-tuning LoRA RINA AI
+
+model:
+  base: siliconcorerina/rina-coder-base
+  trust_remote_code: false
+
+data:
+  train_file: data/train.jsonl
+  eval_file: data/eval.jsonl
+  max_length: 2048
+
+lora:
+  r: 16
+  alpha: 32
+  dropout: 0.05
+  target_modules:
+    - q_proj
+    - k_proj
+    - v_proj
+    - o_proj
+
+training:
+  output_dir: outputs/rina-lora
+  num_train_epochs: 3
+  per_device_train_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.03
+  lr_scheduler_type: cosine
+  logging_steps: 10
+  save_strategy: epoch
+  evaluation_strategy: epoch
+  bf16: true
+
+logging:
+  report_to: none  # ou "wandb"
+  run_name: rina-coder-lora-v1
