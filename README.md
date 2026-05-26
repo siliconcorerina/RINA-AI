@@ -1,5 +1,10 @@
+<p align="center">
+  <img src="assets/logo/rina-ai-logo.svg" alt="RINA AI" width="360"/>
+</p>
+
 # RINA AI
 
+[![CI](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml)
 [![Site](https://img.shields.io/badge/site-plateforme--rina.com-blue)](https://plateforme-rina.com)
 [![Contact](https://img.shields.io/badge/contact-hello%40plateforme--rina.com-orange)](mailto:hello@plateforme-rina.com)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)

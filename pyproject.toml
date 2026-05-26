@@ -1,0 +1,19 @@
+[project]
+name = "rina-ai"
+version = "0.1.0"
+description = "RINA AI - modèles et outils d'IA pour le code"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "RINA AI", email = "hello@plateforme-rina.com" }]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"

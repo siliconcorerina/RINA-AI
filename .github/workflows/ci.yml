@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint Python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install ruff
+        run: pip install ruff==0.5.0
+
+      - name: Run ruff check
+        run: ruff check .
+
+      - name: Run ruff format check
+        run: ruff format --check .
+
+  structure:
+    name: Verify repo structure
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Ensure required top-level files exist
+        run: |
+          for f in README.md LICENSE requirements.txt .gitignore; do
+            if [ ! -f "$f" ]; then
+              echo "Missing required file: $f"
+              exit 1
+            fi
+          done
+
+      - name: Ensure required directories exist
+        run: |
+          for d in evaluation demo finetune assets; do
+            if [ ! -d "$d" ]; then
+              echo "Missing required directory: $d"
+              exit 1
+            fi
+          done
+
+  syntax:
+    name: Python syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Byte-compile all .py files
+        run: python -m compileall -q .
