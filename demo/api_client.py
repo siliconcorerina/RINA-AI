@@ -39,8 +39,7 @@ def get_api_key() -> str:
     key = os.environ.get("RINA_API_KEY")
     if not key:
         print(
-            "RINA_API_KEY n'est pas defini. Recupere une cle sur "
-            "https://plateforme-rina.com/account.",
+            "RINA_API_KEY n'est pas defini. Recupere une cle sur " "https://plateforme-rina.com/account.",
             file=sys.stderr,
         )
         raise SystemExit(2)

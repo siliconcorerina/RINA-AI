@@ -84,9 +84,7 @@ def execute(spec: LangSpec, source: str, timeout: float) -> tuple[bool, str]:
         try:
             if spec.compile_cmd:
                 cmd = [c.format(**subst) for c in spec.compile_cmd]
-                compile_proc = subprocess.run(
-                    cmd, capture_output=True, text=True, timeout=timeout, cwd=tmp
-                )
+                compile_proc = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout, cwd=tmp)
                 if compile_proc.returncode != 0:
                     return False, "compile: " + compile_proc.stderr[-300:]
 
@@ -167,8 +165,7 @@ def main() -> int:
                 "model": args.model,
                 "language": args.language,
                 "n_problems": len(ds),
-                "pass_at_1": sum(p["n_correct"] for p in per_problem)
-                / (len(per_problem) * args.n_samples),
+                "pass_at_1": sum(p["n_correct"] for p in per_problem) / (len(per_problem) * args.n_samples),
                 "per_problem": per_problem,
             },
             indent=2,

@@ -34,9 +34,7 @@ def load_yaml(path: Path) -> dict[str, Any]:
 def format_example(example: dict, tokenizer, max_length: int) -> dict:
     """Convertit un example {prompt, completion} ou {messages: [...]} en input_ids."""
     if "messages" in example:
-        text = tokenizer.apply_chat_template(
-            example["messages"], tokenize=False, add_generation_prompt=False
-        )
+        text = tokenizer.apply_chat_template(example["messages"], tokenize=False, add_generation_prompt=False)
     elif "prompt" in example and "completion" in example:
         text = example["prompt"] + example["completion"]
     else:
