@@ -1,0 +1,96 @@
+{
+  "name": "rina-ai-vscode",
+  "displayName": "RINA AI",
+  "description": "Assistant code RINA AI dans VS Code : explication, refactor, completion",
+  "version": "0.0.1",
+  "publisher": "siliconcorerina",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Programming Languages", "Machine Learning", "Other"],
+  "keywords": ["rina", "ai", "code", "llm", "assistant"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/siliconcorerina/RINA-AI.git",
+    "directory": "vscode-extension"
+  },
+  "homepage": "https://plateforme-rina.com",
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "rinaAI.explain",
+        "title": "RINA AI : Expliquer le code selectionne",
+        "category": "RINA AI"
+      },
+      {
+        "command": "rinaAI.refactor",
+        "title": "RINA AI : Refactorer le code selectionne",
+        "category": "RINA AI"
+      },
+      {
+        "command": "rinaAI.generate",
+        "title": "RINA AI : Generer du code depuis un prompt",
+        "category": "RINA AI"
+      },
+      {
+        "command": "rinaAI.setApiKey",
+        "title": "RINA AI : Definir la cle API",
+        "category": "RINA AI"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "rinaAI.explain",
+          "when": "editorHasSelection",
+          "group": "rinaAI@1"
+        },
+        {
+          "command": "rinaAI.refactor",
+          "when": "editorHasSelection",
+          "group": "rinaAI@2"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "RINA AI",
+      "properties": {
+        "rinaAI.baseUrl": {
+          "type": "string",
+          "default": "https://api.plateforme-rina.com",
+          "description": "Base URL de l API RINA AI"
+        },
+        "rinaAI.model": {
+          "type": "string",
+          "default": "rina-coder-base",
+          "description": "Identifiant du modele a utiliser"
+        },
+        "rinaAI.temperature": {
+          "type": "number",
+          "default": 0.2,
+          "minimum": 0,
+          "maximum": 2,
+          "description": "Temperature d echantillonnage"
+        },
+        "rinaAI.maxTokens": {
+          "type": "number",
+          "default": 512,
+          "description": "Nombre maximum de tokens generes"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "typescript": "^5.4.0"
+  }
+}

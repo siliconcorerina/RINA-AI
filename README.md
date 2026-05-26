@@ -61,11 +61,32 @@ python demo/inference_example.py --prompt "Écris une fonction Python qui calcul
 
 ## Évaluation
 
-Les scripts d'évaluation se trouvent dans [`evaluation/`](evaluation/). Ils couvrent les benchmarks standards de génération de code (HumanEval, MBPP, etc.) ainsi que des suites internes RINA AI.
+Les scripts d'évaluation se trouvent dans [`evaluation/`](evaluation/). Ils couvrent les benchmarks standards de génération de code (HumanEval, MBPP, MultiPL-E pour Rust/Go/Kotlin) ainsi qu'une suite interne RINA-Bench.
+
+```bash
+# HumanEval
+python evaluation/humaneval/run_eval.py --model siliconcorerina/rina-coder-base --n-samples 1
+
+# MBPP
+python evaluation/mbpp/run_eval.py --model siliconcorerina/rina-coder-base
+
+# MultiPL-E (Rust)
+python evaluation/multipl_e/run_eval.py --model siliconcorerina/rina-coder-base --language rs --output results/rs.json
+```
 
 ## Fine-tuning
 
-Les pipelines de fine-tuning (LoRA, full fine-tuning) sont disponibles dans [`finetune/`](finetune/) avec des configurations d'exemple.
+Pipeline LoRA / full fine-tuning dans [`finetune/`](finetune/), piloté par YAML :
+
+```bash
+python finetune/train.py --config finetune/configs/lora_default.yaml
+```
+
+Exemples de données dans [`finetune/data/`](finetune/data/).
+
+## Extension VS Code
+
+Le bootstrap d'une extension VS Code RINA AI (explication, refactoring, génération) est dans [`vscode-extension/`](vscode-extension/).
 
 ## Feuille de route
 
