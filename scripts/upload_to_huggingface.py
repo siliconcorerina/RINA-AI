@@ -15,7 +15,6 @@ Prérequis:
 from __future__ import annotations
 
 import argparse
-import glob
 import os
 import sys
 from pathlib import Path
@@ -23,8 +22,16 @@ from pathlib import Path
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Upload RINA AI checkpoint to HuggingFace Hub")
-    p.add_argument("--model-path", required=True, help="Chemin local vers le checkpoint (config.json, model.safetensors...)")
-    p.add_argument("--repo-id", required=True, help="ID du depot HuggingFace (ex: siliconcorerina/rina-coder-base)")
+    p.add_argument(
+        "--model-path",
+        required=True,
+        help="Chemin local vers le checkpoint (config.json, model.safetensors...)",
+    )
+    p.add_argument(
+        "--repo-id",
+        required=True,
+        help="ID du depot HuggingFace (ex: siliconcorerina/rina-coder-base)",
+    )
     p.add_argument("--message", default="Update checkpoint", help="Message de commit")
     p.add_argument("--private", action="store_true", help="Depot prive sur HF")
     p.add_argument("--dry-run", action="store_true", help="Affiche les fichiers sans uploader")
@@ -86,7 +93,7 @@ def main() -> int:
         print(f"AVERTISSEMENT : creation du depot : {e}", file=sys.stderr)
 
     # Upload
-    print(f"\n Upload en cours...")
+    print("\n Upload en cours...")
     try:
         api.upload_folder(
             repo_id=args.repo_id,
@@ -95,7 +102,7 @@ def main() -> int:
             token=os.environ.get("HF_TOKEN"),
             ignore_patterns=["__pycache__/*"],
         )
-        print(f" Upload termine !")
+        print(" Upload termine !")
         print(f" Voir : https://huggingface.co/{args.repo_id}")
     except Exception as e:
         print(f" ERREUR upload : {e}", file=sys.stderr)

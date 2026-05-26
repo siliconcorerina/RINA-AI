@@ -6,6 +6,7 @@ Usage:
         --n-samples 1 \\
         --output results/mbpp.json
 """
+
 from __future__ import annotations
 
 import argparse
@@ -16,7 +17,6 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from evaluation._utils.sandbox import ExecResult, pass_at_k, run_python  # noqa: E402
-
 
 PROMPT_TEMPLATE = (
     "Tu es un assistant Python. Resous le probleme suivant en ecrivant uniquement le code Python.\n"
@@ -34,7 +34,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--temperature", type=float, default=0.2)
     parser.add_argument("--timeout", type=float, default=10.0)
     parser.add_argument("--limit", type=int, default=None)
-    parser.add_argument("--split", default="test", choices=["train", "validation", "test", "prompt"])
+    parser.add_argument(
+        "--split", default="test", choices=["train", "validation", "test", "prompt"]
+    )
     parser.add_argument("--output", default="results/mbpp.json")
     parser.add_argument("--device", default="auto")
     return parser.parse_args()
@@ -64,7 +66,7 @@ def generate_completion(model, tokenizer, prompt: str, args) -> str:
         pad_token_id=tokenizer.eos_token_id,
     )
     return tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1]:],
+        outputs[0][inputs["input_ids"].shape[1] :],
         skip_special_tokens=True,
     )
 
@@ -113,10 +115,13 @@ def main() -> int:
         "split": args.split,
         "n_problems": len(ds),
         "n_samples": args.n_samples,
-        "pass_at_1": sum(pass_at_k(args.n_samples, p["n_correct"], 1) for p in per_problem) / len(per_problem),
+        "pass_at_1": sum(pass_at_k(args.n_samples, p["n_correct"], 1) for p in per_problem)
+        / len(per_problem),
     }
     if args.n_samples >= 10:
-        metrics["pass_at_10"] = sum(pass_at_k(args.n_samples, p["n_correct"], 10) for p in per_problem) / len(per_problem)
+        metrics["pass_at_10"] = sum(
+            pass_at_k(args.n_samples, p["n_correct"], 10) for p in per_problem
+        ) / len(per_problem)
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)

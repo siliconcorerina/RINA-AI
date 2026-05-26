@@ -3,6 +3,7 @@
 Usage:
     python demo/inference_example.py --prompt "Écris une fonction Python qui ..."
 """
+
 import argparse
 import sys
 
@@ -72,7 +73,7 @@ def main() -> int:
     )
 
     generated = tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1]:],
+        outputs[0][inputs["input_ids"].shape[1] :],
         skip_special_tokens=True,
     )
 

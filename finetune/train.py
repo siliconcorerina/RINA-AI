@@ -5,6 +5,7 @@ Usage:
 
 Le YAML pilote tout (modele, donnees, hyperparametres, LoRA, logging).
 """
+
 from __future__ import annotations
 
 import argparse
@@ -39,9 +40,7 @@ def format_example(example: dict, tokenizer, max_length: int) -> dict:
     elif "prompt" in example and "completion" in example:
         text = example["prompt"] + example["completion"]
     else:
-        raise ValueError(
-            "Chaque exemple doit avoir soit (prompt + completion), soit messages[]"
-        )
+        raise ValueError("Chaque exemple doit avoir soit (prompt + completion), soit messages[]")
 
     enc = tokenizer(
         text,
@@ -96,7 +95,7 @@ def main() -> int:
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
 
-    print(f"[RINA-Train] Chargement du modele")
+    print("[RINA-Train] Chargement du modele")
     model = AutoModelForCausalLM.from_pretrained(
         model_cfg["base"],
         torch_dtype=torch.bfloat16 if train_cfg.get("bf16") else torch.float32,

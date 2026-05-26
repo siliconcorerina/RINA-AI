@@ -7,13 +7,14 @@ Usage:
     python demo/api_client.py --prompt "Ecris une fonction de tri rapide"
     python demo/api_client.py --prompt "Explique ce code" --stream
 """
+
 from __future__ import annotations
 
 import argparse
 import json
 import os
 import sys
-from typing import Iterator
+from collections.abc import Iterator
 from urllib import error, request
 
 DEFAULT_BASE_URL = "https://api.plateforme-rina.com"
@@ -62,8 +63,7 @@ def post(base_url: str, path: str, payload: dict, api_key: str, stream: bool) ->
     try:
         with request.urlopen(req, timeout=120) as resp:
             if stream:
-                for line in resp:
-                    yield line
+                yield from resp
             else:
                 yield resp.read()
     except error.HTTPError as e:
@@ -88,7 +88,7 @@ def generate(args, api_key: str) -> None:
             line = raw.decode("utf-8", errors="replace").strip()
             if not line or not line.startswith("data:"):
                 continue
-            chunk = line[len("data:"):].strip()
+            chunk = line[len("data:") :].strip()
             if chunk == "[DONE]":
                 print()
                 return

@@ -9,6 +9,7 @@ Commandes au prompt :
     :system <msg>   redefinit le message systeme
     :quit    sort
 """
+
 from __future__ import annotations
 
 import argparse
@@ -33,9 +34,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def render_reply(model, tokenizer, messages: list[dict], args) -> str:
-    text = tokenizer.apply_chat_template(
-        messages, tokenize=False, add_generation_prompt=True
-    )
+    text = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt").to(model.device)
 
     if args.stream:
@@ -79,7 +78,7 @@ def _generate_blocking(model, tokenizer, inputs, args) -> str:
         pad_token_id=tokenizer.eos_token_id,
     )
     reply = tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1]:],
+        outputs[0][inputs["input_ids"].shape[1] :],
         skip_special_tokens=True,
     )
     print(reply)
@@ -118,7 +117,7 @@ def main() -> int:
             print("[historique efface]")
             continue
         if user.startswith(":system "):
-            args.system = user[len(":system "):].strip()
+            args.system = user[len(":system ") :].strip()
             messages = [{"role": "system", "content": args.system}]
             print("[message systeme mis a jour]")
             continue

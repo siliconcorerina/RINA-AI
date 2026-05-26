@@ -6,6 +6,7 @@ Usage:
         --language rs \\
         --output results/multipl_e_rs.json
 """
+
 from __future__ import annotations
 
 import argparse
@@ -90,9 +91,7 @@ def execute(spec: LangSpec, source: str, timeout: float) -> tuple[bool, str]:
                     return False, "compile: " + compile_proc.stderr[-300:]
 
             run = [c.format(**subst) for c in spec.run_cmd]
-            run_proc = subprocess.run(
-                run, capture_output=True, text=True, timeout=timeout, cwd=tmp
-            )
+            run_proc = subprocess.run(run, capture_output=True, text=True, timeout=timeout, cwd=tmp)
             if run_proc.returncode != 0:
                 return False, "run: " + run_proc.stderr[-300:]
             return True, ""
@@ -112,7 +111,7 @@ def generate(model, tokenizer, prompt: str, args) -> str:
         pad_token_id=tokenizer.eos_token_id,
     )
     return tokenizer.decode(
-        outputs[0][inputs["input_ids"].shape[1]:],
+        outputs[0][inputs["input_ids"].shape[1] :],
         skip_special_tokens=True,
     )
 

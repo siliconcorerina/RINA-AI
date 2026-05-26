@@ -4,6 +4,7 @@ Lance le code dans un sous-processus Python isole, avec un timeout dur.
 Ne pretend pas etre une sandbox de securite : a executer dans un environnement
 controle (CI, conteneur jetable).
 """
+
 from __future__ import annotations
 
 import subprocess
