@@ -5,6 +5,7 @@
 # RINA AI
 
 [![CI](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml)
+[![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-rina--coder--base-yellow)](https://huggingface.co/siliconcorerina/rina-coder-base)
 [![Site](https://img.shields.io/badge/site-plateforme--rina.com-blue)](https://plateforme-rina.com)
 [![Contact](https://img.shields.io/badge/contact-hello%40plateforme--rina.com-orange)](mailto:hello@plateforme-rina.com)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -24,6 +25,12 @@ RINA AI est un projet open-source visant à fournir des modèles de langage spé
 - [Contribuer](#contribuer)
 - [Licence](#licence)
 - [Contact](#contact)
+
+## Modèles
+
+| Modèle | HuggingFace | Statut |
+|--------|-------------|--------|
+| RINA Coder Base | [`siliconcorerina/rina-coder-base`](https://huggingface.co/siliconcorerina/rina-coder-base) | Placeholder (poids à venir) |
 
 ## Présentation
 
