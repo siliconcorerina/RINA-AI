@@ -1,29 +1,25 @@
-# Configuration pre-commit pour RINA AI
-# Installation :
-#   pip install pre-commit
-#   pre-commit install
-# Lancer manuellement sur tout le repo :
-#   pre-commit run --all-files
-
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
-      - id: trailing-whitespace
-        exclude: '\.md$'
-      - id: end-of-file-fixer
-      - id: check-yaml
-      - id: check-json
-      - id: check-merge-conflict
-      - id: check-added-large-files
-        args: [--maxkb=512]
-      - id: check-case-conflict
-      - id: mixed-line-ending
-        args: [--fix=lf]
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.5.0
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
+        args: [--check]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-added-large-files
+        args: [--maxkb=500]
+
+  - repo: local
+    hooks:
+      - id: python-syntax-check
+        name: Python syntax check
+        entry: python -m compileall -q .
+        language: system
+        pass_filenames: false
