@@ -2,3 +2,7 @@ out/
 node_modules/
 *.vsix
 .vscode-test/
+
+# Fichiers temporaires (scripts d'aide, encodages base64, etc.)
+_*
+__pycache__/

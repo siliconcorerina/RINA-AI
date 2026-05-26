@@ -3,7 +3,7 @@
   "displayName": "RINA AI",
   "description": "Assistant code RINA AI dans VS Code : explication, refactor, completion",
   "version": "0.0.1",
-  "publisher": "siliconcorerina",
+  "publisher": "siliconcore",
   "license": "MIT",
   "engines": {
     "vscode": "^1.96.0"

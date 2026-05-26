@@ -41,7 +41,7 @@ Voir le guide complet : [`PUBLISHING.md`](PUBLISHING.md) — résumé :
 
 ```bash
 # Une fois : login avec un PAT Azure DevOps (scope Marketplace → Publish)
-npx vsce login siliconcorerina
+npx vsce login siliconcore
 
 # Publier
 npx vsce publish --no-dependencies

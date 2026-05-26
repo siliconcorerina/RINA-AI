@@ -1,16 +1,16 @@
 # Publier l'extension RINA AI sur le VS Code Marketplace
 
-Guide pas-à-pas pour publier `siliconcorerina.rina-ai-vscode` sur https://marketplace.visualstudio.com.
+Guide pas-à-pas pour publier `siliconcore.rina-ai-vscode` sur https://marketplace.visualstudio.com.
 
 ## 1. Prérequis (une fois)
 
 ### a) Compte publisher
 
-Le publisher `siliconcorerina` doit exister sur le Marketplace.
+Le publisher `siliconcore` doit exister sur le Marketplace.
 
 1. Aller sur https://marketplace.visualstudio.com/manage
 2. Se connecter avec le compte Microsoft lié à Azure DevOps
-3. Si le publisher n'existe pas encore : **Create Publisher** → ID `siliconcorerina`
+3. Si le publisher n'existe pas encore : **Create Publisher** → ID `siliconcore`
 
 ### b) Personal Access Token (PAT) Azure DevOps
 
@@ -33,11 +33,11 @@ Depuis `vscode-extension/` :
 
 ```bash
 cd vscode-extension
-npx vsce login siliconcorerina
+npx vsce login siliconcore
 # Coller le PAT Azure DevOps quand il le demande
 ```
 
-Si tu vois `siliconcorerina is now logged in.` → tout est bon.
+Si tu vois `siliconcore is now logged in.` → tout est bon.
 
 ## 3. Verification avant publication
 
@@ -80,7 +80,7 @@ npx vsce publish major --no-dependencies
 `vsce publish` met automatiquement a jour `package.json` et cree un commit.
 
 Apres ~5-10 min, l'extension apparait sur :
-https://marketplace.visualstudio.com/items?itemName=siliconcorerina.rina-ai-vscode
+https://marketplace.visualstudio.com/items?itemName=siliconcore.rina-ai-vscode
 
 ## 5. Tester l'installation
 
@@ -96,23 +96,23 @@ Dans VS Code :
 
 ### Lister tes publications
 ```bash
-npx vsce show siliconcorerina.rina-ai-vscode
+npx vsce show siliconcore.rina-ai-vscode
 ```
 
 ### Retirer une version (en cas de bug critique)
 ```bash
-npx vsce unpublish siliconcorerina.rina-ai-vscode@0.0.2
+npx vsce unpublish siliconcore.rina-ai-vscode@0.0.2
 ```
 
 ### Renouveler le PAT (avant expiration)
-Repeter l'etape 1.b puis `npx vsce login siliconcorerina` avec le nouveau PAT.
+Repeter l'etape 1.b puis `npx vsce login siliconcore` avec le nouveau PAT.
 
 ## Depannage
 
 | Probleme | Solution |
 |----------|----------|
 | `Personal Access Token verification failed` | PAT invalide ou expire → en regenerer un avec le bon scope (`Marketplace → Publish`) |
-| `Missing publisher name` | Lance `npx vsce login siliconcorerina` d'abord |
+| `Missing publisher name` | Lance `npx vsce login siliconcore` d'abord |
 | `repository missing` warning | Deja configure dans `package.json` → ignorer ou ajouter `--allow-missing-repository` |
 | `Make sure to edit the README.md before publishing` | Editer `vscode-extension/README.md` pour qu'il ne contienne plus de placeholder par defaut |
 | Icone manquante | Ajouter une `icon.png` 128x128 dans le `.vsix` et reference dans `package.json` (`"icon": "icon.png"`) |
