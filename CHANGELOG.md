@@ -9,7 +9,8 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 ### Ajoute
 
 #### Evaluation
-- Backend pluggable `evaluation/_utils/backend.py` — specs `hf:`, `openai:`, `anthropic:`, `mistral:` partagees avec le LSP server et le CLI
+- Backend pluggable `evaluation/_utils/backend.py` — specs `hf:`, `openai:`, `anthropic:`, `mistral:`, `deepseek:` partagees avec le LSP server et le CLI
+- Backend DeepSeek (V3, R1, Coder) — OpenAI-compatible via `deepseek:<model>`, cle `DEEPSEEK_API_KEY`
 - LiveCodeBench runner — problemes de concours, faible contamination
 - BigCodeBench runner — taches multi-bibliotheques, styles `complete` et `instruct`
 - SWE-bench runner — generation de patches au format predictions officiel (grading externe via le harness Docker `swebench`)

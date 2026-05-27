@@ -13,11 +13,13 @@ Backends are addressed by a single string spec so the CLI stays clean:
     anthropic:claude-3-7-sonnet-latest       → Anthropic messages API
     mistral:codestral-latest                 → Mistral chat completions
     mistral:mistral-large-latest             → ditto
+    deepseek:deepseek-chat                   → DeepSeek chat completions (V3)
+    deepseek:deepseek-reasoner               → DeepSeek R1 with chain-of-thought
 
 `Backend.from_spec("hf:…")` returns a ready-to-call object. Each backend
 reads its API key from the environment (OPENAI_API_KEY, ANTHROPIC_API_KEY,
-MISTRAL_API_KEY) and raises an explicit error if it's missing — better
-than silently authenticating to nobody.
+MISTRAL_API_KEY, DEEPSEEK_API_KEY) and raises an explicit error if it's
+missing — better than silently authenticating to nobody.
 """
 
 from __future__ import annotations
@@ -98,8 +100,13 @@ class Backend(ABC):
             return AnthropicBackend(model)
         if provider == "mistral":
             return MistralBackend(model)
+        if provider == "deepseek":
+            return DeepSeekBackend(model)
 
-        raise ValueError(f"Unknown backend provider '{provider}'. " "Supported: hf, openai, anthropic, mistral.")
+        raise ValueError(
+            f"Unknown backend provider '{provider}'. "
+            "Supported: hf, openai, anthropic, mistral, deepseek."
+        )
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -280,6 +287,50 @@ class MistralBackend(Backend):
             random_seed=config.seed,
         )
         return response.choices[0].message.content or ""
+
+
+class DeepSeekBackend(Backend):
+    """Uses DeepSeek's Chat Completions API.
+
+    DeepSeek's API is OpenAI-compatible — same request/response shapes, same
+    `openai` SDK, just a different `base_url`. Common models:
+
+    - ``deepseek-chat``     — V3 generalist
+    - ``deepseek-coder``    — legacy code specialist
+    - ``deepseek-reasoner`` — R1 with chain-of-thought (slower, smarter)
+
+    Requires ``DEEPSEEK_API_KEY``. Get a key from
+    https://platform.deepseek.com/api_keys.
+    """
+
+    name = "deepseek"
+
+    def __init__(self, model: str) -> None:
+        try:
+            from openai import OpenAI
+        except ImportError as exc:
+            raise RuntimeError(
+                "DeepSeek backend requires the `openai` package "
+                "(used as a generic OpenAI-compatible client). "
+                "Install via `pip install openai`."
+            ) from exc
+
+        api_key = _require_env("DEEPSEEK_API_KEY", "DeepSeek")
+        self.spec = f"deepseek:{model}"
+        self.model = model
+        self.client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com/v1")
+
+    def _generate_one(self, prompt: str, config: GenerationConfig) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=config.max_new_tokens,
+            temperature=config.temperature,
+            top_p=config.top_p,
+            stop=config.stop or None,
+        )
+        text = response.choices[0].message.content or ""
+        return text
 
 
 # ─────────────────────────────────────────────────────────────────────

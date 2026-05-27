@@ -12,12 +12,13 @@
  *   - openai:<model>     → OpenAI Chat Completions API
  *   - anthropic:<model>  → Anthropic Messages API
  *   - mistral:<model>    → Mistral Chat Completions API
+ *   - deepseek:<model>   → DeepSeek Chat Completions API (OpenAI-compat)
  *   - rina:<url>         → future RINA AI inference endpoint (OpenAI-compat)
  *
  * Each backend reads its key from the corresponding env var
- * (OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY, RINA_API_KEY) —
- * we don't accept keys via initializationOptions to avoid having them
- * sit in the LSP client's config file.
+ * (OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY, DEEPSEEK_API_KEY,
+ * RINA_API_KEY) — we don't accept keys via initializationOptions to avoid
+ * having them sit in the LSP client's config file.
  *
  * Network calls use Node's built-in fetch (Node 18+) so we pull zero
  * runtime deps beyond vscode-languageserver. Retry-with-backoff is
@@ -58,7 +59,8 @@ export function backendFromSpec(spec: string): Backend {
     throw new Error(
       `Invalid backend spec '${spec}'. Expected '<provider>:<model>' — ` +
         `e.g. 'openai:gpt-4o-mini', 'anthropic:claude-3-5-haiku-latest', ` +
-        `'mistral:codestral-latest', 'rina:https://api.plateforme-rina.com/v1'.`
+        `'mistral:codestral-latest', 'deepseek:deepseek-chat', ` +
+        `'rina:https://api.plateforme-rina.com/v1'.`
     );
   }
   const provider = spec.slice(0, sep).toLowerCase();
@@ -71,12 +73,14 @@ export function backendFromSpec(spec: string): Backend {
       return new AnthropicBackend(model);
     case "mistral":
       return new MistralBackend(model);
+    case "deepseek":
+      return new DeepSeekBackend(model);
     case "rina":
       return new RinaBackend(model);
     default:
       throw new Error(
         `Unknown backend provider '${provider}'. ` +
-          `Supported: openai, anthropic, mistral, rina.`
+          `Supported: openai, anthropic, mistral, deepseek, rina.`
       );
   }
 }
@@ -256,6 +260,44 @@ class MistralBackend implements Backend {
     return withRetry(async () => {
       const data = await postJson<{ choices: { message: { content: string } }[] }>(
         "https://api.mistral.ai/v1/chat/completions",
+        {
+          model: this.model,
+          messages,
+          max_tokens: c.maxTokens,
+          temperature: c.temperature,
+          stop: c.stop.length ? c.stop : undefined,
+        },
+        { Authorization: `Bearer ${this.apiKey}` }
+      );
+      return data.choices?.[0]?.message?.content ?? "";
+    });
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────
+// DeepSeek — OpenAI-compatible API hosted at api.deepseek.com.
+// Common models: `deepseek-chat` (V3), `deepseek-coder` (legacy code
+// specialist), `deepseek-reasoner` (R1, with chain-of-thought).
+// ────────────────────────────────────────────────────────────────────
+
+class DeepSeekBackend implements Backend {
+  readonly spec: string;
+  private readonly apiKey: string;
+
+  constructor(private readonly model: string) {
+    this.spec = `deepseek:${model}`;
+    this.apiKey = requireEnv(
+      "DEEPSEEK_API_KEY",
+      "Set it in your shell, e.g. `export DEEPSEEK_API_KEY=sk-...`. " +
+        "Get a key from https://platform.deepseek.com/api_keys."
+    );
+  }
+
+  async generate(messages: ChatMessage[], config?: GenerationConfig): Promise<string> {
+    const c = { ...DEFAULT_CONFIG, ...config };
+    return withRetry(async () => {
+      const data = await postJson<{ choices: { message: { content: string } }[] }>(
+        "https://api.deepseek.com/v1/chat/completions",
         {
           model: this.model,
           messages,

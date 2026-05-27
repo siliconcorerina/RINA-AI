@@ -17,7 +17,13 @@
 import { afterEach, beforeEach, describe, expect, test } from "vitest";
 import { backendFromSpec } from "../src/backend.js";
 
-const ENV_KEYS = ["OPENAI_API_KEY", "ANTHROPIC_API_KEY", "MISTRAL_API_KEY", "RINA_API_KEY"];
+const ENV_KEYS = [
+  "OPENAI_API_KEY",
+  "ANTHROPIC_API_KEY",
+  "MISTRAL_API_KEY",
+  "DEEPSEEK_API_KEY",
+  "RINA_API_KEY",
+];
 
 let savedEnv: Record<string, string | undefined>;
 
@@ -46,7 +52,7 @@ describe("backendFromSpec — parsing", () => {
 
   test("rejects unknown providers with a helpful list", () => {
     expect(() => backendFromSpec("cohere:command-r")).toThrow(
-      /Unknown backend provider 'cohere'.*openai.*anthropic.*mistral.*rina/s
+      /Unknown backend provider 'cohere'.*openai.*anthropic.*mistral.*deepseek.*rina/s
     );
   });
 
@@ -78,6 +84,11 @@ describe("backendFromSpec — missing API key", () => {
     expect(() => backendFromSpec("mistral:codestral-latest")).toThrow(/MISTRAL_API_KEY/);
   });
 
+  test("deepseek surfaces the env var name + onboarding hint", () => {
+    expect(() => backendFromSpec("deepseek:deepseek-chat")).toThrow(/DEEPSEEK_API_KEY/);
+    expect(() => backendFromSpec("deepseek:deepseek-chat")).toThrow(/platform\.deepseek\.com/);
+  });
+
   test("rina surfaces the env var name + onboarding hint", () => {
     expect(() => backendFromSpec("rina:https://api.example.com/v1")).toThrow(/RINA_API_KEY/);
     expect(() => backendFromSpec("rina:https://api.example.com/v1")).toThrow(/plateforme-rina/);
@@ -90,6 +101,19 @@ describe("backendFromSpec — successful construction", () => {
     const b = backendFromSpec("openai:gpt-4o-mini");
     expect(b.spec).toBe("openai:gpt-4o-mini");
     expect(typeof b.generate).toBe("function");
+  });
+
+  test("deepseek builds when key is present", () => {
+    process.env.DEEPSEEK_API_KEY = "sk-test";
+    const b = backendFromSpec("deepseek:deepseek-chat");
+    expect(b.spec).toBe("deepseek:deepseek-chat");
+    expect(typeof b.generate).toBe("function");
+  });
+
+  test("deepseek-reasoner (R1) is accepted as a model id", () => {
+    process.env.DEEPSEEK_API_KEY = "sk-test";
+    const b = backendFromSpec("deepseek:deepseek-reasoner");
+    expect(b.spec).toBe("deepseek:deepseek-reasoner");
   });
 
   test("rina trims trailing slashes from the base URL", () => {
