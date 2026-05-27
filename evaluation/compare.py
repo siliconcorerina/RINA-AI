@@ -42,10 +42,11 @@ sys.path.insert(0, str(REPO_ROOT))
 # (LiveCodeBench, BigCodeBench) use `--backend`. Encoding the flag here
 # avoids forcing all runners to accept both names.
 BENCHMARKS: dict[str, tuple[Path, str]] = {
-    "humaneval":      (REPO_ROOT / "evaluation" / "humaneval"      / "run_eval.py", "--model"),
-    "mbpp":           (REPO_ROOT / "evaluation" / "mbpp"           / "run_eval.py", "--model"),
-    "livecodebench":  (REPO_ROOT / "evaluation" / "livecodebench"  / "run_eval.py", "--backend"),
-    "bigcodebench":   (REPO_ROOT / "evaluation" / "bigcodebench"   / "run_eval.py", "--backend"),
+    "humaneval": (REPO_ROOT / "evaluation" / "humaneval" / "run_eval.py", "--model"),
+    "mbpp": (REPO_ROOT / "evaluation" / "mbpp" / "run_eval.py", "--model"),
+    "livecodebench": (REPO_ROOT / "evaluation" / "livecodebench" / "run_eval.py", "--backend"),
+    "bigcodebench": (REPO_ROOT / "evaluation" / "bigcodebench" / "run_eval.py", "--backend"),
+    "swebench": (REPO_ROOT / "evaluation" / "swebench" / "run_eval.py", "--backend"),
 }
 
 
@@ -80,10 +81,14 @@ def run_one(benchmark: str, backend_spec: str, output_dir: Path, n_samples: int,
     out_file = output_dir / f"{safe_filename(backend_spec)}.json"
 
     cmd: list[str] = [
-        sys.executable, str(script),
-        spec_flag, backend_spec,
-        "--n-samples", str(n_samples),
-        "--output", str(out_file),
+        sys.executable,
+        str(script),
+        spec_flag,
+        backend_spec,
+        "--n-samples",
+        str(n_samples),
+        "--output",
+        str(out_file),
     ]
     if limit is not None:
         cmd += ["--limit", str(limit)]
@@ -152,15 +157,17 @@ def write_csv(rows: list[dict], path: Path) -> None:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         for r in rows:
-            writer.writerow({
-                "backend":      r.get("backend") or r.get("model") or "",
-                "benchmark":    r.get("benchmark") or "",
-                "n_problems":   r.get("n_problems") or "",
-                "n_samples":    r.get("n_samples") or "",
-                "pass_at_1":    r.get("pass_at_1") or "",
-                "pass_at_10":   r.get("pass_at_10") or "",
-                "pass_at_100":  r.get("pass_at_100") or "",
-            })
+            writer.writerow(
+                {
+                    "backend": r.get("backend") or r.get("model") or "",
+                    "benchmark": r.get("benchmark") or "",
+                    "n_problems": r.get("n_problems") or "",
+                    "n_samples": r.get("n_samples") or "",
+                    "pass_at_1": r.get("pass_at_1") or "",
+                    "pass_at_10": r.get("pass_at_10") or "",
+                    "pass_at_100": r.get("pass_at_100") or "",
+                }
+            )
 
 
 def main() -> int:

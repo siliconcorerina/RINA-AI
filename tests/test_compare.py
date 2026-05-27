@@ -23,9 +23,7 @@ from evaluation.compare import (
 def test_benchmarks_registry_paths_exist():
     for name, (script, flag) in BENCHMARKS.items():
         assert script.exists(), f"{name} runner missing at {script}"
-        assert flag in {"--model", "--backend"}, (
-            f"{name} declared unknown spec flag {flag!r}"
-        )
+        assert flag in {"--model", "--backend"}, f"{name} declared unknown spec flag {flag!r}"
 
 
 def test_safe_filename_strips_separators():
@@ -39,10 +37,14 @@ def test_load_metrics_new_shape(tmp_path: Path):
     {metrics: {...}, per_problem: [...]}; loader should reach into
     `metrics`."""
     p = tmp_path / "r.json"
-    p.write_text(json.dumps({
-        "metrics": {"backend": "openai:gpt-4o", "benchmark": "humaneval", "pass_at_1": 0.85},
-        "per_problem": [],
-    }))
+    p.write_text(
+        json.dumps(
+            {
+                "metrics": {"backend": "openai:gpt-4o", "benchmark": "humaneval", "pass_at_1": 0.85},
+                "per_problem": [],
+            }
+        )
+    )
     m = load_metrics(p)
     assert m["pass_at_1"] == 0.85
     assert m["backend"] == "openai:gpt-4o"
@@ -99,7 +101,14 @@ def test_render_markdown_pass_at_10_only_appears_if_present():
 def test_write_csv_round_trip(tmp_path: Path):
     rows = [
         {"backend": "rina", "benchmark": "humaneval", "n_problems": 164, "n_samples": 1, "pass_at_1": 0.40},
-        {"backend": "gpt-4o", "benchmark": "humaneval", "n_problems": 164, "n_samples": 10, "pass_at_1": 0.85, "pass_at_10": 0.91},
+        {
+            "backend": "gpt-4o",
+            "benchmark": "humaneval",
+            "n_problems": 164,
+            "n_samples": 10,
+            "pass_at_1": 0.85,
+            "pass_at_10": 0.91,
+        },
     ]
     out = tmp_path / "x.csv"
     write_csv(rows, out)

@@ -41,7 +41,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from evaluation._utils.backend import Backend, GenerationConfig  # noqa: E402
 from evaluation._utils.sandbox import ExecResult, pass_at_k, run_python  # noqa: E402
 
-
 CODE_FENCE = re.compile(r"```(?:python|py)?\s*\n(.+?)```", re.DOTALL)
 
 
@@ -152,15 +151,19 @@ def main() -> int:
             result: ExecResult = run_python(script, timeout=args.timeout)
             if result.passed:
                 correct += 1
-            sample_logs.append({"passed": result.passed, "timed_out": result.timed_out, "stderr_tail": result.stderr[-300:]})
+            sample_logs.append(
+                {"passed": result.passed, "timed_out": result.timed_out, "stderr_tail": result.stderr[-300:]}
+            )
 
-        per_problem.append({
-            "task_id": problem.get("task_id"),
-            "entry_point": entry_point,
-            "n_samples": args.n_samples,
-            "n_correct": correct,
-            "samples": sample_logs,
-        })
+        per_problem.append(
+            {
+                "task_id": problem.get("task_id"),
+                "entry_point": entry_point,
+                "n_samples": args.n_samples,
+                "n_correct": correct,
+                "samples": sample_logs,
+            }
+        )
 
         print(f"[{i + 1}/{len(ds)}] {problem.get('task_id')}: {correct}/{args.n_samples}")
 

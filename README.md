@@ -78,7 +78,40 @@ python evaluation/livecodebench/run_eval.py --backend hf:siliconcorerina/rina-co
 
 # BigCodeBench — practical, multi-library tasks (function-completion or instruction styles)
 python evaluation/bigcodebench/run_eval.py --backend hf:siliconcorerina/rina-coder-base --prompt-style complete
+
+# SWE-bench — real GitHub issues, end-to-end patch generation
+# (predictions only; run the official swebench harness on the JSON for the resolved rate)
+python evaluation/swebench/run_eval.py --backend openai:gpt-4o --dataset lite --output results/swebench/lite.json
 ```
+
+### SWE-bench — phase de génération + grading officiel
+
+SWE-bench est gradé par un *harness* Docker officiel : trop lourd pour
+tourner dans le même script que la génération. Notre runner se concentre
+donc sur la phase 1 (génération des patches) et écrit un fichier
+`predictions.json` au format officiel. La phase 2 (grading réel via
+Docker) se lance ensuite avec le paquet `swebench` :
+
+```bash
+# 1. Génération des patches (RINA, GPT-4, Claude, …)
+python evaluation/swebench/run_eval.py \
+    --backend openai:gpt-4o \
+    --dataset lite \
+    --output results/swebench/lite.json
+# → écrit aussi results/swebench/predictions.json
+
+# 2. Grading Docker officiel (résolved rate réel)
+pip install swebench
+python -m swebench.harness.run_evaluation \
+    --predictions_path results/swebench/predictions.json \
+    --max_workers 4 \
+    --run_id gpt-4o
+```
+
+En attendant le grading, le runner publie un **proxy** (`well_formed_rate`)
+mappé sur `pass_at_1` pour que SWE-bench apparaisse dans la table de
+comparaison — le champ `note` du JSON signale clairement que ce n'est
+pas le score officiel.
 
 ### Comparer RINA AI à GPT-4 / Claude / Codestral
 
@@ -139,7 +172,7 @@ Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode
 - [ ] Publication des premiers checkpoints RINA Coder
 - [x] Benchmark complet sur HumanEval / MBPP / MultiPL-E
 - [x] LiveCodeBench + BigCodeBench (avec backends pluggables OpenAI / Anthropic / Mistral)
-- [ ] SWE-bench (patch d'issues GitHub end-to-end)
+- [x] SWE-bench (génération de patches + format officiel pour le harness Docker)
 - [ ] Intégration avec la plateforme [plateforme-rina.com](https://plateforme-rina.com)
 - [ ] Extension VS Code RINA AI
 - [ ] Support multi-langage étendu (Rust, Go, Kotlin)

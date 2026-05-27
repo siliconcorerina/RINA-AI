@@ -71,13 +71,13 @@ class Backend(ABC):
                 last_exc = exc
                 # Brief exponential backoff: 1s, 2s, 4s.
                 if attempt < retries:
-                    time.sleep(2 ** attempt)
+                    time.sleep(2**attempt)
         # All retries exhausted — re-raise the most recent error so the
         # benchmark loop can record it and keep going.
         raise last_exc  # type: ignore[misc]
 
     @staticmethod
-    def from_spec(spec: str) -> "Backend":
+    def from_spec(spec: str) -> Backend:
         """Parse a `<provider>:<model>` spec into a concrete backend.
 
         Raises ValueError on unknown providers so a typo in the CLI fails
@@ -99,15 +99,13 @@ class Backend(ABC):
         if provider == "mistral":
             return MistralBackend(model)
 
-        raise ValueError(
-            f"Unknown backend provider '{provider}'. "
-            "Supported: hf, openai, anthropic, mistral."
-        )
+        raise ValueError(f"Unknown backend provider '{provider}'. " "Supported: hf, openai, anthropic, mistral.")
 
 
 # ─────────────────────────────────────────────────────────────────────
 # HuggingFace local backend — the original behaviour of run_eval.py
 # ─────────────────────────────────────────────────────────────────────
+
 
 class HuggingFaceBackend(Backend):
     """Runs a checkpoint locally via `transformers`.
@@ -136,6 +134,7 @@ class HuggingFaceBackend(Backend):
         load_kwargs: dict[str, Any] = {"device_map": device}
         if dtype is not None:
             import torch as _torch
+
             load_kwargs["torch_dtype"] = getattr(_torch, dtype)
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_id)
@@ -163,6 +162,7 @@ class HuggingFaceBackend(Backend):
 # Hosted API backends
 # ─────────────────────────────────────────────────────────────────────
 
+
 def _require_env(key: str, backend_name: str) -> str:
     value = os.environ.get(key)
     if not value:
@@ -189,8 +189,7 @@ class OpenAIBackend(Backend):
             from openai import OpenAI
         except ImportError as exc:
             raise RuntimeError(
-                "OpenAI backend requires the `openai` package. "
-                "Install via `pip install openai`."
+                "OpenAI backend requires the `openai` package. " "Install via `pip install openai`."
             ) from exc
 
         api_key = _require_env("OPENAI_API_KEY", "OpenAI")
@@ -222,8 +221,7 @@ class AnthropicBackend(Backend):
             from anthropic import Anthropic
         except ImportError as exc:
             raise RuntimeError(
-                "Anthropic backend requires the `anthropic` package. "
-                "Install via `pip install anthropic`."
+                "Anthropic backend requires the `anthropic` package. " "Install via `pip install anthropic`."
             ) from exc
 
         api_key = _require_env("ANTHROPIC_API_KEY", "Anthropic")
@@ -263,8 +261,7 @@ class MistralBackend(Backend):
             from mistralai import Mistral
         except ImportError as exc:
             raise RuntimeError(
-                "Mistral backend requires the `mistralai` package. "
-                "Install via `pip install mistralai`."
+                "Mistral backend requires the `mistralai` package. " "Install via `pip install mistralai`."
             ) from exc
 
         api_key = _require_env("MISTRAL_API_KEY", "Mistral")
@@ -288,6 +285,7 @@ class MistralBackend(Backend):
 # ─────────────────────────────────────────────────────────────────────
 # Helpers
 # ─────────────────────────────────────────────────────────────────────
+
 
 def _truncate_on_stops(text: str, stops: list[str]) -> str:
     """Cut the generation at the first occurrence of any stop string.

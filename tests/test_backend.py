@@ -13,8 +13,6 @@ runners themselves — pointless to mock the network here.
 
 from __future__ import annotations
 
-import os
-
 import pytest
 
 from evaluation._utils.backend import (

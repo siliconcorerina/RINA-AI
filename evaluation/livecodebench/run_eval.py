@@ -43,7 +43,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from evaluation._utils.backend import Backend, GenerationConfig  # noqa: E402
 from evaluation._utils.sandbox import ExecResult, pass_at_k, run_python  # noqa: E402
 
-
 PROMPT_TEMPLATE = """You are an expert Python programmer. Solve the following programming problem.
 
 ## Problem
@@ -65,7 +64,9 @@ Write ONLY the full Python solution that satisfies the test cases. Return a code
 
 def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(description="LiveCodeBench runner for RINA AI")
-    p.add_argument("--backend", required=True, help="Backend spec, e.g. hf:siliconcorerina/rina-coder-base or openai:gpt-4o")
+    p.add_argument(
+        "--backend", required=True, help="Backend spec, e.g. hf:siliconcorerina/rina-coder-base or openai:gpt-4o"
+    )
     p.add_argument("--n-samples", type=int, default=1)
     p.add_argument("--max-new-tokens", type=int, default=2048)
     p.add_argument("--temperature", type=float, default=0.2)
@@ -164,7 +165,7 @@ def main() -> int:
     except ImportError as exc:  # pragma: no cover
         raise RuntimeError("`datasets` is required: pip install datasets") from exc
 
-    print(f"[LiveCodeBench] Loading dataset…")
+    print("[LiveCodeBench] Loading dataset…")
     ds = load_dataset("livecodebench/code_generation_lite", split="test", trust_remote_code=True)
 
     if args.difficulty:
@@ -222,18 +223,24 @@ def main() -> int:
             result: ExecResult = run_python(script, timeout=args.timeout)
             if result.passed:
                 correct += 1
-            sample_logs.append({"passed": result.passed, "timed_out": result.timed_out, "stderr_tail": result.stderr[-300:]})
+            sample_logs.append(
+                {"passed": result.passed, "timed_out": result.timed_out, "stderr_tail": result.stderr[-300:]}
+            )
 
-        per_problem.append({
-            "task_id": problem.get("question_id"),
-            "title": problem.get("question_title"),
-            "difficulty": problem.get("difficulty"),
-            "n_samples": args.n_samples,
-            "n_correct": correct,
-            "samples": sample_logs,
-        })
+        per_problem.append(
+            {
+                "task_id": problem.get("question_id"),
+                "title": problem.get("question_title"),
+                "difficulty": problem.get("difficulty"),
+                "n_samples": args.n_samples,
+                "n_correct": correct,
+                "samples": sample_logs,
+            }
+        )
 
-        print(f"[{i + 1}/{len(ds)}] {problem.get('question_id')} ({problem.get('difficulty', '?')}): {correct}/{args.n_samples}")
+        print(
+            f"[{i + 1}/{len(ds)}] {problem.get('question_id')} ({problem.get('difficulty', '?')}): {correct}/{args.n_samples}"
+        )
 
     n = len(per_problem)
     if n == 0:
