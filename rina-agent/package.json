@@ -1,0 +1,46 @@
+{
+  "name": "@siliconcore/rina-agent",
+  "version": "0.1.0",
+  "description": "Autonomous shell agent powered by RINA AI — reads files, writes code, runs commands. MIT, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral).",
+  "license": "MIT",
+  "author": "Silicon Core <hello@plateforme-rina.com>",
+  "homepage": "https://plateforme-rina.com/research",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/siliconcorerina/RINA-AI.git",
+    "directory": "rina-agent"
+  },
+  "bin": {
+    "rina-agent": "./out/cli.js"
+  },
+  "main": "./out/cli.js",
+  "files": [
+    "out",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "agent",
+    "autonomous",
+    "rina",
+    "rina-ai",
+    "code",
+    "ai",
+    "shell",
+    "tool-use",
+    "swe-agent"
+  ]
+}
