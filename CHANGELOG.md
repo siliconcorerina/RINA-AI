@@ -6,6 +6,28 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 
 ## [Non publie]
 
+### Ajoute
+
+#### Evaluation
+- Backend pluggable `evaluation/_utils/backend.py` — specs `hf:`, `openai:`, `anthropic:`, `mistral:` partagees avec le LSP server et le CLI
+- LiveCodeBench runner — problemes de concours, faible contamination
+- BigCodeBench runner — taches multi-bibliotheques, styles `complete` et `instruct`
+- SWE-bench runner — generation de patches au format predictions officiel (grading externe via le harness Docker `swebench`)
+- `evaluation/compare.py` — orchestrateur multi-modeles, modes RUN et MERGE, sorties Markdown + CSV
+- Tests : `tests/test_backend.py` (13), `tests/test_compare.py` (10), `tests/test_swebench.py` (12)
+
+#### Outils developpeur
+- `lsp-server/` — implementation Language Server Protocol en TypeScript pour Neovim, Helix, Zed, Sublime Text, Emacs (lsp-mode + eglot) et JupyterLab. 3 actions exposees : Explain / Refactor / Generate tests. Backends pluggables, prompts FR/EN. Configs prets-a-coller dans `editor-configs/`. 31 tests vitest.
+- `rina-cli/` — CLI shell pipe-friendly. Verbes : `ask`, `explain`, `refactor`, `tests`. Memes backends + prompts que le LSP server. 59 tests vitest.
+- Compatibilite Cursor / Windsurf documentee pour l'extension VS Code existante
+
+#### CI
+- Job `lsp-server` : build TypeScript strict + tests vitest
+- Job `rina-cli` : build + tests + smoke test du binaire (`--version`, `--help`)
+
+### Corrige
+- Plusieurs warnings ruff (UP037, I001, F541, F401) introduits par les commits initiaux des nouveaux runners
+
 ## [0.1.0] — 2026-05-26
 
 ### Ajoute
