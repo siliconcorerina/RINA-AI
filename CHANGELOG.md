@@ -20,11 +20,13 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 #### Outils developpeur
 - `lsp-server/` — implementation Language Server Protocol en TypeScript pour Neovim, Helix, Zed, Sublime Text, Emacs (lsp-mode + eglot) et JupyterLab. 3 actions exposees : Explain / Refactor / Generate tests. Backends pluggables, prompts FR/EN. Configs prets-a-coller dans `editor-configs/`. 31 tests vitest.
 - `rina-cli/` — CLI shell pipe-friendly. Verbes : `ask`, `explain`, `refactor`, `tests`. Memes backends + prompts que le LSP server. 59 tests vitest.
+- `rina-agent/` — agent autonome multi-backend. 5 outils (read_file, write_file, list_files, shell, finish), boucle ReAct avec parsing `<tool>{...}</tool>`. Safety layer : path scoping, blacklist commandes destructrices (rm -rf /, sudo, dd, curl|sh, fork bombs), confirmation Y/n interactive sur shell + write_file, step limit + token budget. Modes `--read-only` et `--yolo`. 40 tests vitest.
 - Compatibilite Cursor / Windsurf documentee pour l'extension VS Code existante
 
 #### CI
 - Job `lsp-server` : build TypeScript strict + tests vitest
 - Job `rina-cli` : build + tests + smoke test du binaire (`--version`, `--help`)
+- Job `rina-agent` : build + tests + smoke test du binaire (`--version`, `--help`)
 
 ### Corrige
 - Plusieurs warnings ruff (UP037, I001, F541, F401) introduits par les commits initiaux des nouveaux runners
