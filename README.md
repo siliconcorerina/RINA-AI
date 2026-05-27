@@ -72,6 +72,45 @@ python evaluation/mbpp/run_eval.py --model siliconcorerina/rina-coder-base
 
 # MultiPL-E (Rust)
 python evaluation/multipl_e/run_eval.py --model siliconcorerina/rina-coder-base --language rs --output results/rs.json
+
+# LiveCodeBench — contest problems updated regularly, low contamination risk
+python evaluation/livecodebench/run_eval.py --backend hf:siliconcorerina/rina-coder-base --n-samples 1
+
+# BigCodeBench — practical, multi-library tasks (function-completion or instruction styles)
+python evaluation/bigcodebench/run_eval.py --backend hf:siliconcorerina/rina-coder-base --prompt-style complete
+```
+
+### Comparer RINA AI à GPT-4 / Claude / Codestral
+
+Les nouveaux runners acceptent un *backend spec* qui permet d'évaluer
+n'importe quel modèle — local (HuggingFace) ou hébergé (OpenAI,
+Anthropic, Mistral). Le script `evaluation/compare.py` orchestre une
+campagne multi-modèles et émet un tableau Markdown + CSV prêt à coller :
+
+```bash
+# Exporter les clés API des modèles concurrents que vous voulez tester
+export OPENAI_API_KEY=...
+export ANTHROPIC_API_KEY=...
+export MISTRAL_API_KEY=...
+
+python evaluation/compare.py \
+    --benchmark humaneval \
+    --backends hf:siliconcorerina/rina-coder-base \
+               openai:gpt-4o-mini \
+               anthropic:claude-3-5-haiku-latest \
+               mistral:codestral-latest \
+    --n-samples 1 \
+    --output-dir results/compare/humaneval
+```
+
+Specs supportés : `hf:<id>`, `openai:<model>`, `anthropic:<model>`,
+`mistral:<model>`. Les helpers de génération vivent dans
+[`evaluation/_utils/backend.py`](evaluation/_utils/backend.py).
+
+Vous pouvez aussi merger des résultats déjà calculés :
+
+```bash
+python evaluation/compare.py --merge results/*.json
 ```
 
 ## Fine-tuning
@@ -98,7 +137,9 @@ Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode
 ## Feuille de route
 
 - [ ] Publication des premiers checkpoints RINA Coder
-- [ ] Benchmark complet sur HumanEval / MBPP
+- [x] Benchmark complet sur HumanEval / MBPP / MultiPL-E
+- [x] LiveCodeBench + BigCodeBench (avec backends pluggables OpenAI / Anthropic / Mistral)
+- [ ] SWE-bench (patch d'issues GitHub end-to-end)
 - [ ] Intégration avec la plateforme [plateforme-rina.com](https://plateforme-rina.com)
 - [ ] Extension VS Code RINA AI
 - [ ] Support multi-langage étendu (Rust, Go, Kotlin)

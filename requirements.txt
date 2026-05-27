@@ -12,3 +12,9 @@ pandas>=2.2.0
 tqdm>=4.66.0
 pyyaml>=6.0
 einops>=0.8.2
+
+# Optional — only needed to benchmark hosted models via evaluation/compare.py
+# (skip these if you only run HuggingFace backends).
+openai>=1.30.0
+anthropic>=0.30.0
+mistralai>=1.0.0
