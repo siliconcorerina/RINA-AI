@@ -8,6 +8,14 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 
 ### Ajoute
 
+#### rina-agent 0.3.0 — "Web, git, resume, native function-calling"
+- `web_fetch({url})` — recupere une URL http(s) ; safety stricte : SSRF guard (refus localhost / 127.0.0.1 / 10./192.168./172.16-31./169.254./IPv6 link-local), https/http only, confirmation Y/n obligatoire (prompt-injection via page hostile), cap 256 KB, timeout 30s, User-Agent identifiable
+- `git_status()` / `git_diff({path?, staged?})` / `git_log({path?, limit?})` — outils read-only, pas de confirmation, scopes au workdir ; detection automatique "pas un repo git" avec message clair
+- Mode `--continue` (`-c`) — sauvegarde la conversation complete + budget cumulatif dans `<workdir>/.rina-agent/last.json` apres chaque etape ; reprise atomique via temp-file rename
+- **Native function-calling** (`--native-tools`) — utilise l'API tool-use native des providers au lieu de parser `<tool>{...}</tool>`. Implemente pour OpenAI / Mistral / DeepSeek (Chat Completions `tools`) et Anthropic (Messages `tool_use` blocks). Fallback automatique prompt-based si le backend ne le supporte pas
+- 11 outils exposes via `getToolDefinitions()` pour FC native (JSON Schema)
+- 18 nouveaux tests vitest (total 96 dans rina-agent)
+
 #### rina-agent 0.2.0 — "Reliability + Smart edits"
 - `edit_file({path, old_text, new_text})` — patch ciblé au lieu de reecrire le fichier entier ; 5-10x moins de tokens consommes sur les modifications de code, divise la latence sur les gros fichiers, ne reussit que si `old_text` est unique dans le fichier (message d'erreur clair sinon)
 - `search_files({pattern, glob?, max_results?})` — grep recursif sur le workdir, regex JS, support glob (`src/**/*.ts`), respect `.gitignore`, cap a 100 matches par defaut

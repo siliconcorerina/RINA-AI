@@ -24,6 +24,7 @@ import { dirname, relative, join } from "node:path";
 import { promisify } from "node:util";
 
 import type { AgentConfig, ToolCall, ToolResult } from "./types.js";
+import type { ToolDefinition } from "./backend.js";
 import {
   assertCommandAllowed,
   BlockedCommandError,
@@ -68,6 +69,14 @@ export async function runTool(call: ToolCall, config: AgentConfig): Promise<Tool
         return await runSearchFiles(call.args, config);
       case "shell":
         return await runShell(call.args, config);
+      case "web_fetch":
+        return await runWebFetch(call.args, config);
+      case "git_status":
+        return await runGit(["status", "--short", "--branch"], config);
+      case "git_diff":
+        return await runGitDiff(call.args, config);
+      case "git_log":
+        return await runGitLog(call.args, config);
       case "finish":
         // The loop handles `finish` specially; we still return a result
         // so the contract stays uniform.
@@ -513,6 +522,301 @@ function truncate(s: string): string {
     return s;
   }
   return s.slice(0, SHELL_OUTPUT_LIMIT) + `\n[truncated: ${s.length} bytes total]`;
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// web_fetch — pull a URL into the model's context
+// ─────────────────────────────────────────────────────────────────────
+
+const WEB_FETCH_SIZE_LIMIT = 256 * 1024; // 256 KB — anything bigger should be processed via shell
+const WEB_FETCH_TIMEOUT_MS = 30_000;
+
+async function runWebFetch(
+  args: Record<string, unknown>,
+  config: AgentConfig
+): Promise<ToolResult> {
+  const url = requireString(args, "url");
+
+  // URL parsing first — reject anything that isn't a real URL before we
+  // even ask the user. Catches the model hallucinating "fetch the file
+  // at /etc/passwd".
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return { ok: false, output: `Invalid URL: ${url}` };
+  }
+
+  // Restrict to http(s) — file://, ftp://, gopher:// (yes, still a thing
+  // in some lib defaults) have no business being reached by an agent.
+  if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+    return { ok: false, output: `Refusing scheme '${parsed.protocol}' — only http/https are allowed.` };
+  }
+
+  // SSRF defence: refuse loopback and private/link-local IPs. This is a
+  // best-effort check — getaddrinfo at the OS level could still resolve
+  // a domain to a private IP, but flagging the obvious cases is worth
+  // the few lines.
+  const host = parsed.hostname.toLowerCase();
+  if (
+    host === "localhost" ||
+    host === "0.0.0.0" ||
+    /^127\./.test(host) ||
+    /^10\./.test(host) ||
+    /^192\.168\./.test(host) ||
+    /^172\.(1[6-9]|2[0-9]|3[01])\./.test(host) ||
+    /^169\.254\./.test(host) ||
+    /^::1$/.test(host) ||
+    /^fe80:/.test(host)
+  ) {
+    return { ok: false, output: `Refusing to fetch private/loopback host '${host}'.` };
+  }
+
+  // Confirmation: the contents of a fetched URL become part of the
+  // model's context, which means a malicious page can prompt-inject the
+  // agent. So we treat web_fetch like shell — Y/n by default.
+  const okToFetch = await confirm(`Fetch ${url}`, config);
+  if (!okToFetch) {
+    return { ok: false, output: `User declined to fetch ${url}.` };
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), WEB_FETCH_TIMEOUT_MS);
+  try {
+    const res = await fetch(url, {
+      signal: controller.signal,
+      headers: { "User-Agent": "rina-agent/0.3 (+https://github.com/siliconcorerina/RINA-AI)" },
+      redirect: "follow",
+    });
+    if (!res.ok) {
+      return { ok: false, output: `HTTP ${res.status} ${res.statusText} from ${url}` };
+    }
+    const text = await res.text();
+    if (text.length > WEB_FETCH_SIZE_LIMIT) {
+      return {
+        ok: true,
+        output:
+          text.slice(0, WEB_FETCH_SIZE_LIMIT) +
+          `\n\n[truncated: page is ${text.length} bytes, showed first ${WEB_FETCH_SIZE_LIMIT}]`,
+      };
+    }
+    return { ok: true, output: text };
+  } catch (err) {
+    return { ok: false, output: `web_fetch failed: ${(err as Error).message}` };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// git_* — read-only git inspection
+// ─────────────────────────────────────────────────────────────────────
+
+const GIT_OUTPUT_LIMIT = 32 * 1024;
+
+async function runGit(gitArgs: string[], config: AgentConfig): Promise<ToolResult> {
+  // Build the command as a single string for execP. We splice in args
+  // ourselves and never accept arbitrary command strings from the
+  // model — only the structured args of git_status/git_diff/git_log,
+  // each of which we validate.
+  const cmd = ["git", ...gitArgs].map((s) => (/[\s"'$`]/.test(s) ? JSON.stringify(s) : s)).join(" ");
+  try {
+    const { stdout, stderr } = await execP(cmd, {
+      cwd: config.workdir,
+      timeout: 30_000,
+      maxBuffer: 10 * 1024 * 1024,
+    });
+    const out = stdout + (stderr ? `\n[stderr]\n${stderr}` : "");
+    return {
+      ok: true,
+      output: out.length > GIT_OUTPUT_LIMIT ? out.slice(0, GIT_OUTPUT_LIMIT) + `\n[truncated]` : out,
+    };
+  } catch (err) {
+    const e = err as { stdout?: string; stderr?: string; code?: number; message: string };
+    // Most common failure: "not a git repository". Surface it cleanly
+    // rather than as a generic exit-code message so the model knows
+    // what's wrong.
+    const stderr = e.stderr ?? "";
+    if (/not a git repository/i.test(stderr)) {
+      return { ok: false, output: `${config.workdir} is not a git repository.` };
+    }
+    return { ok: false, output: `git ${gitArgs.join(" ")} → exit ${e.code ?? "?"}: ${stderr || e.message}` };
+  }
+}
+
+async function runGitDiff(args: Record<string, unknown>, config: AgentConfig): Promise<ToolResult> {
+  // Two args of interest: `path` to scope the diff, and `staged`
+  // (boolean) to switch to --cached. Everything else is ignored — we
+  // don't accept arbitrary git options to keep the surface small.
+  const gitArgs: string[] = ["diff"];
+  if (args.staged === true || args.cached === true) {
+    gitArgs.push("--cached");
+  }
+  if (typeof args.path === "string" && args.path.length > 0) {
+    // Validate the path is inside workdir before passing to git.
+    safePath(args.path, config.workdir);
+    gitArgs.push("--", args.path);
+  }
+  return runGit(gitArgs, config);
+}
+
+async function runGitLog(args: Record<string, unknown>, config: AgentConfig): Promise<ToolResult> {
+  const gitArgs: string[] = ["log", "--oneline", "--decorate"];
+  // Allow the model to ask for more or fewer commits, bounded.
+  const limit =
+    typeof args.limit === "number" && args.limit > 0 ? Math.min(args.limit, 200) : 20;
+  gitArgs.push(`-n${limit}`);
+  if (typeof args.path === "string" && args.path.length > 0) {
+    safePath(args.path, config.workdir);
+    gitArgs.push("--", args.path);
+  }
+  return runGit(gitArgs, config);
+}
+
+// ─────────────────────────────────────────────────────────────────────
+// Tool definitions for native function-calling
+// ─────────────────────────────────────────────────────────────────────
+
+/**
+ * JSON Schema definitions for every tool. Used by backends that support
+ * native function-calling — the prompt-based fallback teaches the same
+ * surface via `prompt.ts` instead.
+ *
+ * Schemas stay deliberately permissive (no `additionalProperties: false`)
+ * — providers handle small format drift better when the schema is
+ * forgiving, and tools.ts already validates each arg at dispatch time.
+ */
+export function getToolDefinitions(): ToolDefinition[] {
+  return [
+    {
+      name: "read_file",
+      description: "Read a file relative to the working directory. Output truncated at 64 KB.",
+      parameters: {
+        type: "object",
+        properties: { path: { type: "string", description: "Relative path to the file." } },
+        required: ["path"],
+      },
+    },
+    {
+      name: "write_file",
+      description:
+        "Create or overwrite a file with the given content. Requires user confirmation. " +
+        "Prefer edit_file when modifying part of an existing file.",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "Relative path to the file." },
+          content: { type: "string", description: "Full new file contents." },
+        },
+        required: ["path", "content"],
+      },
+    },
+    {
+      name: "edit_file",
+      description:
+        "Replace exactly one occurrence of old_text with new_text inside an existing file. " +
+        "Fails if old_text is absent or appears more than once. Requires confirmation.",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string" },
+          old_text: { type: "string", description: "Exact text to be replaced; must match once." },
+          new_text: { type: "string", description: "Replacement text." },
+        },
+        required: ["path", "old_text", "new_text"],
+      },
+    },
+    {
+      name: "list_files",
+      description:
+        "List entries in a directory. Non-recursive by default; recursive walks respect .gitignore.",
+      parameters: {
+        type: "object",
+        properties: {
+          dir: { type: "string", description: "Directory relative to workdir. Default '.'." },
+          recursive: { type: "boolean", description: "Walk into subdirectories." },
+          respect_gitignore: {
+            type: "boolean",
+            description: "Honour .gitignore when recursive. Default true.",
+          },
+          max_entries: { type: "integer", description: "Cap on entries returned." },
+        },
+      },
+    },
+    {
+      name: "search_files",
+      description:
+        "Regex grep across the workdir. Returns 'path:line: matched line'. Respects .gitignore.",
+      parameters: {
+        type: "object",
+        properties: {
+          pattern: { type: "string", description: "JavaScript regex." },
+          glob: {
+            type: "string",
+            description: "Optional glob filter, e.g. 'src/**/*.ts'.",
+          },
+          max_results: { type: "integer", description: "Cap on results. Default 100." },
+        },
+        required: ["pattern"],
+      },
+    },
+    {
+      name: "shell",
+      description:
+        "Run a shell command in the workdir. Requires confirmation. Output capped at 16 KB.",
+      parameters: {
+        type: "object",
+        properties: { cmd: { type: "string", description: "Command line to execute." } },
+        required: ["cmd"],
+      },
+    },
+    {
+      name: "web_fetch",
+      description:
+        "Fetch the body of an http(s) URL. Requires confirmation. Private hosts refused.",
+      parameters: {
+        type: "object",
+        properties: { url: { type: "string", description: "Absolute http(s) URL." } },
+        required: ["url"],
+      },
+    },
+    {
+      name: "git_status",
+      description: "Show working-tree status (--short --branch). Read-only.",
+      parameters: { type: "object", properties: {} },
+    },
+    {
+      name: "git_diff",
+      description: "Show working-tree or staged diff, optionally scoped to a path. Read-only.",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "Scope the diff to this path." },
+          staged: { type: "boolean", description: "Use --cached." },
+        },
+      },
+    },
+    {
+      name: "git_log",
+      description: "Recent commits, oneline. Default 20, max 200. Read-only.",
+      parameters: {
+        type: "object",
+        properties: {
+          path: { type: "string", description: "Scope the log to this path." },
+          limit: { type: "integer", description: "Number of commits to show." },
+        },
+      },
+    },
+    {
+      name: "finish",
+      description: "Signal the task is complete and pass a one-paragraph summary.",
+      parameters: {
+        type: "object",
+        properties: { summary: { type: "string", description: "What you accomplished." } },
+        required: ["summary"],
+      },
+    },
+  ];
 }
 
 // ─────────────────────────────────────────────────────────────────────

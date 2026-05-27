@@ -35,6 +35,19 @@ const TOOLS_SPEC = `
 - shell({ "cmd": string })
     Run a shell command. Requires user confirmation. Output capped at 16 KB.
 
+- web_fetch({ "url": string })
+    Fetch the body of an http(s) URL. Requires user confirmation (a malicious
+    page could prompt-inject you). Refuses private / loopback hosts. Output capped at 256 KB.
+
+- git_status()
+    Show working tree status (-short, with branch info). Read-only, no confirmation.
+
+- git_diff({ "path"?: string, "staged"?: boolean })
+    Show working-tree or staged diff, optionally scoped to a path. Read-only.
+
+- git_log({ "path"?: string, "limit"?: number })
+    Show recent commits (--oneline). Default 20 commits, max 200. Read-only.
+
 - finish({ "summary": string })
     End the task; pass a one-paragraph summary of what you did.
 `.trim();

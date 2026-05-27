@@ -14,6 +14,10 @@ export type ToolName =
   | "list_files"
   | "search_files"
   | "shell"
+  | "web_fetch"
+  | "git_status"
+  | "git_diff"
+  | "git_log"
   | "finish";
 
 export interface ToolCall {
@@ -59,6 +63,14 @@ export interface AgentConfig {
   /** Per-call generation knobs forwarded to the backend. */
   maxTokens: number;
   temperature: number;
+  /** When true, resume from workdir/.rina-agent/last.json instead of starting fresh. */
+  resume: boolean;
+  /**
+   * When true, use the backend's native function-calling API instead of
+   * prompt-based `<tool>{...}</tool>` parsing. Only takes effect on
+   * backends that implement `generateWithTools`.
+   */
+  nativeTools: boolean;
 }
 
 export interface AgentResult {

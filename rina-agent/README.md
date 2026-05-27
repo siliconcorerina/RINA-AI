@@ -72,7 +72,43 @@ echo "rename every UserDTO to User everywhere in src/" | rina-agent --stdin
 | `list_files`   | Directory listing. `recursive` + `respect_gitignore` options. *(extended in v0.2)*       |
 | `search_files` | Regex grep across the workdir with optional glob filter. *(v0.2)*                        |
 | `shell`        | Run a shell command. **Asks for your confirmation.**                                     |
+| `web_fetch`    | Fetch an http(s) URL body. SSRF-guarded. **Asks for confirmation.** *(v0.3)*             |
+| `git_status`   | Working-tree status (`--short --branch`). Read-only. *(v0.3)*                            |
+| `git_diff`     | Working-tree or staged diff, optionally path-scoped. Read-only. *(v0.3)*                 |
+| `git_log`      | Recent commits (default 20, max 200). Read-only. *(v0.3)*                                |
 | `finish`       | Signal task complete with a one-paragraph summary.                                       |
+
+### Native function-calling *(v0.3)*
+
+Pass `--native-tools` to use the backend's structured tool-use API
+instead of `<tool>{...}</tool>` parsing. Implemented for OpenAI,
+Anthropic, Mistral and DeepSeek. More reliable on long sessions, on
+parity for short ones.
+
+```bash
+rina-agent --native-tools --backend openai:gpt-4o-mini "add a /health route"
+```
+
+### Resumable sessions *(v0.3)*
+
+Every step writes the full conversation history + budget counters to
+`<workdir>/.rina-agent/last.json`. Pass `--continue` (or `-c`) to pick
+up where the last run stopped:
+
+```bash
+# First run hits the step cap halfway through
+rina-agent "refactor src/api.ts to use async/await"
+
+# Bump the cap and keep going (with optional extra guidance)
+rina-agent --continue --max-steps 60 "also extract the validation into a helper"
+```
+
+The agent recreates the conversation, replays nothing, and respects
+the *cumulative* token budget across resumes — raise `--budget` if
+you need more room.
+
+Add `.rina-agent/` to your `.gitignore` so saved sessions don't get
+committed.
 
 ### Cost tracking *(v0.2)*
 

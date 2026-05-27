@@ -22,6 +22,10 @@ const VALID_TOOLS: ReadonlySet<ToolName> = new Set([
   "list_files",
   "search_files",
   "shell",
+  "web_fetch",
+  "git_status",
+  "git_diff",
+  "git_log",
   "finish",
 ]);
 

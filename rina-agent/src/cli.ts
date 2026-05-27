@@ -36,6 +36,8 @@ interface ParsedArgs {
   maxTokens: number;
   temperature: number;
   fromStdin: boolean;
+  resume: boolean;
+  nativeTools: boolean;
   showHelp: boolean;
   showVersion: boolean;
 }
@@ -64,6 +66,8 @@ function parseArgs(argv: string[]): ParsedArgs {
     maxTokens: DEFAULTS.maxTokens,
     temperature: DEFAULTS.temperature,
     fromStdin: false,
+    resume: false,
+    nativeTools: false,
     showHelp: false,
     showVersion: false,
   };
@@ -125,6 +129,13 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--stdin":
         out.fromStdin = true;
         break;
+      case "--continue":
+      case "-c":
+        out.resume = true;
+        break;
+      case "--native-tools":
+        out.nativeTools = true;
+        break;
       default:
         if (a.startsWith("-")) {
           throw new CliArgError(`Unknown option: ${a}`);
@@ -181,6 +192,11 @@ function printHelp(): void {
       `  --yolo                  Skip interactive confirmation. Use with care.\n` +
       `  --read-only             Reject every write_file / shell tool call.\n` +
       `  --stdin                 Read the task description from stdin.\n` +
+      `  --continue, -c          Resume from workdir/.rina-agent/last.json.\n` +
+      `  --native-tools          Use the backend's native function-calling API\n` +
+      `                          instead of <tool>{...}</tool> parsing. More reliable\n` +
+      `                          on providers that support it (OpenAI/Anthropic/\n` +
+      `                          Mistral/DeepSeek).\n` +
       `  --help, -h              Show this message.\n` +
       `  --version, -v           Print version + Node version.\n\n` +
       `ENV\n` +
@@ -229,7 +245,9 @@ export async function main(argv: string[]): Promise<number> {
   if (args.fromStdin) {
     task = (await readStdin()).trim();
   }
-  if (!task) {
+  // With --continue the task is optional — the agent just keeps going
+  // on whatever was queued. Without --continue an empty task is fatal.
+  if (!task && !args.resume) {
     process.stderr.write(`rina-agent: missing task. Try --help.\n`);
     return 2;
   }
@@ -244,6 +262,8 @@ export async function main(argv: string[]): Promise<number> {
     language: args.language,
     maxTokens: args.maxTokens,
     temperature: args.temperature,
+    resume: args.resume,
+    nativeTools: args.nativeTools,
   };
 
   try {

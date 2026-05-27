@@ -36,11 +36,58 @@ export interface GenerationConfig {
 export interface Backend {
   spec: string;
   generate(messages: ChatMessage[], config?: GenerationConfig): Promise<string>;
+  /**
+   * Optional native function-calling. Backends that don't implement it
+   * leave this undefined; the agent falls back to prompt-based parsing
+   * of `<tool>{...}</tool>` blocks.
+   *
+   * The contract is intentionally simple: send messages + tool defs,
+   * get back either a plain text answer or a single tool call. We
+   * don't support parallel tool calls in this version — keeping the
+   * agent loop linear matches our prompt-based flow.
+   */
+  generateWithTools?(
+    messages: ChatMessage[],
+    tools: ToolDefinition[],
+    config?: GenerationConfig
+  ): Promise<NativeAssistantResponse>;
 }
 
 export interface ChatMessage {
   role: "system" | "user" | "assistant";
   content: string;
+  /**
+   * When `role === "assistant"` and the model made a native tool call:
+   * the call details. The provider-specific id is needed on the next
+   * turn to thread the result back through the conversation.
+   */
+  toolCall?: { id: string; name: string; argsJson: string };
+  /**
+   * When `role === "user"` and this message is the result of a tool
+   * call: the id of the call this response answers. Required by the
+   * OpenAI Chat Completions and Anthropic Messages tool protocols.
+   */
+  toolCallId?: string;
+}
+
+/**
+ * Provider-agnostic tool description fed to a native function-calling
+ * backend. The shape mirrors OpenAI's `tools` schema (the JSON Schema
+ * subset that every provider seems to converge on) — Anthropic's
+ * `input_schema` is the same JSON Schema body, just nested under a
+ * differently-named field, so the adapter does that rename at send time.
+ */
+export interface ToolDefinition {
+  name: string;
+  description: string;
+  parameters: Record<string, unknown>; // JSON Schema
+}
+
+export interface NativeAssistantResponse {
+  /** Free-form text the model produced. Often empty when it makes a tool call. */
+  text: string;
+  /** The single tool call the model made this turn, if any. */
+  toolCall: { id: string; name: string; argsJson: string } | null;
 }
 
 const DEFAULT_CONFIG: Required<GenerationConfig> = {
@@ -161,6 +208,203 @@ function requireEnv(name: string, hint: string): string {
 }
 
 // ────────────────────────────────────────────────────────────────────
+// Shared adapters for native function-calling
+// ────────────────────────────────────────────────────────────────────
+
+/**
+ * Translate our internal ChatMessage[] into OpenAI's Chat Completions
+ * message format. The non-trivial bits are:
+ *   - assistant turns that called a tool become role=assistant with a
+ *     `tool_calls` array (and content may be null/empty).
+ *   - user turns that carry a tool result become role=tool with a
+ *     `tool_call_id` keyed to the matching assistant turn.
+ *
+ * Everything else passes through with just `{role, content}`.
+ */
+function toOpenAIMessages(messages: ChatMessage[]): unknown[] {
+  return messages.map((m) => {
+    if (m.role === "assistant" && m.toolCall) {
+      return {
+        role: "assistant",
+        content: m.content || null,
+        tool_calls: [
+          {
+            id: m.toolCall.id,
+            type: "function",
+            function: { name: m.toolCall.name, arguments: m.toolCall.argsJson },
+          },
+        ],
+      };
+    }
+    if (m.role === "user" && m.toolCallId) {
+      return {
+        role: "tool",
+        tool_call_id: m.toolCallId,
+        content: m.content,
+      };
+    }
+    return { role: m.role, content: m.content };
+  });
+}
+
+function toOpenAITools(tools: ToolDefinition[]): unknown[] {
+  return tools.map((t) => ({
+    type: "function",
+    function: { name: t.name, description: t.description, parameters: t.parameters },
+  }));
+}
+
+interface OpenAIChatToolResponse {
+  choices?: {
+    message?: {
+      content?: string | null;
+      tool_calls?: {
+        id: string;
+        function: { name: string; arguments?: string };
+      }[];
+    };
+  }[];
+}
+
+/**
+ * Generate-with-tools helper shared by every OpenAI-compatible
+ * provider (OpenAI itself, Mistral, DeepSeek, and the future RINA
+ * endpoint). Each provider just supplies its own base URL and auth.
+ */
+async function openAICompatGenerateWithTools(
+  baseUrl: string,
+  apiKey: string,
+  model: string,
+  messages: ChatMessage[],
+  tools: ToolDefinition[],
+  config?: GenerationConfig
+): Promise<NativeAssistantResponse> {
+  const c = { ...DEFAULT_CONFIG, ...config };
+  return withRetry(async () => {
+    const data = await postJson<OpenAIChatToolResponse>(
+      `${baseUrl}/chat/completions`,
+      {
+        model,
+        messages: toOpenAIMessages(messages),
+        tools: toOpenAITools(tools),
+        // We don't pass `tool_choice: "required"` — letting the model
+        // answer in plain text when the task is conversational is a
+        // useful escape hatch, and the agent loop handles "no tool
+        // call this turn" cleanly.
+        max_tokens: c.maxTokens,
+        temperature: c.temperature,
+      },
+      { Authorization: `Bearer ${apiKey}` }
+    );
+    const choice = data.choices?.[0];
+    const msg = choice?.message;
+    const tc = msg?.tool_calls?.[0];
+    return {
+      text: msg?.content ?? "",
+      toolCall: tc
+        ? { id: tc.id, name: tc.function.name, argsJson: tc.function.arguments ?? "{}" }
+        : null,
+    };
+  });
+}
+
+/**
+ * Anthropic's Messages API takes the same JSON Schema body for tools
+ * but nests it under `input_schema`, and uses content-block messages
+ * (text + tool_use + tool_result) rather than the flat OpenAI shape.
+ */
+interface AnthropicToolBlock {
+  type: string;
+  text?: string;
+  id?: string;
+  name?: string;
+  input?: Record<string, unknown>;
+}
+
+async function anthropicGenerateWithTools(
+  apiKey: string,
+  model: string,
+  messages: ChatMessage[],
+  tools: ToolDefinition[],
+  config?: GenerationConfig
+): Promise<NativeAssistantResponse> {
+  const c = { ...DEFAULT_CONFIG, ...config };
+  const systemMsgs = messages.filter((m) => m.role === "system").map((m) => m.content);
+  const nonSystem = messages.filter((m) => m.role !== "system");
+
+  const anthropicMessages = nonSystem.map((m) => {
+    if (m.role === "assistant" && m.toolCall) {
+      const blocks: unknown[] = [];
+      if (m.content && m.content.length > 0) {
+        blocks.push({ type: "text", text: m.content });
+      }
+      blocks.push({
+        type: "tool_use",
+        id: m.toolCall.id,
+        name: m.toolCall.name,
+        input: safeParseJson(m.toolCall.argsJson),
+      });
+      return { role: "assistant", content: blocks };
+    }
+    if (m.role === "user" && m.toolCallId) {
+      return {
+        role: "user",
+        content: [
+          { type: "tool_result", tool_use_id: m.toolCallId, content: m.content },
+        ],
+      };
+    }
+    return { role: m.role, content: m.content };
+  });
+
+  return withRetry(async () => {
+    const data = await postJson<{ content?: AnthropicToolBlock[] }>(
+      "https://api.anthropic.com/v1/messages",
+      {
+        model,
+        system: systemMsgs.join("\n\n") || undefined,
+        messages: anthropicMessages,
+        tools: tools.map((t) => ({
+          name: t.name,
+          description: t.description,
+          input_schema: t.parameters,
+        })),
+        max_tokens: c.maxTokens,
+        temperature: c.temperature,
+      },
+      {
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+      }
+    );
+
+    let text = "";
+    let toolCall: NativeAssistantResponse["toolCall"] = null;
+    for (const block of data.content ?? []) {
+      if (block.type === "text") {
+        text += block.text ?? "";
+      } else if (block.type === "tool_use" && block.id && block.name) {
+        toolCall = {
+          id: block.id,
+          name: block.name,
+          argsJson: JSON.stringify(block.input ?? {}),
+        };
+      }
+    }
+    return { text, toolCall };
+  });
+}
+
+function safeParseJson(s: string): Record<string, unknown> {
+  try {
+    const parsed = JSON.parse(s);
+    return parsed && typeof parsed === "object" ? (parsed as Record<string, unknown>) : {};
+  } catch {
+    return {};
+  }
+}
+
+// ────────────────────────────────────────────────────────────────────
 // OpenAI
 // ────────────────────────────────────────────────────────────────────
 
@@ -192,6 +436,21 @@ class OpenAIBackend implements Backend {
       );
       return data.choices?.[0]?.message?.content ?? "";
     });
+  }
+
+  generateWithTools(
+    messages: ChatMessage[],
+    tools: ToolDefinition[],
+    config?: GenerationConfig
+  ): Promise<NativeAssistantResponse> {
+    return openAICompatGenerateWithTools(
+      "https://api.openai.com/v1",
+      this.apiKey,
+      this.model,
+      messages,
+      tools,
+      config
+    );
   }
 }
 
@@ -239,6 +498,14 @@ class AnthropicBackend implements Backend {
         .join("");
     });
   }
+
+  generateWithTools(
+    messages: ChatMessage[],
+    tools: ToolDefinition[],
+    config?: GenerationConfig
+  ): Promise<NativeAssistantResponse> {
+    return anthropicGenerateWithTools(this.apiKey, this.model, messages, tools, config);
+  }
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -273,6 +540,21 @@ class MistralBackend implements Backend {
       );
       return data.choices?.[0]?.message?.content ?? "";
     });
+  }
+
+  generateWithTools(
+    messages: ChatMessage[],
+    tools: ToolDefinition[],
+    config?: GenerationConfig
+  ): Promise<NativeAssistantResponse> {
+    return openAICompatGenerateWithTools(
+      "https://api.mistral.ai/v1",
+      this.apiKey,
+      this.model,
+      messages,
+      tools,
+      config
+    );
   }
 }
 
@@ -311,6 +593,21 @@ class DeepSeekBackend implements Backend {
       );
       return data.choices?.[0]?.message?.content ?? "";
     });
+  }
+
+  generateWithTools(
+    messages: ChatMessage[],
+    tools: ToolDefinition[],
+    config?: GenerationConfig
+  ): Promise<NativeAssistantResponse> {
+    return openAICompatGenerateWithTools(
+      "https://api.deepseek.com/v1",
+      this.apiKey,
+      this.model,
+      messages,
+      tools,
+      config
+    );
   }
 }
 
