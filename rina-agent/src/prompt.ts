@@ -12,12 +12,31 @@
  */
 
 const TOOLS_SPEC = `
-- read_file({ "path": string })             — Read a file relative to the workdir.
+- read_file({ "path": string })
+    Read a file relative to the workdir. Output truncated at 64 KB.
+
 - write_file({ "path": string, "content": string })
-                                            — Create or overwrite a file. Requires user confirmation.
-- list_files({ "dir": string })             — List entries in a directory (non-recursive).
-- shell({ "cmd": string })                  — Run a shell command. Requires user confirmation.
-- finish({ "summary": string })             — End the task; pass a one-paragraph summary of what you did.
+    Create or overwrite a file. Requires user confirmation.
+    Prefer edit_file when changing just part of an existing file — it's cheaper and safer.
+
+- edit_file({ "path": string, "old_text": string, "new_text": string })
+    Targeted search/replace: replace exactly one occurrence of old_text with new_text.
+    Fails if old_text is absent or appears more than once. Requires user confirmation.
+    Use it whenever you're modifying an existing file rather than creating one.
+
+- list_files({ "dir": string, "recursive"?: boolean, "respect_gitignore"?: boolean, "max_entries"?: number })
+    List entries in a directory. Non-recursive by default. When recursive=true,
+    .gitignore is respected by default (set respect_gitignore=false to disable).
+
+- search_files({ "pattern": string, "glob"?: string, "max_results"?: number })
+    Grep across the workdir for a regex. Optional glob filters files (e.g. "src/**/*.ts").
+    .gitignore is respected. Output is "path:line: matched line".
+
+- shell({ "cmd": string })
+    Run a shell command. Requires user confirmation. Output capped at 16 KB.
+
+- finish({ "summary": string })
+    End the task; pass a one-paragraph summary of what you did.
 `.trim();
 
 const FORMAT_RULES = `

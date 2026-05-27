@@ -8,6 +8,16 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 
 ### Ajoute
 
+#### rina-agent 0.2.0 — "Reliability + Smart edits"
+- `edit_file({path, old_text, new_text})` — patch ciblé au lieu de reecrire le fichier entier ; 5-10x moins de tokens consommes sur les modifications de code, divise la latence sur les gros fichiers, ne reussit que si `old_text` est unique dans le fichier (message d'erreur clair sinon)
+- `search_files({pattern, glob?, max_results?})` — grep recursif sur le workdir, regex JS, support glob (`src/**/*.ts`), respect `.gitignore`, cap a 100 matches par defaut
+- `list_files` etendu : `recursive`, `respect_gitignore`, `max_entries` ; arbre complet d'un repo dans un seul appel (500 entrees max par defaut)
+- Cost tracker live : ligne de statut affiche `[step N/25 · tokens · $X.XX · provider:model]` apres chaque outil
+- `gitignore.ts` : parser minimal (bare, anchored, dir-only, `*`/`**`/`?`, negation `!`)
+- `pricing.ts` : table de prix OpenAI/Anthropic/Mistral/DeepSeek, override possible via `RINA_PRICING_OVERRIDE` env
+- 38 nouveaux tests vitest (total 78)
+- Note : native function-calling reporte a v0.2.1 (necessite traitement specifique Anthropic vs OpenAI sur les tool_call_id)
+
 #### Evaluation
 - Backend pluggable `evaluation/_utils/backend.py` — specs `hf:`, `openai:`, `anthropic:`, `mistral:`, `deepseek:` partagees avec le LSP server et le CLI
 - Backend DeepSeek (V3, R1, Coder) — OpenAI-compatible via `deepseek:<model>`, cle `DEEPSEEK_API_KEY`

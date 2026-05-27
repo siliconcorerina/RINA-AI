@@ -1,7 +1,7 @@
 {
   "name": "@siliconcorerina/rina-agent",
-  "version": "0.1.0",
-  "description": "Autonomous shell agent powered by RINA AI — reads files, writes code, runs commands. MIT, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral).",
+  "version": "0.2.0",
+  "description": "Autonomous shell agent powered by RINA AI — reads files, writes patches, searches code, runs commands. MIT, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral). Cost tracking + gitignore-aware.",
   "license": "MIT",
   "author": "Silicon Core <hello@plateforme-rina.com>",
   "homepage": "https://plateforme-rina.com/research",

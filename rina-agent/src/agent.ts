@@ -25,6 +25,7 @@ import { extractFirstToolCall, estimateTokens } from "./parse.js";
 import { buildSystemPrompt } from "./prompt.js";
 import { runTool } from "./tools.js";
 import { Budget } from "./safety.js";
+import { estimateCost, formatCost } from "./pricing.js";
 import type { AgentConfig, AgentResult, ToolCall, ToolResult } from "./types.js";
 
 /**
@@ -94,8 +95,10 @@ export async function runAgent(task: string, config: AgentConfig): Promise<Agent
     const result = await runTool(call, config);
     appendToolResult(messages, call, result);
 
+    const costStr = formatCost(estimateCost(config.backendSpec, budget.tokens));
     process.stderr.write(
-      `[rina-agent] step ${budget.steps} → ${call.tool} ${result.ok ? "ok" : "ERR"}\n`
+      `[rina-agent] step ${budget.steps}/${config.maxSteps} · ` +
+        `${budget.tokens} tok · ${costStr} · ${call.tool} ${result.ok ? "ok" : "ERR"}\n`
     );
 
     if (!stillUnderBudget) {

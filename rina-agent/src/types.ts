@@ -7,7 +7,14 @@
  * calling) is intentionally out of scope for the v0 MVP.
  */
 
-export type ToolName = "read_file" | "write_file" | "list_files" | "shell" | "finish";
+export type ToolName =
+  | "read_file"
+  | "write_file"
+  | "edit_file"
+  | "list_files"
+  | "search_files"
+  | "shell"
+  | "finish";
 
 export interface ToolCall {
   tool: ToolName;

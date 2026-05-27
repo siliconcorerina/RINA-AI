@@ -64,13 +64,27 @@ echo "rename every UserDTO to User everywhere in src/" | rina-agent --stdin
 
 ### Tools available to the model
 
-| Tool         | Purpose                                                   |
-|--------------|-----------------------------------------------------------|
-| `read_file`  | Read a file relative to `--workdir`.                      |
-| `write_file` | Create/overwrite a file. **Asks for your confirmation.**  |
-| `list_files` | Non-recursive directory listing.                          |
-| `shell`      | Run a shell command. **Asks for your confirmation.**      |
-| `finish`     | Signal task complete with a one-paragraph summary.        |
+| Tool           | Purpose                                                                                  |
+|----------------|------------------------------------------------------------------------------------------|
+| `read_file`    | Read a file relative to `--workdir`.                                                     |
+| `write_file`   | Create/overwrite a file. **Asks for your confirmation.**                                 |
+| `edit_file`    | Targeted search/replace (one unique occurrence). **Asks for confirmation.** *(v0.2)*     |
+| `list_files`   | Directory listing. `recursive` + `respect_gitignore` options. *(extended in v0.2)*       |
+| `search_files` | Regex grep across the workdir with optional glob filter. *(v0.2)*                        |
+| `shell`        | Run a shell command. **Asks for your confirmation.**                                     |
+| `finish`       | Signal task complete with a one-paragraph summary.                                       |
+
+### Cost tracking *(v0.2)*
+
+Every step prints a live status line showing token use and estimated cost:
+
+```
+[rina-agent] step 3/25 · 1240 tok · $0.0012 · edit_file ok
+```
+
+Pricing tables ship for OpenAI, Anthropic, Mistral and DeepSeek. Unknown models
+get a conservative fallback. Override via the `RINA_PRICING_OVERRIDE` env var
+(JSON of `{ "provider:model": { "input": N, "output": M } }`).
 
 ---
 

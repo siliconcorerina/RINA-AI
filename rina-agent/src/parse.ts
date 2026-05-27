@@ -18,7 +18,9 @@ import type { ToolCall, ToolName } from "./types.js";
 const VALID_TOOLS: ReadonlySet<ToolName> = new Set([
   "read_file",
   "write_file",
+  "edit_file",
   "list_files",
+  "search_files",
   "shell",
   "finish",
 ]);
