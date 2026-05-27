@@ -89,8 +89,12 @@ def test_from_spec_dispatches_to_huggingface(monkeypatch):
 
 
 def test_openai_backend_missing_api_key(monkeypatch):
+    """CI doesn't install the `openai` package — it's an optional dep
+    of the comparison feature — so we may hit the import error first.
+    Either failure mode is user-actionable; the contract is that we
+    never silently construct an unconfigured backend."""
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
-    with pytest.raises(RuntimeError, match="OPENAI_API_KEY"):
+    with pytest.raises(RuntimeError, match=r"OPENAI_API_KEY|openai"):
         OpenAIBackend("gpt-4o-mini")
 
 
