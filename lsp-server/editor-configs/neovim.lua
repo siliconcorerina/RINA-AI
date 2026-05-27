@@ -1,7 +1,7 @@
 -- RINA AI LSP — Neovim configuration via nvim-lspconfig.
 --
 -- Drop this in your init.lua (or require it as a module). Prerequisites:
---   1. `npm install -g @siliconcore/rina-lsp-server`
+--   1. `npm install -g @siliconcorerina/rina-lsp-server`
 --   2. export OPENAI_API_KEY=...  (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)
 --   3. nvim-lspconfig installed
 

@@ -1,5 +1,5 @@
 {
-  "name": "@siliconcore/rina-cli",
+  "name": "@siliconcorerina/rina-cli",
   "version": "0.1.0",
   "description": "Pipe-friendly command-line interface for RINA AI — explain, refactor, test and chat from your shell.",
   "license": "MIT",

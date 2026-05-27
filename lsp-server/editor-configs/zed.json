@@ -1,7 +1,7 @@
 {
   "// RINA AI LSP for Zed —": "drop into ~/.config/zed/settings.json (merge with existing config).",
   "// Prerequisites": [
-    "1. `npm install -g @siliconcore/rina-lsp-server`",
+    "1. `npm install -g @siliconcorerina/rina-lsp-server`",
     "2. export OPENAI_API_KEY=... (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)"
   ],
 

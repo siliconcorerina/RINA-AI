@@ -1,5 +1,5 @@
 {
-  "name": "@siliconcore/rina-lsp-server",
+  "name": "@siliconcorerina/rina-lsp-server",
   "version": "0.1.0",
   "description": "RINA AI Language Server Protocol implementation — explain / refactor / generate code actions across Neovim, Helix, Zed, Sublime Text, Emacs, JupyterLab and any LSP-aware editor.",
   "license": "MIT",

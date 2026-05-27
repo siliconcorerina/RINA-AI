@@ -1,6 +1,6 @@
 # Configuration par éditeur
 
-Pour chaque éditeur, prérequis : `rina-lsp` doit être installé (`npm install -g @siliconcore/rina-lsp-server`) et la variable d'environnement de ton backend doit être positionnée (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `MISTRAL_API_KEY`, ou `RINA_API_KEY`).
+Pour chaque éditeur, prérequis : `rina-lsp` doit être installé (`npm install -g @siliconcorerina/rina-lsp-server`) et la variable d'environnement de ton backend doit être positionnée (`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `MISTRAL_API_KEY`, ou `RINA_API_KEY`).
 
 Tous les exemples utilisent `openai:gpt-4o-mini` — remplace par ton backend préféré.
 

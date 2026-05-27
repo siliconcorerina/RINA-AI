@@ -28,7 +28,7 @@ Les clés sont lues dans l'environnement — **jamais** dans le fichier de confi
 ### Depuis npm (recommandé)
 
 ```bash
-npm install -g @siliconcore/rina-lsp-server
+npm install -g @siliconcorerina/rina-lsp-server
 ```
 
 Le binaire `rina-lsp` est ensuite dans le `$PATH`.

@@ -11,7 +11,7 @@
 ;; or copy the relevant block directly into your config.
 ;;
 ;; Prerequisites:
-;;   1. `npm install -g @siliconcore/rina-lsp-server` (provides `rina-lsp` binary)
+;;   1. `npm install -g @siliconcorerina/rina-lsp-server` (provides `rina-lsp` binary)
 ;;   2. export OPENAI_API_KEY=... (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)
 ;;
 ;; Two flavours below — pick the one matching your LSP client.

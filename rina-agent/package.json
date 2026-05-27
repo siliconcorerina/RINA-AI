@@ -1,5 +1,5 @@
 {
-  "name": "@siliconcore/rina-agent",
+  "name": "@siliconcorerina/rina-agent",
   "version": "0.1.0",
   "description": "Autonomous shell agent powered by RINA AI — reads files, writes code, runs commands. MIT, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral).",
   "license": "MIT",

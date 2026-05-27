@@ -6,7 +6,7 @@ JupyterLab supporte LSP via l'extension [jupyterlab-lsp](https://github.com/jupy
 
 ```bash
 pip install jupyterlab jupyterlab-lsp
-npm install -g @siliconcore/rina-lsp-server
+npm install -g @siliconcorerina/rina-lsp-server
 export OPENAI_API_KEY=sk-...   # ou ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY
 ```
 

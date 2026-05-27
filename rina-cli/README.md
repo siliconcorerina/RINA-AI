@@ -3,7 +3,7 @@
 RINA AI depuis le shell. Pipe-friendly, scriptable, sans éditeur.
 
 ```bash
-npm install -g @siliconcore/rina-cli
+npm install -g @siliconcorerina/rina-cli
 export OPENAI_API_KEY=sk-...   # ou ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY
 ```
 
