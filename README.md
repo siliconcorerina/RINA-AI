@@ -179,6 +179,29 @@ rina-lsp --stdio              # ton éditeur s'en occupe normalement
 Guides prêts-à-coller : [`lsp-server/CONFIGS.md`](lsp-server/CONFIGS.md)
 (et fichiers de config drop-in dans [`lsp-server/editor-configs/`](lsp-server/editor-configs/)).
 
+## CLI `rina`
+
+RINA AI depuis le shell, pipe-friendly. Code dans [`rina-cli/`](rina-cli/) —
+mêmes backends et mêmes prompts que les autres outils.
+
+```bash
+cd rina-cli && npm install && npm run build && npm install -g .
+export OPENAI_API_KEY=sk-...
+
+rina ask "what does this regex match: ^[A-Z][a-z]{2,}$"
+cat src/legacy.py | rina explain --stdin
+rina refactor src/utils.py -o src/utils.refactored.py
+rina tests src/parser.ts -o src/parser.test.ts
+```
+
+Tableau récap **éditeur ↔ outil** :
+
+| Tu codes dans… | Tu installes… |
+|---|---|
+| VS Code, Cursor, Windsurf | [`vscode-extension/`](vscode-extension/) |
+| Neovim, Helix, Zed, Sublime, Emacs, JupyterLab | [`lsp-server/`](lsp-server/) |
+| Shell, scripts, CI | [`rina-cli/`](rina-cli/) |
+
 ## Entraînement et publication du modèle
 
 - [`finetune/TRAINING_GUIDE.md`](finetune/TRAINING_GUIDE.md) — entraînement local ou Colab + upload HuggingFace
@@ -193,6 +216,7 @@ Guides prêts-à-coller : [`lsp-server/CONFIGS.md`](lsp-server/CONFIGS.md)
 - [ ] Intégration avec la plateforme [plateforme-rina.com](https://plateforme-rina.com)
 - [x] Extension VS Code RINA AI
 - [x] LSP server multi-éditeur (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
+- [x] CLI `rina` (shell, scripts, CI)
 - [ ] Support multi-langage étendu (Rust, Go, Kotlin)
 
 ## Contribuer

@@ -4,6 +4,14 @@ Assistant code RINA AI directement dans VS Code : explication, refactoring, gene
 
 > Bootstrap initial. Les commandes communiquent avec l API hebergee sur `api.plateforme-rina.com`.
 
+## Compatible Cursor, Windsurf et autres forks VS Code
+
+Cursor et Windsurf sont des forks de VS Code qui maintiennent l'API d'extension. Tu peux installer cette extension dedans sans modification — elle s'enregistrera dans le même panel "Extensions" et toutes les commandes (`RINA AI: ...`) seront disponibles via la palette (Ctrl+Shift+P).
+
+Si tu n'utilises pas un fork de VS Code :
+- **Neovim, Helix, Zed, Sublime, Emacs, JupyterLab** → [`../lsp-server/`](../lsp-server/)
+- **Shell, scripts, CI** → [`../rina-cli/`](../rina-cli/)
+
 ## Installation (developpement)
 
 ```bash
