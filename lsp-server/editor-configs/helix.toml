@@ -1,0 +1,39 @@
+# RINA AI LSP — Helix configuration.
+#
+# Append to ~/.config/helix/languages.toml. Prerequisites:
+#   1. `npm install -g @siliconcore/rina-lsp-server`
+#   2. export OPENAI_API_KEY=... (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)
+#
+# Helix lets multiple language servers run side by side per file type —
+# RINA AI co-exists with your primary LSP (pylsp, rust-analyzer, ...).
+
+[language-server.rina-ai]
+command = "rina-lsp"
+args = ["--stdio"]
+
+[language-server.rina-ai.config]
+backend = "openai:gpt-4o-mini"
+language = "fr"
+completion = { enabled = true, trigger = "manual" }
+maxTokens = 1024
+temperature = 0.2
+
+# ─── Activate rina-ai on the languages you care about ───
+# Helix doesn't have a global toggle, so list each language you want
+# RINA AI to attach to. Duplicate the block as needed.
+
+[[language]]
+name = "python"
+language-servers = ["pylsp", "rina-ai"]
+
+[[language]]
+name = "typescript"
+language-servers = ["typescript-language-server", "rina-ai"]
+
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer", "rina-ai"]
+
+[[language]]
+name = "go"
+language-servers = ["gopls", "rina-ai"]

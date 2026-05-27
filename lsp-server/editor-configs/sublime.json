@@ -1,0 +1,23 @@
+{
+  "// RINA AI LSP for Sublime Text —": "drop into LSP package preferences (Preferences > Package Settings > LSP > Settings).",
+  "// Prerequisites": [
+    "1. Install the LSP package via Package Control",
+    "2. `npm install -g @siliconcore/rina-lsp-server`",
+    "3. export OPENAI_API_KEY=... (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)"
+  ],
+
+  "clients": {
+    "rina-ai": {
+      "enabled": true,
+      "command": ["rina-lsp", "--stdio"],
+      "selector": "source.python | source.js | source.ts | source.tsx | source.jsx | source.rust | source.go | source.java | source.c++ | source.c | source.ruby | source.php | source.lua",
+      "initializationOptions": {
+        "backend": "openai:gpt-4o-mini",
+        "language": "fr",
+        "completion": { "enabled": true, "trigger": "manual" },
+        "maxTokens": 1024,
+        "temperature": 0.2
+      }
+    }
+  }
+}

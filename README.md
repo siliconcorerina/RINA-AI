@@ -162,6 +162,23 @@ Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode
 - [`vscode-extension/README.md`](vscode-extension/README.md) — installation et usage
 - [`vscode-extension/PUBLISHING.md`](vscode-extension/PUBLISHING.md) — publication sur le Marketplace
 
+## LSP server (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
+
+Un seul serveur Language Server Protocol qui apporte les mêmes actions
+(**Explain / Refactor / Generate tests**) à tout éditeur LSP-compatible.
+Code dans [`lsp-server/`](lsp-server/), backends pluggables (OpenAI,
+Anthropic, Mistral, RINA), tests inclus (31 tests vitest).
+
+```bash
+cd lsp-server && npm install && npm run build
+npm install -g .              # expose le binaire `rina-lsp` globalement
+export OPENAI_API_KEY=sk-...
+rina-lsp --stdio              # ton éditeur s'en occupe normalement
+```
+
+Guides prêts-à-coller : [`lsp-server/CONFIGS.md`](lsp-server/CONFIGS.md)
+(et fichiers de config drop-in dans [`lsp-server/editor-configs/`](lsp-server/editor-configs/)).
+
 ## Entraînement et publication du modèle
 
 - [`finetune/TRAINING_GUIDE.md`](finetune/TRAINING_GUIDE.md) — entraînement local ou Colab + upload HuggingFace
@@ -174,7 +191,8 @@ Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode
 - [x] LiveCodeBench + BigCodeBench (avec backends pluggables OpenAI / Anthropic / Mistral)
 - [x] SWE-bench (génération de patches + format officiel pour le harness Docker)
 - [ ] Intégration avec la plateforme [plateforme-rina.com](https://plateforme-rina.com)
-- [ ] Extension VS Code RINA AI
+- [x] Extension VS Code RINA AI
+- [x] LSP server multi-éditeur (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
 - [ ] Support multi-langage étendu (Rust, Go, Kotlin)
 
 ## Contribuer

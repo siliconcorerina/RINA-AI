@@ -1,0 +1,33 @@
+{
+  "// RINA AI LSP for Zed —": "drop into ~/.config/zed/settings.json (merge with existing config).",
+  "// Prerequisites": [
+    "1. `npm install -g @siliconcore/rina-lsp-server`",
+    "2. export OPENAI_API_KEY=... (or ANTHROPIC_API_KEY / MISTRAL_API_KEY / RINA_API_KEY)"
+  ],
+
+  "lsp": {
+    "rina-ai": {
+      "binary": {
+        "path": "rina-lsp",
+        "arguments": ["--stdio"]
+      },
+      "initialization_options": {
+        "backend": "openai:gpt-4o-mini",
+        "language": "fr",
+        "completion": { "enabled": true, "trigger": "manual" },
+        "maxTokens": 1024,
+        "temperature": 0.2
+      }
+    }
+  },
+
+  "languages": {
+    "// The '...' tells Zed to keep its default LSPs in addition to rina-ai.": "",
+    "Python": { "language_servers": ["rina-ai", "..."] },
+    "TypeScript": { "language_servers": ["rina-ai", "..."] },
+    "TSX": { "language_servers": ["rina-ai", "..."] },
+    "JavaScript": { "language_servers": ["rina-ai", "..."] },
+    "Rust": { "language_servers": ["rina-ai", "..."] },
+    "Go": { "language_servers": ["rina-ai", "..."] }
+  }
+}

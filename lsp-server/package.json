@@ -1,0 +1,50 @@
+{
+  "name": "@siliconcore/rina-lsp-server",
+  "version": "0.1.0",
+  "description": "RINA AI Language Server Protocol implementation — explain / refactor / generate code actions across Neovim, Helix, Zed, Sublime Text, Emacs, JupyterLab and any LSP-aware editor.",
+  "license": "MIT",
+  "author": "Silicon Core <hello@plateforme-rina.com>",
+  "homepage": "https://plateforme-rina.com/research",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/siliconcorerina/RINA-AI.git",
+    "directory": "lsp-server"
+  },
+  "bin": {
+    "rina-lsp": "./out/server.js"
+  },
+  "main": "./out/server.js",
+  "files": [
+    "out",
+    "README.md",
+    "CONFIGS.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver-textdocument": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "lsp",
+    "language-server",
+    "rina",
+    "rina-ai",
+    "code",
+    "ai",
+    "completion",
+    "refactor"
+  ]
+}
