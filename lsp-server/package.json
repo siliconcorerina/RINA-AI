@@ -7,13 +7,13 @@
   "homepage": "https://plateforme-rina.com/research",
   "repository": {
     "type": "git",
-    "url": "https://github.com/siliconcorerina/RINA-AI.git",
+    "url": "git+https://github.com/siliconcorerina/RINA-AI.git",
     "directory": "lsp-server"
   },
   "bin": {
-    "rina-lsp": "./out/server.js"
+    "rina-lsp": "out/server.js"
   },
-  "main": "./out/server.js",
+  "main": "out/server.js",
   "files": [
     "out",
     "README.md",
