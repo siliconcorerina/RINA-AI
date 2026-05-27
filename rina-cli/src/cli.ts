@@ -159,14 +159,14 @@ function cmdHelp(): number {
       `  version                 Print version + Node version.\n\n` +
       `OPTIONS\n` +
       `  --backend SPEC          Provider:model (default: openai:gpt-4o-mini).\n` +
-      `                          openai: / anthropic: / mistral: / rina:\n` +
+      `                          openai: / anthropic: / mistral: / deepseek: / rina:\n` +
       `  --lang en|fr            System-prompt language (default: en).\n` +
       `  -o, --output FILE       Write to FILE instead of stdout.\n` +
       `  --stdin                 Read input from stdin even when a file path is given.\n` +
       `  --max-tokens N          Response cap (default: 2048).\n` +
       `  --temperature F         Sampling temperature (default: 0.2).\n\n` +
       `ENV\n` +
-      `  OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY, RINA_API_KEY\n` +
+      `  OPENAI_API_KEY, ANTHROPIC_API_KEY, MISTRAL_API_KEY, DEEPSEEK_API_KEY, RINA_API_KEY\n` +
       `  RINA_BACKEND            Default --backend value.\n` +
       `  RINA_LANG               Default --lang value.\n\n` +
       `EXAMPLES\n` +
