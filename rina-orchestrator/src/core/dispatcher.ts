@@ -57,6 +57,7 @@ export class Dispatcher {
           description: step.description,
           previousResults: [...results],
           onProgress: (message) => state.emitStepProgress(step.id, message),
+          onScreenshot: (dataUrl) => state.emitStepScreenshot(step.id, dataUrl),
         });
         state.markStepCompleted(step.id, out.result, out.rounds);
         results.push(out.result);

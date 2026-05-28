@@ -27,6 +27,17 @@ export interface SubAgentResult {
  */
 export type ProgressCallback = (message: string) => void;
 
+/**
+ * Screenshot callback. Sub-agents call this after any tool call that
+ * visibly changes the page (browser: navigate/click/type/scroll/etc.)
+ * so the UI can render the agent's viewport inline — that's the
+ * "embedded browser" feel from Manus.
+ *
+ * `dataUrl` is a base64 JPEG (data:image/jpeg;base64,…). Sub-agents
+ * that don't have a viewport (code, answer) just never call this.
+ */
+export type ScreenshotCallback = (dataUrl: string) => void;
+
 export interface SubAgent {
   /** Discriminator the dispatcher uses to route Steps. */
   readonly kind: StepKind;
@@ -44,6 +55,7 @@ export interface SubAgent {
     description: string;
     previousResults: string[];
     onProgress: ProgressCallback;
+    onScreenshot?: ScreenshotCallback;
   }): Promise<SubAgentResult>;
 
   /** Cleanup hook called at end of run (success OR failure). Used

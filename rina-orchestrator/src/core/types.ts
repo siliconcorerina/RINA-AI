@@ -66,6 +66,15 @@ export type AgentEvent =
   | { type: "plan_created"; plan: Plan }
   | { type: "step_started"; stepId: string }
   | { type: "step_progress"; stepId: string; message: string }
+  /** A fresh viewport screenshot after a visible browser action.
+   *  `dataUrl` is a base64-encoded JPEG (data:image/jpeg;base64,…)
+   *  capped at ~80 KB by the driver's quality setting. Emitted by
+   *  the browser sub-agent after navigate/click/type/press/scroll/
+   *  back — i.e. anything that visibly changes what the user would
+   *  see — but NOT after read_page (no visual change). The mobile
+   *  UI shows the latest one inline so the user experiences the
+   *  agent's browser without exposing a local window. */
+  | { type: "step_screenshot"; stepId: string; dataUrl: string }
   | { type: "step_completed"; stepId: string; result: string; rounds: number }
   | { type: "step_failed"; stepId: string; error: string }
   | { type: "run_completed"; summary: string }

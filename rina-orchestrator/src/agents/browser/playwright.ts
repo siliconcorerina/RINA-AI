@@ -290,6 +290,34 @@ export class BrowserDriver {
     await page.waitForTimeout(Math.max(0, Math.min(ms, 10_000)));
   }
 
+  /**
+   * Capture the current viewport as a base64-encoded JPEG data URL.
+   *
+   * JPEG quality 60 + the 1280x800 viewport yields ~60-80 KB per
+   * shot in practice — light enough to push every few seconds over
+   * SSE without dwarfing the agent event stream. PNG would be
+   * lossless but 3-5× larger; the UI just needs to show the user
+   * "this is what the browser sees", not pixel-perfect fidelity.
+   *
+   * Errors during capture (page closed mid-shot, ssl mid-redirect)
+   * resolve to null so the agent can keep going — losing one frame
+   * isn't worth aborting a step.
+   */
+  async screenshot(): Promise<string | null> {
+    try {
+      const page = await this.ensure();
+      const buffer = await page.screenshot({
+        type: "jpeg",
+        quality: 60,
+        fullPage: false,
+        timeout: 5_000,
+      });
+      return `data:image/jpeg;base64,${buffer.toString("base64")}`;
+    } catch {
+      return null;
+    }
+  }
+
   async shutdown(): Promise<void> {
     try {
       await this.page?.close();

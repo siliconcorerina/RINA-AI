@@ -121,6 +121,10 @@ function renderEvent(e: AgentEvent): string {
       return `\n▶ Étape ${e.stepId}…`;
     case "step_progress":
       return `   ${e.message}`;
+    case "step_screenshot":
+      // CLI doesn't render images — just hint that a fresh frame
+      // is available. Mobile + web UIs consume the actual data URL.
+      return `   📸 (frame: ${Math.round(e.dataUrl.length / 1024)} KB)`;
     case "step_completed":
       return `✓ Étape ${e.stepId} (${e.rounds} tour${e.rounds > 1 ? "s" : ""}): ${truncate(e.result, 200)}`;
     case "step_failed":

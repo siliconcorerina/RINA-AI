@@ -58,6 +58,14 @@ export class StateManager {
     this.emit({ type: "step_progress", stepId, message });
   }
 
+  emitStepScreenshot(stepId: string, dataUrl: string): void {
+    // Same pure-observability semantics as progress: no plan
+    // mutation, just push the latest viewport image so the UI can
+    // render the agent's browser inline. Skipped on the CLI; the
+    // mobile + web UIs are the consumers.
+    this.emit({ type: "step_screenshot", stepId, dataUrl });
+  }
+
   markStepCompleted(stepId: string, result: string, rounds: number): void {
     this.updateStep(stepId, { status: "completed", result, rounds });
     this.emit({ type: "step_completed", stepId, result, rounds });

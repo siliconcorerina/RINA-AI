@@ -20,7 +20,12 @@ import type {
   ToolDefinition,
 } from "@siliconcorerina/rina-agent/out/backend.js";
 
-import type { ProgressCallback, SubAgent, SubAgentResult } from "../base.js";
+import type {
+  ProgressCallback,
+  ScreenshotCallback,
+  SubAgent,
+  SubAgentResult,
+} from "../base.js";
 import type { StepKind } from "../../core/types.js";
 
 import { BrowserDriver, type PageSnapshot } from "./playwright.js";
@@ -155,6 +160,9 @@ export class BrowserAgent implements SubAgent {
 
   private readonly driver: BrowserDriver;
   private readonly maxRounds: number;
+  /** Set on each run() call so dispatchTool can fire shots without
+   *  carrying the callback through every method signature. */
+  private onScreenshot: ScreenshotCallback | null = null;
 
   constructor(
     private readonly backend: Backend,
@@ -174,7 +182,12 @@ export class BrowserAgent implements SubAgent {
     description: string;
     previousResults: string[];
     onProgress: ProgressCallback;
+    onScreenshot?: ScreenshotCallback;
   }): Promise<SubAgentResult> {
+    // Stashed for the inner dispatchTool helper so it can fire shots
+    // without threading the callback through every method signature.
+    this.onScreenshot = input.onScreenshot ?? null;
+
     const messages: ChatMessage[] = [
       { role: "system", content: SYSTEM_PROMPT },
       ...this.priorContext(input.previousResults),
@@ -262,20 +275,27 @@ export class BrowserAgent implements SubAgent {
   private async dispatchTool(name: string, args: unknown): Promise<string> {
     const a = (args ?? {}) as Record<string, unknown>;
     switch (name) {
-      case "navigate":
-        return this.renderSnapshot(
-          await this.driver.navigate(requireString(a, "url"))
-        );
+      case "navigate": {
+        const snap = await this.driver.navigate(requireString(a, "url"));
+        await this.captureAndEmit();
+        return this.renderSnapshot(snap);
+      }
       case "read_page":
+        // No screenshot here — read_page doesn't change visible
+        // state. The frame from the most recent action is still
+        // accurate.
         return this.renderSnapshot(await this.driver.readPage());
       case "click":
         await this.driver.click(requireString(a, "ref"));
+        await this.captureAndEmit();
         return "OK. Call read_page to see the result.";
       case "type":
         await this.driver.type(requireString(a, "ref"), requireString(a, "text"));
+        await this.captureAndEmit();
         return "OK. Call read_page to see the result.";
       case "press":
         await this.driver.press(requireString(a, "key"));
+        await this.captureAndEmit();
         return "OK. Call read_page to see the result.";
       case "scroll": {
         const dir = a.direction;
@@ -283,10 +303,12 @@ export class BrowserAgent implements SubAgent {
           throw new Error("direction must be 'down' or 'up'");
         }
         await this.driver.scroll(dir);
+        await this.captureAndEmit();
         return "OK. Call read_page to see the result.";
       }
       case "back":
         await this.driver.back();
+        await this.captureAndEmit();
         return "OK. Call read_page to see the result.";
       case "wait": {
         const ms = Number(a.ms);
@@ -297,6 +319,17 @@ export class BrowserAgent implements SubAgent {
       default:
         throw new Error(`Unknown tool '${name}'.`);
     }
+  }
+
+  /**
+   * Take a fresh viewport screenshot and push it to the listener.
+   * Fire-and-forget — a missed shot (5s timeout, page closed, etc.)
+   * never fails the step. Skips entirely when no listener is wired.
+   */
+  private async captureAndEmit(): Promise<void> {
+    if (!this.onScreenshot) return;
+    const dataUrl = await this.driver.screenshot();
+    if (dataUrl) this.onScreenshot(dataUrl);
   }
 
   private renderSnapshot(s: PageSnapshot): string {
