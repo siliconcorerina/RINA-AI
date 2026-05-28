@@ -1,7 +1,7 @@
 {
   "name": "@siliconcorerina/rina-orchestrator",
-  "version": "0.1.0",
-  "description": "Multi-agent orchestrator powered by RINA AI — plans a goal into atomic steps, dispatches them to specialised sub-agents (browser, code, research). MIT, Playwright-backed, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral) via @siliconcorerina/rina-agent's Backend abstraction.",
+  "version": "0.2.0",
+  "description": "Multi-agent orchestrator powered by RINA AI — plans a goal into atomic steps, dispatches them to specialised sub-agents (browser, code, research). Ships a CLI and an HTTP worker that streams AgentEvents via SSE so a web UI can drive it remotely. MIT, Playwright-backed, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral) via @siliconcorerina/rina-agent's Backend abstraction.",
   "license": "MIT",
   "author": "Silicon Core <hello@plateforme-rina.com>",
   "homepage": "https://plateforme-rina.com/research",
@@ -11,7 +11,8 @@
     "directory": "rina-orchestrator"
   },
   "bin": {
-    "rina-orchestrator": "out/cli.js"
+    "rina-orchestrator": "out/cli.js",
+    "rina-orchestrator-serve": "out/server.js"
   },
   "main": "out/index.js",
   "types": "out/index.d.ts",
