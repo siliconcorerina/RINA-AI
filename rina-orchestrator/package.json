@@ -1,0 +1,55 @@
+{
+  "name": "@siliconcorerina/rina-orchestrator",
+  "version": "0.1.0",
+  "description": "Multi-agent orchestrator powered by RINA AI — plans a goal into atomic steps, dispatches them to specialised sub-agents (browser, code, research). MIT, Playwright-backed, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral) via @siliconcorerina/rina-agent's Backend abstraction.",
+  "license": "MIT",
+  "author": "Silicon Core <hello@plateforme-rina.com>",
+  "homepage": "https://plateforme-rina.com/research",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/siliconcorerina/RINA-AI.git",
+    "directory": "rina-orchestrator"
+  },
+  "bin": {
+    "rina-orchestrator": "out/cli.js"
+  },
+  "main": "out/index.js",
+  "types": "out/index.d.ts",
+  "files": [
+    "out",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build && npm test",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@siliconcorerina/rina-agent": "^0.3.0",
+    "playwright": "^1.48.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.0.0"
+  },
+  "keywords": [
+    "orchestrator",
+    "multi-agent",
+    "browser-agent",
+    "playwright",
+    "rina",
+    "rina-ai",
+    "ai-agent",
+    "autonomous",
+    "deepseek",
+    "openai",
+    "anthropic",
+    "mistral"
+  ]
+}
