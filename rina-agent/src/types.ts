@@ -71,6 +71,16 @@ export interface AgentConfig {
    * backends that implement `generateWithTools`.
    */
   nativeTools: boolean;
+  /**
+   * Optional path to an MCP connector config. Shape mirrors the common
+   * `.mcp.json` convention:
+   *   { "mcpServers": { "<name>": { "command", "args"?, "env"? } } }
+   * When omitted the agent auto-detects `<workdir>/.mcp.json`; if that's
+   * absent too, no MCP servers are connected. Optional (unlike the rest
+   * of this config) so existing consumers that construct an AgentConfig
+   * keep compiling without change.
+   */
+  mcpConfigPath?: string;
 }
 
 export interface AgentResult {

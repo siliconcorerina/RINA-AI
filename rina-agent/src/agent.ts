@@ -18,15 +18,20 @@
  * Nothing in this file knows about specific providers — backend.ts owns
  * that. Anything provider-shaped that leaks here should be pushed back
  * down to the shared Backend abstraction.
+ *
+ * Tools come from two places: the built-ins in tools.ts, and any
+ * external MCP servers wired up via mcp.ts. Both are dispatched through
+ * the same loop; `dispatchTool` decides which side a call belongs to.
  */
 
 import { backendFromSpec, ChatMessage } from "./backend.js";
 import { extractFirstToolCall, estimateTokens } from "./parse.js";
 import { buildSystemPrompt } from "./prompt.js";
 import { runTool, getToolDefinitions } from "./tools.js";
-import { Budget } from "./safety.js";
+import { Budget, confirm } from "./safety.js";
 import { estimateCost, formatCost } from "./pricing.js";
 import { buildSnapshot, loadSession, saveSession } from "./session.js";
+import { McpHub, loadMcpConfig, describeMcpToolsForPrompt } from "./mcp.js";
 import type { AgentConfig, AgentResult, ToolCall, ToolResult, ToolName } from "./types.js";
 
 /**
@@ -88,130 +93,203 @@ export async function runAgent(task: string, config: AgentConfig): Promise<Agent
   // that round-trip back as tool_result/tool messages. The prompt-based
   // path stays available as a universal fallback.
   const useNative = config.nativeTools && typeof backend.generateWithTools === "function";
-  const toolDefs = useNative ? getToolDefinitions() : [];
   if (config.nativeTools && !useNative) {
     process.stderr.write(
       `[rina-agent] warn: --native-tools requested but ${config.backendSpec} doesn't implement it; falling back to prompt-based.\n`
     );
   }
 
-  while (true) {
-    let displayText: string;
-    let call: ToolCall | null;
-    let toolCallId: string | undefined;
-    let addedTokens: number;
-
-    if (useNative) {
-      const resp = await backend.generateWithTools!(messages, toolDefs, {
-        maxTokens: config.maxTokens,
-        temperature: config.temperature,
-      });
-      displayText = resp.text;
-      addedTokens = estimateTokens(resp.text) + (resp.toolCall ? estimateTokens(resp.toolCall.argsJson) : 0);
-      if (resp.toolCall) {
-        call = {
-          tool: resp.toolCall.name as ToolName,
-          args: parseToolArgs(resp.toolCall.argsJson),
-        };
-        toolCallId = resp.toolCall.id;
-        // Record the assistant turn with toolCall metadata so subsequent
-        // generateWithTools calls can stitch the tool result back through.
-        messages.push({
-          role: "assistant",
-          content: resp.text,
-          toolCall: { id: resp.toolCall.id, name: resp.toolCall.name, argsJson: resp.toolCall.argsJson },
-        });
-      } else {
-        call = null;
-        messages.push({ role: "assistant", content: resp.text });
-      }
-    } else {
-      const reply = await backend.generate(messages, {
-        maxTokens: config.maxTokens,
-        temperature: config.temperature,
-      });
-      displayText = reply;
-      addedTokens = estimateTokens(reply);
-      messages.push({ role: "assistant", content: reply });
-      call = extractFirstToolCall(reply);
-    }
-
-    // Record the assistant turn against the budget before doing anything
-    // else so the counter reflects what the API just billed, even if
-    // the tool execution below fails later.
-    const stillUnderBudget = budget.record(addedTokens);
-
-    // Show the model's thinking + tool call to the user. This is
-    // critical for trust: the human sees what the agent intends
-    // before any confirmation prompt appears.
-    if (displayText.trim().length > 0) {
-      process.stderr.write(displayText.trim() + "\n");
-    }
-
-    if (!call) {
-      // The model declined to call a tool. Politely nudge it once,
-      // then bail if it keeps refusing — looping forever on a chatty
-      // model wastes the user's quota.
-      messages.push({
-        role: "user",
-        content: useNative
-          ? "Please call a tool. If the task is complete, call `finish`."
-          : "Please respond with exactly one <tool>...</tool> JSON block. " +
-            "If the task is complete, call `finish` with a summary.",
-      });
-      if (!stillUnderBudget) {
-        return summarize("exhausted", "Budget exhausted while the model refused to emit a tool call.", budget);
-      }
-      continue;
-    }
-
-    if (call.tool === "finish") {
-      const summary = typeof call.args.summary === "string" ? call.args.summary : "Done.";
-      process.stderr.write(`\n[rina-agent] finished: ${summary}\n[rina-agent] ${budget.describe()}\n`);
-      return summarize("finished", summary, budget);
-    }
-
-    const result = await runTool(call, config);
-    appendToolResult(messages, call, result, toolCallId);
-
-    const costStr = formatCost(estimateCost(config.backendSpec, budget.tokens));
+  // MCP connectors: connect to any external servers declared in a
+  // .mcp.json (auto-detected in the workdir) or via --mcp-config, and
+  // expose their tools to the model alongside the built-ins. The hub
+  // owns the spawned child processes; the finally below guarantees they
+  // are killed on every exit path (finish, exhaustion, or a throw).
+  let hub: McpHub | null = null;
+  const mcpLoaded = loadMcpConfig(config.mcpConfigPath, config.workdir);
+  if (mcpLoaded) {
+    const serverNames = Object.keys(mcpLoaded.config.mcpServers);
     process.stderr.write(
-      `[rina-agent] step ${budget.steps}/${config.maxSteps} · ` +
-        `${budget.tokens} tok · ${costStr} · ${call.tool} ${result.ok ? "ok" : "ERR"}\n`
+      `[rina-agent] mcp: loading ${serverNames.length} server(s) from ${mcpLoaded.path}\n`
     );
+    hub = await McpHub.create(mcpLoaded.config, (m) => process.stderr.write(m + "\n"));
+  }
+  const mcpToolDefs = hub ? hub.getToolDefinitions() : [];
+  const toolDefs = useNative ? [...getToolDefinitions(), ...mcpToolDefs] : [];
 
-    // Snapshot the session after every step so Ctrl-C / crash leaves a
-    // usable file for --continue. Saved before we check exhaustion so
-    // even the "ran out of budget" state is resumable (raise the cap
-    // and pick up where we left off).
-    try {
-      await saveSession(
-        config.workdir,
-        buildSnapshot({
-          workdir: config.workdir,
-          backendSpec: config.backendSpec,
-          task: resumedTask,
-          messages,
-          steps: budget.steps,
-          tokens: budget.tokens,
-        })
-      );
-    } catch (saveErr) {
-      // Don't kill the agent if the session can't be written (e.g.
-      // workdir is read-only). Warn once and continue.
+  // Prompt-based fallback: native backends get the JSON Schemas above via
+  // toolDefs; the <tool>{...}</tool> flow instead needs the MCP catalogue
+  // spelled out in the prompt so the model knows the tools exist.
+  if (hub && !useNative && mcpToolDefs.length > 0) {
+    messages.push({
+      role: "system",
+      content:
+        (config.language === "fr"
+          ? "OUTILS MCP EXTERNES (même protocole <tool> que les outils intégrés) :\n"
+          : "EXTERNAL MCP TOOLS (same <tool> protocol as the built-ins):\n") +
+        describeMcpToolsForPrompt(mcpToolDefs),
+    });
+  }
+
+  try {
+    while (true) {
+      let displayText: string;
+      let call: ToolCall | null;
+      let toolCallId: string | undefined;
+      let addedTokens: number;
+
+      if (useNative) {
+        const resp = await backend.generateWithTools!(messages, toolDefs, {
+          maxTokens: config.maxTokens,
+          temperature: config.temperature,
+        });
+        displayText = resp.text;
+        addedTokens =
+          estimateTokens(resp.text) + (resp.toolCall ? estimateTokens(resp.toolCall.argsJson) : 0);
+        if (resp.toolCall) {
+          call = {
+            tool: resp.toolCall.name as ToolName,
+            args: parseToolArgs(resp.toolCall.argsJson),
+          };
+          toolCallId = resp.toolCall.id;
+          // Record the assistant turn with toolCall metadata so subsequent
+          // generateWithTools calls can stitch the tool result back through.
+          messages.push({
+            role: "assistant",
+            content: resp.text,
+            toolCall: {
+              id: resp.toolCall.id,
+              name: resp.toolCall.name,
+              argsJson: resp.toolCall.argsJson,
+            },
+          });
+        } else {
+          call = null;
+          messages.push({ role: "assistant", content: resp.text });
+        }
+      } else {
+        const reply = await backend.generate(messages, {
+          maxTokens: config.maxTokens,
+          temperature: config.temperature,
+        });
+        displayText = reply;
+        addedTokens = estimateTokens(reply);
+        messages.push({ role: "assistant", content: reply });
+        call = extractFirstToolCall(reply);
+      }
+
+      // Record the assistant turn against the budget before doing anything
+      // else so the counter reflects what the API just billed, even if
+      // the tool execution below fails later.
+      const stillUnderBudget = budget.record(addedTokens);
+
+      // Show the model's thinking + tool call to the user. This is
+      // critical for trust: the human sees what the agent intends
+      // before any confirmation prompt appears.
+      if (displayText.trim().length > 0) {
+        process.stderr.write(displayText.trim() + "\n");
+      }
+
+      if (!call) {
+        // The model declined to call a tool. Politely nudge it once,
+        // then bail if it keeps refusing — looping forever on a chatty
+        // model wastes the user's quota.
+        messages.push({
+          role: "user",
+          content: useNative
+            ? "Please call a tool. If the task is complete, call `finish`."
+            : "Please respond with exactly one <tool>...</tool> JSON block. " +
+              "If the task is complete, call `finish` with a summary.",
+        });
+        if (!stillUnderBudget) {
+          return summarize(
+            "exhausted",
+            "Budget exhausted while the model refused to emit a tool call.",
+            budget
+          );
+        }
+        continue;
+      }
+
+      if (call.tool === "finish") {
+        const summary = typeof call.args.summary === "string" ? call.args.summary : "Done.";
+        process.stderr.write(
+          `\n[rina-agent] finished: ${summary}\n[rina-agent] ${budget.describe()}\n`
+        );
+        return summarize("finished", summary, budget);
+      }
+
+      const result = await dispatchTool(call, config, hub);
+      appendToolResult(messages, call, result, toolCallId);
+
+      const costStr = formatCost(estimateCost(config.backendSpec, budget.tokens));
       process.stderr.write(
-        `[rina-agent] warn: could not save session — ${(saveErr as Error).message}\n`
+        `[rina-agent] step ${budget.steps}/${config.maxSteps} · ` +
+          `${budget.tokens} tok · ${costStr} · ${call.tool} ${result.ok ? "ok" : "ERR"}\n`
       );
-    }
 
-    if (!stillUnderBudget) {
-      return summarize(
-        "exhausted",
-        `Budget cap reached (${budget.describe()}). Last tool: ${call.tool}.`,
-        budget
-      );
+      // Snapshot the session after every step so Ctrl-C / crash leaves a
+      // usable file for --continue. Saved before we check exhaustion so
+      // even the "ran out of budget" state is resumable (raise the cap
+      // and pick up where we left off).
+      try {
+        await saveSession(
+          config.workdir,
+          buildSnapshot({
+            workdir: config.workdir,
+            backendSpec: config.backendSpec,
+            task: resumedTask,
+            messages,
+            steps: budget.steps,
+            tokens: budget.tokens,
+          })
+        );
+      } catch (saveErr) {
+        // Don't kill the agent if the session can't be written (e.g.
+        // workdir is read-only). Warn once and continue.
+        process.stderr.write(
+          `[rina-agent] warn: could not save session — ${(saveErr as Error).message}\n`
+        );
+      }
+
+      if (!stillUnderBudget) {
+        return summarize(
+          "exhausted",
+          `Budget cap reached (${budget.describe()}). Last tool: ${call.tool}.`,
+          budget
+        );
+      }
+    }
+  } finally {
+    // Always tear down MCP child processes — a leaked `npx` server would
+    // otherwise outlive the agent and hold the port / file handles.
+    if (hub) {
+      await hub.closeAll();
     }
   }
+}
+
+/**
+ * Route a tool call to the right executor.
+ *
+ *   - MCP tools (`mcp__server__tool`) go to the hub, gated by the same
+ *     interactive confirmation as shell/web_fetch: an external connector
+ *     can have real side effects (send an email, create an issue) and is
+ *     a fresh prompt-injection surface, so the human approves each call.
+ *   - everything else is a built-in handled by runTool.
+ */
+async function dispatchTool(
+  call: ToolCall,
+  config: AgentConfig,
+  hub: McpHub | null
+): Promise<ToolResult> {
+  if (hub && hub.isMcpTool(call.tool)) {
+    const approved = await confirm(`Call MCP tool \`${call.tool}\`?`, config);
+    if (!approved) {
+      return { ok: false, output: `User declined the MCP call ${call.tool}.` };
+    }
+    return hub.callTool(call.tool, call.args);
+  }
+  return runTool(call, config);
 }
 
 /**

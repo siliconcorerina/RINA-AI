@@ -1,6 +1,7 @@
 # `rina-agent`
 
-> Autonomous shell agent for RINA AI — reads files, writes code, runs commands.
+> Autonomous shell agent for RINA AI — reads files, writes code, runs
+> commands, and connects to external **MCP servers**.
 
 Same multi-backend abstraction as `rina-cli` and `rina-lsp`: works with
 **OpenAI**, **Anthropic**, **Mistral**, **DeepSeek** out of the box.
@@ -77,6 +78,59 @@ echo "rename every UserDTO to User everywhere in src/" | rina-agent --stdin
 | `git_diff`     | Working-tree or staged diff, optionally path-scoped. Read-only. *(v0.3)*                 |
 | `git_log`      | Recent commits (default 20, max 200). Read-only. *(v0.3)*                                |
 | `finish`       | Signal task complete with a one-paragraph summary.                                       |
+
+### MCP connectors *(v0.4)*
+
+`rina-agent` can connect to external **[Model Context Protocol](https://modelcontextprotocol.io)**
+servers and expose *their* tools to the model alongside its built-ins.
+Point it at a config and every tool the server advertises becomes
+callable — filesystem, GitHub, Slack, a database, your own server, …
+
+Declare servers in a `.mcp.json` (same shape the rest of the ecosystem
+uses):
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": { "GITHUB_TOKEN": "${GITHUB_TOKEN}" }
+    }
+  }
+}
+```
+
+`${VAR}` placeholders in `args` and `env` are expanded from the
+environment, so secrets stay out of the file.
+
+```bash
+# Explicit config
+rina-agent --mcp-config ./.mcp.json "list the open issues and triage them"
+
+# Or just drop .mcp.json in the workdir — it's auto-detected
+rina-agent "summarise the README of every repo in my org"
+```
+
+- **Namespacing.** A server's tools are exposed as
+  `mcp__<server>__<tool>` (e.g. `mcp__github__create_issue`), so two
+  servers can ship a `search` tool without colliding. Names are
+  sanitised to satisfy provider function-name rules.
+- **Confirmation-gated.** Every MCP call asks for your approval, exactly
+  like `shell` and `web_fetch`. `--yolo` skips the prompt; `--read-only`
+  does **not** block MCP calls (the server decides what's read-only).
+- **Both protocols.** Works whether you use `--native-tools` or the
+  default `<tool>{...}</tool>` parsing.
+- **Resilient.** A server that fails to start is logged and skipped, not
+  fatal — the agent runs with whatever connected.
+
+Transport is local **stdio** (the server is spawned as a child process).
+Remote HTTP/SSE servers are not connected yet; they're planned behind the
+same config.
 
 ### Native function-calling *(v0.3)*
 
@@ -202,19 +256,18 @@ are usually worth the extra cost. For simple edits, `gpt-4o-mini` or
 
 ---
 
-## Limitations (v0)
+## Limitations
 
-- **No native function-calling yet.** The protocol is prompt-based
-  (`<tool>{...}</tool>`). This works across all four providers but is
-  marginally less reliable than native tool calls. v1 will switch where
-  the provider supports it.
-- **Non-recursive `list_files`.** The model can do depth manually via
-  `shell`/`find`. A recursive variant might land in v1.
-- **Single-shot only.** No `--continue` flag yet; each run starts a new
-  conversation.
+- **MCP transport is local stdio only.** Servers are spawned as child
+  processes; remote HTTP/SSE servers aren't connected yet (planned
+  behind the same `.mcp.json`).
+- **One tool call per turn.** The model acts sequentially — no parallel
+  tool calls in a single step.
 - **No Docker sandbox.** Path scoping + blacklist + confirmation are
-  the only barriers between the model and your machine. For high-trust
-  scenarios (CI agents, untrusted models) run under a container.
+  the only barriers between the model and your machine. MCP servers run
+  with your environment and are **not** path-scoped — only add servers
+  you trust. For high-trust scenarios (CI agents, untrusted models) run
+  under a container.
 
 ---
 

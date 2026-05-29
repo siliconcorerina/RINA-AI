@@ -38,6 +38,7 @@ interface ParsedArgs {
   fromStdin: boolean;
   resume: boolean;
   nativeTools: boolean;
+  mcpConfig: string | undefined;
   showHelp: boolean;
   showVersion: boolean;
 }
@@ -68,6 +69,7 @@ function parseArgs(argv: string[]): ParsedArgs {
     fromStdin: false,
     resume: false,
     nativeTools: false,
+    mcpConfig: undefined,
     showHelp: false,
     showVersion: false,
   };
@@ -136,6 +138,9 @@ function parseArgs(argv: string[]): ParsedArgs {
       case "--native-tools":
         out.nativeTools = true;
         break;
+      case "--mcp-config":
+        out.mcpConfig = nextValue();
+        break;
       default:
         if (a.startsWith("-")) {
           throw new CliArgError(`Unknown option: ${a}`);
@@ -197,6 +202,11 @@ function printHelp(): void {
       `                          instead of <tool>{...}</tool> parsing. More reliable\n` +
       `                          on providers that support it (OpenAI/Anthropic/\n` +
       `                          Mistral/DeepSeek).\n` +
+      `  --mcp-config PATH       Connect to external MCP servers declared in PATH\n` +
+      `                          (a .mcp.json: { "mcpServers": { "name": { "command",\n` +
+      `                          "args", "env" } } }). Their tools are namespaced\n` +
+      `                          mcp__<server>__<tool> and gated by confirmation.\n` +
+      `                          Auto-detected at <workdir>/.mcp.json if omitted.\n` +
       `  --help, -h              Show this message.\n` +
       `  --version, -v           Print version + Node version.\n\n` +
       `ENV\n` +
@@ -264,6 +274,7 @@ export async function main(argv: string[]): Promise<number> {
     temperature: args.temperature,
     resume: args.resume,
     nativeTools: args.nativeTools,
+    mcpConfigPath: args.mcpConfig,
   };
 
   try {

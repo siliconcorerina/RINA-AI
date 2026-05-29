@@ -70,7 +70,14 @@ function isToolCall(value: unknown): value is ToolCall {
     return false;
   }
   const obj = value as { tool?: unknown; args?: unknown };
-  if (typeof obj.tool !== "string" || !VALID_TOOLS.has(obj.tool as ToolName)) {
+  if (typeof obj.tool !== "string") {
+    return false;
+  }
+  // Accept a built-in tool name, or an MCP connector tool
+  // (`mcp__server__tool`). MCP names are validated for real at dispatch
+  // time against the live hub — here the parser only has to let the
+  // prefix through rather than reject it as unknown.
+  if (!VALID_TOOLS.has(obj.tool as ToolName) && !obj.tool.startsWith("mcp__")) {
     return false;
   }
   // `args` may legitimately be undefined for tools that take no args

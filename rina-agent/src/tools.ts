@@ -81,6 +81,15 @@ export async function runTool(call: ToolCall, config: AgentConfig): Promise<Tool
         // The loop handles `finish` specially; we still return a result
         // so the contract stays uniform.
         return { ok: true, output: "" };
+      default:
+        // Defensive: a native-FC backend can hallucinate a tool name, and
+        // MCP tools are routed away before reaching here. Either way,
+        // return an error result rather than falling off the switch and
+        // returning undefined — which would crash the agent loop.
+        return {
+          ok: false,
+          output: `Unknown tool '${(call as { tool: string }).tool}' — not a built-in tool.`,
+        };
     }
   } catch (err) {
     if (err instanceof UnsafePathError || err instanceof BlockedCommandError) {
