@@ -20,6 +20,12 @@ export type { BrowserAgentOptions } from "./agents/browser/browser-agent.js";
 export { BrowserDriver } from "./agents/browser/playwright.js";
 export type { PageSnapshot, InteractiveElement } from "./agents/browser/playwright.js";
 
+export { ConnectorAgent } from "./agents/connector/connector-agent.js";
+export type {
+  ConnectorAgentOptions,
+  McpToolProvider,
+} from "./agents/connector/connector-agent.js";
+
 export type {
   Plan,
   Step,

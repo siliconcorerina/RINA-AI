@@ -33,6 +33,7 @@ interface CliArgs {
   headed: boolean;
   maxSteps: number;
   json: boolean;
+  mcpConfig: string | undefined;
 }
 
 function parseArgs(argv: string[]): CliArgs {
@@ -42,6 +43,7 @@ function parseArgs(argv: string[]): CliArgs {
     headed: false,
     maxSteps: 6,
     json: false,
+    mcpConfig: undefined,
   };
   const positional: string[] = [];
 
@@ -63,6 +65,10 @@ function parseArgs(argv: string[]): CliArgs {
       args.maxSteps = n;
     } else if (a === "--json") {
       args.json = true;
+    } else if (a === "--mcp-config") {
+      const v = argv[++i];
+      if (!v) usage("Missing value for --mcp-config");
+      args.mcpConfig = v!;
     } else if (a === "--help" || a === "-h") {
       usage(null);
     } else if (a && a.startsWith("--")) {
@@ -90,6 +96,8 @@ Options:
   --headed             Open a visible browser window (default headless)
   --max-steps <N>      Cap on planner step count (1..12, default 6)
   --json               Emit NDJSON events on stdout (for piping)
+  --mcp-config <path>  Path to an MCP connector config (.mcp.json).
+                       Auto-detected at ./.mcp.json if present.
   -h, --help           Show this help
 
 Env:
@@ -164,6 +172,11 @@ async function main() {
       onEvent,
       browser: { headless: !args.headed },
       maxSteps: args.maxSteps,
+      mcpConfigPath: args.mcpConfig,
+      workdir: process.cwd(),
+      // MCP connect/skip diagnostics go to stderr so --json stdout
+      // stays pure NDJSON.
+      onLog: (m) => process.stderr.write(m + "\n"),
     });
     process.exit(0);
   } catch (err) {

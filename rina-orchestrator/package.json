@@ -31,7 +31,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@siliconcorerina/rina-agent": "^0.3.0",
+    "@siliconcorerina/rina-agent": "^0.4.0",
     "playwright": "^1.48.0"
   },
   "devDependencies": {

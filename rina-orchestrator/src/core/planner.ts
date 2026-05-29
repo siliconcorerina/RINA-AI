@@ -17,6 +17,7 @@
  */
 
 import type { Backend, ToolDefinition } from "@siliconcorerina/rina-agent/out/backend.js";
+import { describeMcpToolsForPrompt } from "@siliconcorerina/rina-agent/out/mcp.js";
 
 import type { Plan, Step, StepKind } from "./types.js";
 
@@ -37,46 +38,19 @@ Règles dures :
 5. Privilégie le sous-agent "browser" pour cette version 0.1.
 6. Termine toujours par une étape qui produit le RÉSULTAT attendu (un fait, un nombre, un texte extrait).`;
 
-const SUBMIT_PLAN_TOOL: ToolDefinition = {
-  name: "submit_plan",
-  description:
-    "Submit the decomposed plan for the user goal. Call this exactly once.",
-  parameters: {
-    type: "object",
-    properties: {
-      steps: {
-        type: "array",
-        minItems: 1,
-        maxItems: 6,
-        items: {
-          type: "object",
-          properties: {
-            kind: {
-              type: "string",
-              enum: ["browser", "code", "answer"],
-              description: "Which specialised sub-agent runs this step.",
-            },
-            description: {
-              type: "string",
-              description:
-                "Natural-language brief for the sub-agent. Imperative voice, atomic, verifiable.",
-              minLength: 6,
-              maxLength: 400,
-            },
-          },
-          required: ["kind", "description"],
-          additionalProperties: false,
-        },
-      },
-    },
-    required: ["steps"],
-    additionalProperties: false,
-  },
-};
+const SUBMIT_PLAN_TOOL: ToolDefinition = makeSubmitPlanTool(["browser", "code", "answer"]);
 
 export interface PlannerOptions {
   /** Hard ceiling on plan size. Defaults to 6. */
   maxSteps?: number;
+  /**
+   * Tool definitions for the connected MCP servers (from
+   * McpHub.getToolDefinitions()). When non-empty, the planner is told
+   * the "connector" sub-agent exists, shown the available tools, and
+   * allowed to emit "connector" steps. When empty/undefined the planner
+   * behaves exactly as before — no "connector" kind is offered.
+   */
+  connectorTools?: ToolDefinition[];
 }
 
 /**
@@ -104,13 +78,15 @@ export async function planGoal(
     );
   }
   const maxSteps = options.maxSteps ?? 6;
+  const connectorTools = options.connectorTools ?? [];
+  const hasConnector = connectorTools.length > 0;
 
   const response = await backend.generateWithTools(
     [
-      { role: "system", content: PLAN_SYSTEM_PROMPT },
+      { role: "system", content: buildSystemPrompt(connectorTools) },
       { role: "user", content: `Objectif :\n${goal.trim()}` },
     ],
-    [SUBMIT_PLAN_TOOL],
+    [buildSubmitPlanTool(hasConnector)],
     { temperature: 0.1, maxTokens: 800 }
   );
 
@@ -127,9 +103,16 @@ export async function planGoal(
     throw new Error("Planner returned an empty step list.");
   }
 
+  const allowed = allowedKinds(hasConnector);
   const steps: Step[] = rawSteps.slice(0, maxSteps).map((raw, i) => {
     const r = raw as { kind?: unknown; description?: unknown };
-    const kind = isStepKind(r.kind) ? r.kind : "browser";
+    // Unknown kinds — and "connector" when no MCP server is connected —
+    // fall back to "browser" so a stray kind can never reach the
+    // dispatcher with no registered handler.
+    const kind =
+      typeof r.kind === "string" && allowed.has(r.kind as StepKind)
+        ? (r.kind as StepKind)
+        : "browser";
     const description =
       typeof r.description === "string" && r.description.trim().length > 0
         ? r.description.trim()
@@ -145,8 +128,85 @@ export async function planGoal(
   return { goal: goal.trim(), steps };
 }
 
-function isStepKind(x: unknown): x is StepKind {
-  return x === "browser" || x === "code" || x === "answer";
+function allowedKinds(hasConnector: boolean): Set<StepKind> {
+  const kinds: StepKind[] = ["browser", "code", "answer"];
+  if (hasConnector) {
+    kinds.push("connector");
+  }
+  return new Set(kinds);
+}
+
+/**
+ * The planner system prompt. When MCP connector tools are available we
+ * append a section describing the "connector" sub-agent and listing the
+ * tools, so the planner knows it can route a step there. With no tools
+ * we return the base prompt unchanged.
+ */
+function buildSystemPrompt(connectorTools: ToolDefinition[]): string {
+  if (connectorTools.length === 0) {
+    return PLAN_SYSTEM_PROMPT;
+  }
+  const catalog = describeMcpToolsForPrompt(connectorTools);
+  return (
+    PLAN_SYSTEM_PROMPT +
+    `\n\nSous-agent supplémentaire DISPONIBLE pour ce run :\n` +
+    `- "connector" : appelle des outils externes connectés via MCP (email, messagerie, ` +
+    `documents, base de données, etc.). Planifie une étape "connector" quand l'objectif ` +
+    `nécessite l'un de ces outils plutôt qu'un navigateur web.\n\n` +
+    `Outils connecteurs disponibles :\n${catalog}\n\n` +
+    `Pour une étape "connector", décris précisément l'action attendue ` +
+    `(ex. "Envoie un email à X avec l'objet Y"). Le sous-agent connecteur ` +
+    `choisira lui-même le bon outil mcp__….`
+  );
+}
+
+/**
+ * The submit_plan tool. Identical to the base schema except the `kind`
+ * enum gains "connector" when at least one MCP server is connected.
+ */
+function buildSubmitPlanTool(hasConnector: boolean): ToolDefinition {
+  return hasConnector
+    ? makeSubmitPlanTool(["browser", "code", "answer", "connector"])
+    : SUBMIT_PLAN_TOOL;
+}
+
+function makeSubmitPlanTool(kinds: StepKind[]): ToolDefinition {
+  return {
+    name: "submit_plan",
+    description:
+      "Submit the decomposed plan for the user goal. Call this exactly once.",
+    parameters: {
+      type: "object",
+      properties: {
+        steps: {
+          type: "array",
+          minItems: 1,
+          maxItems: 6,
+          items: {
+            type: "object",
+            properties: {
+              kind: {
+                type: "string",
+                enum: kinds,
+                description: "Which specialised sub-agent runs this step.",
+              },
+              description: {
+                type: "string",
+                description:
+                  "Natural-language brief for the sub-agent. Imperative voice, atomic, verifiable.",
+                minLength: 6,
+                maxLength: 400,
+              },
+            },
+            required: ["kind", "description"],
+            additionalProperties: false,
+          },
+        },
+      },
+      required: ["steps"],
+      additionalProperties: false,
+    },
+  };
 }
 
 function safeJson(s: string): unknown {
@@ -159,4 +219,9 @@ function safeJson(s: string): unknown {
 
 // Exported for tests — lets us verify the prompt + tool schema didn't
 // silently regress without instantiating a backend.
-export const __test = { PLAN_SYSTEM_PROMPT, SUBMIT_PLAN_TOOL };
+export const __test = {
+  PLAN_SYSTEM_PROMPT,
+  SUBMIT_PLAN_TOOL,
+  buildSystemPrompt,
+  buildSubmitPlanTool,
+};

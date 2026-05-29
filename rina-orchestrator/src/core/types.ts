@@ -14,16 +14,22 @@
  * What kind of work a step requires. The dispatcher uses this to
  * pick which SubAgent runs it.
  *
- *   - "browser" — interact with a real browser (Playwright)
- *   - "code"    — file ops, shell, git (delegated to rina-agent)
- *   - "answer"  — pure-LLM synthesis, no tool calls
+ *   - "browser"   — interact with a real browser (Playwright)
+ *   - "code"      — file ops, shell, git (delegated to rina-agent)
+ *   - "answer"    — pure-LLM synthesis, no tool calls
+ *   - "connector" — call tools on external MCP servers (Gmail, Slack,
+ *                   Notion, a database, your own server…). Only offered
+ *                   to the planner when at least one MCP server is
+ *                   connected; dispatched to the ConnectorAgent, which
+ *                   runs an inner tool-loop over the namespaced
+ *                   mcp__<server>__<tool> surface.
  *
- * v0.1 only ships the "browser" path end-to-end. The others are
+ * "browser" and "connector" ship end-to-end. "code" / "answer" are
  * recognised so the planner can produce mixed plans; the dispatcher
- * surfaces a clear "not implemented yet" error if a non-browser
- * step lands.
+ * surfaces a clear "not implemented yet" error if one lands without a
+ * registered sub-agent.
  */
-export type StepKind = "browser" | "code" | "answer";
+export type StepKind = "browser" | "code" | "answer" | "connector";
 
 export type StepStatus = "pending" | "running" | "completed" | "failed";
 

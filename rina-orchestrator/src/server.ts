@@ -29,6 +29,7 @@
 import http from "node:http";
 
 import { backendFromSpec } from "@siliconcorerina/rina-agent/out/backend.js";
+import type { McpConfig } from "@siliconcorerina/rina-agent/out/mcp.js";
 
 import { runGoal, RunFailedError } from "./core/orchestrator.js";
 import type { AgentEvent } from "./core/types.js";
@@ -41,6 +42,8 @@ interface ServerOptions {
   headless: boolean;
   maxSteps: number;
   token: string | null;
+  /** Path to an MCP connector config (.mcp.json). null → none/auto. */
+  mcpConfig: string | null;
 }
 
 function parseEnv(): ServerOptions {
@@ -49,13 +52,48 @@ function parseEnv(): ServerOptions {
   const headless = process.env.HEADLESS !== "false"; // default headless
   const maxSteps = parseIntEnv(process.env.MAX_STEPS, 6);
   const token = process.env.ORCHESTRATOR_WORKER_TOKEN?.trim() || null;
-  return { port, backendSpec, headless, maxSteps, token };
+  const mcpConfig = process.env.MCP_CONFIG?.trim() || null;
+  return { port, backendSpec, headless, maxSteps, token, mcpConfig };
 }
 
 function parseIntEnv(raw: string | undefined, fallback: number): number {
   if (!raw) return fallback;
   const n = parseInt(raw, 10);
   return Number.isFinite(n) && n > 0 ? n : fallback;
+}
+
+/**
+ * Validate an optional inline MCP config from the /run body. The worker
+ * trusts the caller — the backend assembles this from a curated registry
+ * (provider → command/args) plus the user's decrypted secret in `env`,
+ * never from raw end-user input. So this is a SHAPE check, not a security
+ * boundary: confirm `{ mcpServers: { <name>: { command: string, … } } }`
+ * and reject obviously malformed payloads early (clean 400, nothing spawned).
+ *
+ * Returns undefined when absent → the worker falls back to the global
+ * MCP_CONFIG / auto-detected `.mcp.json`, exactly as before this field.
+ */
+function parseMcpConfig(raw: unknown): McpConfig | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (typeof raw !== "object") {
+    throw new Error("`mcpConfig` must be an object.");
+  }
+  const servers = (raw as { mcpServers?: unknown }).mcpServers;
+  if (typeof servers !== "object" || servers === null) {
+    throw new Error("`mcpConfig.mcpServers` must be an object.");
+  }
+  for (const [name, def] of Object.entries(servers as Record<string, unknown>)) {
+    if (typeof def !== "object" || def === null) {
+      throw new Error(`\`mcpConfig.mcpServers.${name}\` must be an object.`);
+    }
+    const command = (def as { command?: unknown }).command;
+    if (typeof command !== "string" || command.trim().length === 0) {
+      throw new Error(
+        `\`mcpConfig.mcpServers.${name}.command\` (non-empty string) required.`
+      );
+    }
+  }
+  return raw as McpConfig;
 }
 
 async function main() {
@@ -84,7 +122,8 @@ async function main() {
         `   backend: ${opts.backendSpec}\n` +
         `   headless: ${opts.headless}\n` +
         `   maxSteps: ${opts.maxSteps}\n` +
-        `   auth: ${opts.token ? "Bearer token required" : "OPEN (no token set)"}\n\n` +
+        `   auth: ${opts.token ? "Bearer token required" : "OPEN (no token set)"}\n` +
+        `   mcp: ${opts.mcpConfig ?? "auto (./.mcp.json if present)"}\n\n` +
         `   Test: curl -N -X POST http://localhost:${opts.port}/run \\\n` +
         `         -H "Content-Type: application/json" \\\n` +
         `         -d '{"goal":"What is on example.com today"}'\n`
@@ -175,12 +214,16 @@ async function executeRun(
   opts: ServerOptions
 ): Promise<void> {
   let goal: string;
+  let mcpConfig: McpConfig | undefined;
   try {
-    const parsed = JSON.parse(body) as { goal?: unknown };
+    const parsed = JSON.parse(body) as { goal?: unknown; mcpConfig?: unknown };
     if (typeof parsed.goal !== "string" || parsed.goal.trim().length === 0) {
       throw new Error("`goal` (non-empty string) required.");
     }
     goal = parsed.goal.trim();
+    // Per-request connectors: the backend sends an inline MCP config built
+    // from the calling user's connected connectors. Absent → global/auto.
+    mcpConfig = parseMcpConfig(parsed.mcpConfig);
   } catch (err) {
     res.statusCode = 400;
     res.setHeader("Content-Type", "application/json");
@@ -218,6 +261,12 @@ async function executeRun(
     await runGoal(backend, goal, {
       browser: { headless: opts.headless },
       maxSteps: opts.maxSteps,
+      // Inline per-request config wins when it declares ≥1 server; else the
+      // orchestrator falls back to mcpConfigPath / auto-detected .mcp.json.
+      mcpConfig,
+      mcpConfigPath: opts.mcpConfig ?? undefined,
+      workdir: process.cwd(),
+      onLog: (m) => process.stdout.write(m + "\n"),
       onEvent: (event: AgentEvent) => {
         if (clientClosed) return;
         try {

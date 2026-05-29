@@ -10,7 +10,7 @@
 
 import { describe, expect, it } from "vitest";
 
-import type { Backend, NativeAssistantResponse } from "@siliconcorerina/rina-agent/out/backend.js";
+import type { Backend, NativeAssistantResponse, ToolDefinition } from "@siliconcorerina/rina-agent/out/backend.js";
 
 import { planGoal, __test } from "../src/core/planner.js";
 
@@ -128,5 +128,73 @@ describe("planner", () => {
     // Sanity: parameters is a JSON Schema with `steps` as an array.
     const params = tool.parameters as { properties: { steps?: { type?: string } } };
     expect(params.properties.steps?.type).toBe("array");
+  });
+});
+
+describe("planner — connector awareness", () => {
+  const connectorTool: ToolDefinition = {
+    name: "mcp__slack__post",
+    description: "Post a message to a Slack channel",
+    parameters: {
+      type: "object",
+      properties: { channel: { type: "string" }, text: { type: "string" } },
+      required: ["channel", "text"],
+      additionalProperties: false,
+    },
+  };
+
+  /** Read the `kind` enum out of a submit_plan tool definition. */
+  function kindEnum(tool: ToolDefinition): string[] {
+    const p = tool.parameters as {
+      properties: { steps: { items: { properties: { kind: { enum: string[] } } } } };
+    };
+    return p.properties.steps.items.properties.kind.enum;
+  }
+
+  it("accepts a 'connector' step when connectorTools are provided", async () => {
+    const plan = await planGoal(
+      backend({
+        text: "",
+        toolCall: {
+          id: "1",
+          name: "submit_plan",
+          argsJson: JSON.stringify({
+            steps: [{ kind: "connector", description: "Poste un message dans #general" }],
+          }),
+        },
+      }),
+      "Préviens l'équipe sur Slack",
+      { connectorTools: [connectorTool] }
+    );
+    expect(plan.steps[0]?.kind).toBe("connector");
+  });
+
+  it("falls back 'connector' → 'browser' when no connectorTools are present", async () => {
+    const plan = await planGoal(
+      backend({
+        text: "",
+        toolCall: {
+          id: "1",
+          name: "submit_plan",
+          argsJson: JSON.stringify({
+            steps: [{ kind: "connector", description: "Poste un message" }],
+          }),
+        },
+      }),
+      "anything"
+    );
+    expect(plan.steps[0]?.kind).toBe("browser");
+  });
+
+  it("buildSubmitPlanTool adds 'connector' to the kind enum only when hasConnector", () => {
+    expect(kindEnum(__test.buildSubmitPlanTool(true))).toContain("connector");
+    expect(kindEnum(__test.buildSubmitPlanTool(false))).not.toContain("connector");
+  });
+
+  it("buildSystemPrompt appends the connector catalog only when tools exist", () => {
+    expect(__test.buildSystemPrompt([])).toBe(__test.PLAN_SYSTEM_PROMPT);
+    const withTools = __test.buildSystemPrompt([connectorTool]);
+    expect(withTools).toContain("connector");
+    expect(withTools).toContain("mcp__slack__post");
   });
 });
