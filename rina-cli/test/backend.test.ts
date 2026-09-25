@@ -91,7 +91,7 @@ describe("backendFromSpec — missing API key", () => {
 
   test("rina surfaces the env var name + onboarding hint", () => {
     expect(() => backendFromSpec("rina:https://api.example.com/v1")).toThrow(/RINA_API_KEY/);
-    expect(() => backendFromSpec("rina:https://api.example.com/v1")).toThrow(/plateforme-rina/);
+    expect(() => backendFromSpec("rina:https://api.example.com/v1")).toThrow(/rina\.technology/);
   });
 });
 
