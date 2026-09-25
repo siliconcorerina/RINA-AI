@@ -3,8 +3,8 @@
   "version": "0.2.0",
   "description": "Multi-agent orchestrator powered by RINA AI — plans a goal into atomic steps, dispatches them to specialised sub-agents (browser, code, research). Ships a CLI and an HTTP worker that streams AgentEvents via SSE so a web UI can drive it remotely. MIT, Playwright-backed, multi-backend (DeepSeek, OpenAI, Anthropic, Mistral) via @siliconcorerina/rina-agent's Backend abstraction.",
   "license": "MIT",
-  "author": "Silicon Core <hello@plateforme-rina.com>",
-  "homepage": "https://plateforme-rina.com/research",
+  "author": "Silicon Core <hello@rina.technology>",
+  "homepage": "https://www.rina.technology/research",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/siliconcorerina/RINA-AI.git",
