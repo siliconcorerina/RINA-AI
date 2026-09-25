@@ -6,13 +6,13 @@
 
 [![CI](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/siliconcorerina/RINA-AI/actions/workflows/ci.yml)
 [![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20HuggingFace-rina--coder--base-yellow)](https://huggingface.co/siliconcorerina/rina-coder-base)
-[![Site](https://img.shields.io/badge/site-plateforme--rina.com-blue)](https://plateforme-rina.com)
-[![Contact](https://img.shields.io/badge/contact-hello%40plateforme--rina.com-orange)](mailto:hello@plateforme-rina.com)
+[![Site](https://img.shields.io/badge/site-rina.technology-blue)](https://www.rina.technology)
+[![Contact](https://img.shields.io/badge/contact-hello%40rina.technology-orange)](mailto:hello@rina.technology)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 > Plateforme et modèles d'IA pour la génération, la compréhension et l'assistance au code.
 
-RINA AI est un projet open-source visant à fournir des modèles de langage spécialisés pour le code, accompagnés d'outils d'évaluation, de démonstration et de fine-tuning. Le projet est porté par l'équipe de [plateforme-rina.com](https://plateforme-rina.com).
+RINA AI est un projet open-source visant à fournir des modèles de langage spécialisés pour le code, accompagnés d'outils d'évaluation, de démonstration et de fine-tuning. Le projet est porté par l'équipe de [www.rina.technology](https://www.rina.technology).
 
 ## Sommaire
 
@@ -213,7 +213,7 @@ Tableau récap **éditeur ↔ outil** :
 - [x] Benchmark complet sur HumanEval / MBPP / MultiPL-E
 - [x] LiveCodeBench + BigCodeBench (avec backends pluggables OpenAI / Anthropic / Mistral)
 - [x] SWE-bench (génération de patches + format officiel pour le harness Docker)
-- [ ] Intégration avec la plateforme [plateforme-rina.com](https://plateforme-rina.com)
+- [ ] Intégration avec la plateforme [www.rina.technology](https://www.rina.technology)
 - [x] Extension VS Code RINA AI
 - [x] LSP server multi-éditeur (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
 - [x] CLI `rina` (shell, scripts, CI)
@@ -229,6 +229,6 @@ Ce projet est distribué sous licence MIT. Voir [LICENSE](LICENSE) pour les dét
 
 ## Contact
 
-- Site : [plateforme-rina.com](https://plateforme-rina.com)
-- Email : [hello@plateforme-rina.com](mailto:hello@plateforme-rina.com)
+- Site : [www.rina.technology](https://www.rina.technology)
+- Email : [hello@rina.technology](mailto:hello@rina.technology)
 - GitHub : [github.com/siliconcorerina](https://github.com/siliconcorerina)
