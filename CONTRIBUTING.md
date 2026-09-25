@@ -56,5 +56,5 @@ Types : `feat`, `fix`, `docs`, `refactor`, `test`, `chore`, `ci`.
 
 ## Contact
 
-- Email : [hello@plateforme-rina.com](mailto:hello@plateforme-rina.com)
-- Site : [plateforme-rina.com](https://plateforme-rina.com)
+- Email : [hello@rina.technology](mailto:hello@rina.technology)
+- Site : [www.rina.technology](https://www.rina.technology)
