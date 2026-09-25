@@ -10,36 +10,36 @@
 [![Contact](https://img.shields.io/badge/contact-hello%40rina.technology-orange)](mailto:hello@rina.technology)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-> Plateforme et modèles d'IA pour la génération, la compréhension et l'assistance au code.
+> AI platform and models for code generation, code understanding and coding assistance.
 
-RINA AI est un projet open-source visant à fournir des modèles de langage spécialisés pour le code, accompagnés d'outils d'évaluation, de démonstration et de fine-tuning. Le projet est porté par l'équipe de [www.rina.technology](https://www.rina.technology).
+RINA AI is an open-source project that provides language models specialized for code, along with evaluation, demo and fine-tuning tools. The project is led by the team at [www.rina.technology](https://www.rina.technology).
 
-## Sommaire
+## Table of contents
 
-- [Présentation](#présentation)
+- [Overview](#overview)
 - [Installation](#installation)
-- [Démarrage rapide](#démarrage-rapide)
-- [Évaluation](#évaluation)
+- [Quick start](#quick-start)
+- [Evaluation](#evaluation)
 - [Fine-tuning](#fine-tuning)
-- [Feuille de route](#feuille-de-route)
-- [Contribuer](#contribuer)
-- [Licence](#licence)
+- [Roadmap](#roadmap)
+- [Contributing](#contributing)
+- [License](#license)
 - [Contact](#contact)
 
-## Modèles
+## Models
 
-| Modèle | HuggingFace | Statut |
+| Model | HuggingFace | Status |
 |--------|-------------|--------|
-| RINA Coder Base | [`siliconcorerina/rina-coder-base`](https://huggingface.co/siliconcorerina/rina-coder-base) | Placeholder (poids à venir) |
+| RINA Coder Base | [`siliconcorerina/rina-coder-base`](https://huggingface.co/siliconcorerina/rina-coder-base) | Placeholder (weights coming soon) |
 
-## Présentation
+## Overview
 
-RINA AI propose une suite d'outils autour de modèles de langage dédiés au code :
+RINA AI provides a suite of tools built around language models dedicated to code:
 
-- **Inference** — interface simple pour interroger les modèles RINA AI sur des tâches de complétion, génération et explication de code.
-- **Évaluation** — scripts pour mesurer les performances sur des benchmarks publics et internes.
-- **Fine-tuning** — pipelines pour adapter les modèles à un domaine, un langage ou un style de code spécifique.
-- **Démo** — exemples d'intégration prêts à l'emploi.
+- **Inference** — a simple interface to query RINA AI models for code completion, generation and explanation tasks.
+- **Evaluation** — scripts to measure performance on public and internal benchmarks.
+- **Fine-tuning** — pipelines to adapt the models to a specific domain, language or coding style.
+- **Demo** — ready-to-use integration examples.
 
 ## Installation
 
@@ -49,19 +49,19 @@ cd RINA-AI
 pip install -r requirements.txt
 ```
 
-Python 3.10+ est recommandé.
+Python 3.10+ is recommended.
 
-## Démarrage rapide
+## Quick start
 
-Voir le dossier [`demo/`](demo/) pour des exemples d'inférence et d'intégration.
+See the [`demo/`](demo/) folder for inference and integration examples.
 
 ```bash
-python demo/inference_example.py --prompt "Écris une fonction Python qui calcule la suite de Fibonacci"
+python demo/inference_example.py --prompt "Write a Python function that computes the Fibonacci sequence"
 ```
 
-## Évaluation
+## Evaluation
 
-Les scripts d'évaluation se trouvent dans [`evaluation/`](evaluation/). Ils couvrent les benchmarks standards de génération de code (HumanEval, MBPP, MultiPL-E pour Rust/Go/Kotlin) ainsi qu'une suite interne RINA-Bench.
+Evaluation scripts live in [`evaluation/`](evaluation/). They cover the standard code generation benchmarks (HumanEval, MBPP, MultiPL-E for Rust/Go/Kotlin) as well as an internal suite, RINA-Bench.
 
 ```bash
 # HumanEval
@@ -84,23 +84,23 @@ python evaluation/bigcodebench/run_eval.py --backend hf:siliconcorerina/rina-cod
 python evaluation/swebench/run_eval.py --backend openai:gpt-4o --dataset lite --output results/swebench/lite.json
 ```
 
-### SWE-bench — phase de génération + grading officiel
+### SWE-bench — generation phase + official grading
 
-SWE-bench est gradé par un *harness* Docker officiel : trop lourd pour
-tourner dans le même script que la génération. Notre runner se concentre
-donc sur la phase 1 (génération des patches) et écrit un fichier
-`predictions.json` au format officiel. La phase 2 (grading réel via
-Docker) se lance ensuite avec le paquet `swebench` :
+SWE-bench is graded by an official Docker *harness*, which is too heavy
+to run in the same script as generation. Our runner therefore focuses
+on phase 1 (patch generation) and writes a `predictions.json` file in
+the official format. Phase 2 (actual grading via Docker) is then run
+with the `swebench` package:
 
 ```bash
-# 1. Génération des patches (RINA, GPT-4, Claude, …)
+# 1. Patch generation (RINA, GPT-4, Claude, …)
 python evaluation/swebench/run_eval.py \
     --backend openai:gpt-4o \
     --dataset lite \
     --output results/swebench/lite.json
-# → écrit aussi results/swebench/predictions.json
+# → also writes results/swebench/predictions.json
 
-# 2. Grading Docker officiel (résolved rate réel)
+# 2. Official Docker grading (actual resolved rate)
 pip install swebench
 python -m swebench.harness.run_evaluation \
     --predictions_path results/swebench/predictions.json \
@@ -108,20 +108,20 @@ python -m swebench.harness.run_evaluation \
     --run_id gpt-4o
 ```
 
-En attendant le grading, le runner publie un **proxy** (`well_formed_rate`)
-mappé sur `pass_at_1` pour que SWE-bench apparaisse dans la table de
-comparaison — le champ `note` du JSON signale clairement que ce n'est
-pas le score officiel.
+Until grading is done, the runner reports a **proxy** (`well_formed_rate`)
+mapped to `pass_at_1` so that SWE-bench shows up in the comparison
+table — the `note` field in the JSON clearly states that this is not
+the official score.
 
-### Comparer RINA AI à GPT-4 / Claude / Codestral
+### Comparing RINA AI with GPT-4 / Claude / Codestral
 
-Les nouveaux runners acceptent un *backend spec* qui permet d'évaluer
-n'importe quel modèle — local (HuggingFace) ou hébergé (OpenAI,
-Anthropic, Mistral). Le script `evaluation/compare.py` orchestre une
-campagne multi-modèles et émet un tableau Markdown + CSV prêt à coller :
+The new runners accept a *backend spec* that lets you evaluate any
+model — local (HuggingFace) or hosted (OpenAI, Anthropic, Mistral).
+The `evaluation/compare.py` script orchestrates a multi-model run and
+outputs a ready-to-paste Markdown table + CSV:
 
 ```bash
-# Exporter les clés API des modèles concurrents que vous voulez tester
+# Export the API keys for the competing models you want to test
 export OPENAI_API_KEY=...
 export ANTHROPIC_API_KEY=...
 export MISTRAL_API_KEY=...
@@ -136,11 +136,11 @@ python evaluation/compare.py \
     --output-dir results/compare/humaneval
 ```
 
-Specs supportés : `hf:<id>`, `openai:<model>`, `anthropic:<model>`,
-`mistral:<model>`. Les helpers de génération vivent dans
+Supported specs: `hf:<id>`, `openai:<model>`, `anthropic:<model>`,
+`mistral:<model>`. The generation helpers live in
 [`evaluation/_utils/backend.py`](evaluation/_utils/backend.py).
 
-Vous pouvez aussi merger des résultats déjà calculés :
+You can also merge results that have already been computed:
 
 ```bash
 python evaluation/compare.py --merge results/*.json
@@ -148,41 +148,41 @@ python evaluation/compare.py --merge results/*.json
 
 ## Fine-tuning
 
-Pipeline LoRA / full fine-tuning dans [`finetune/`](finetune/), piloté par YAML :
+LoRA / full fine-tuning pipeline in [`finetune/`](finetune/), driven by YAML:
 
 ```bash
 python finetune/train.py --config finetune/configs/lora_default.yaml
 ```
 
-Exemples de données dans [`finetune/data/`](finetune/data/).
+Sample data in [`finetune/data/`](finetune/data/).
 
-## Extension VS Code
+## VS Code extension
 
-Extension VS Code RINA AI (explication, refactoring, génération) dans [`vscode-extension/`](vscode-extension/). Guides :
-- [`vscode-extension/README.md`](vscode-extension/README.md) — installation et usage
-- [`vscode-extension/PUBLISHING.md`](vscode-extension/PUBLISHING.md) — publication sur le Marketplace
+RINA AI VS Code extension (explain, refactor, generate) in [`vscode-extension/`](vscode-extension/). Guides:
+- [`vscode-extension/README.md`](vscode-extension/README.md) — installation and usage
+- [`vscode-extension/PUBLISHING.md`](vscode-extension/PUBLISHING.md) — publishing to the Marketplace
 
 ## LSP server (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
 
-Un seul serveur Language Server Protocol qui apporte les mêmes actions
-(**Explain / Refactor / Generate tests**) à tout éditeur LSP-compatible.
-Code dans [`lsp-server/`](lsp-server/), backends pluggables (OpenAI,
-Anthropic, Mistral, RINA), tests inclus (31 tests vitest).
+A single Language Server Protocol server that brings the same actions
+(**Explain / Refactor / Generate tests**) to any LSP-compatible editor.
+Code in [`lsp-server/`](lsp-server/), pluggable backends (OpenAI,
+Anthropic, Mistral, RINA), tests included (31 vitest tests).
 
 ```bash
 cd lsp-server && npm install && npm run build
-npm install -g .              # expose le binaire `rina-lsp` globalement
+npm install -g .              # exposes the `rina-lsp` binary globally
 export OPENAI_API_KEY=sk-...
-rina-lsp --stdio              # ton éditeur s'en occupe normalement
+rina-lsp --stdio              # your editor normally handles this
 ```
 
-Guides prêts-à-coller : [`lsp-server/CONFIGS.md`](lsp-server/CONFIGS.md)
-(et fichiers de config drop-in dans [`lsp-server/editor-configs/`](lsp-server/editor-configs/)).
+Ready-to-paste guides: [`lsp-server/CONFIGS.md`](lsp-server/CONFIGS.md)
+(and drop-in config files in [`lsp-server/editor-configs/`](lsp-server/editor-configs/)).
 
-## CLI `rina`
+## `rina` CLI
 
-RINA AI depuis le shell, pipe-friendly. Code dans [`rina-cli/`](rina-cli/) —
-mêmes backends et mêmes prompts que les autres outils.
+RINA AI from the shell, pipe-friendly. Code in [`rina-cli/`](rina-cli/) —
+same backends and same prompts as the other tools.
 
 ```bash
 cd rina-cli && npm install && npm run build && npm install -g .
@@ -194,41 +194,41 @@ rina refactor src/utils.py -o src/utils.refactored.py
 rina tests src/parser.ts -o src/parser.test.ts
 ```
 
-Tableau récap **éditeur ↔ outil** :
+**Editor ↔ tool** summary:
 
-| Tu codes dans… | Tu installes… |
+| You code in… | You install… |
 |---|---|
 | VS Code, Cursor, Windsurf | [`vscode-extension/`](vscode-extension/) |
 | Neovim, Helix, Zed, Sublime, Emacs, JupyterLab | [`lsp-server/`](lsp-server/) |
 | Shell, scripts, CI | [`rina-cli/`](rina-cli/) |
 
-## Entraînement et publication du modèle
+## Training and publishing the model
 
-- [`finetune/TRAINING_GUIDE.md`](finetune/TRAINING_GUIDE.md) — entraînement local ou Colab + upload HuggingFace
-- [`notebooks/train_and_upload.ipynb`](notebooks/train_and_upload.ipynb) — notebook Colab clé-en-main
+- [`finetune/TRAINING_GUIDE.md`](finetune/TRAINING_GUIDE.md) — local or Colab training + HuggingFace upload
+- [`notebooks/train_and_upload.ipynb`](notebooks/train_and_upload.ipynb) — turnkey Colab notebook
 
-## Feuille de route
+## Roadmap
 
-- [ ] Publication des premiers checkpoints RINA Coder
-- [x] Benchmark complet sur HumanEval / MBPP / MultiPL-E
-- [x] LiveCodeBench + BigCodeBench (avec backends pluggables OpenAI / Anthropic / Mistral)
-- [x] SWE-bench (génération de patches + format officiel pour le harness Docker)
-- [ ] Intégration avec la plateforme [www.rina.technology](https://www.rina.technology)
-- [x] Extension VS Code RINA AI
-- [x] LSP server multi-éditeur (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
-- [x] CLI `rina` (shell, scripts, CI)
-- [ ] Support multi-langage étendu (Rust, Go, Kotlin)
+- [ ] Release the first RINA Coder checkpoints
+- [x] Full benchmark on HumanEval / MBPP / MultiPL-E
+- [x] LiveCodeBench + BigCodeBench (with pluggable OpenAI / Anthropic / Mistral backends)
+- [x] SWE-bench (patch generation + official format for the Docker harness)
+- [ ] Integration with the [www.rina.technology](https://www.rina.technology) platform
+- [x] RINA AI VS Code extension
+- [x] Multi-editor LSP server (Neovim, Helix, Zed, Sublime, Emacs, JupyterLab)
+- [x] `rina` CLI (shell, scripts, CI)
+- [ ] Extended multi-language support (Rust, Go, Kotlin)
 
-## Contribuer
+## Contributing
 
-Les contributions sont les bienvenues ! Ouvrez une issue ou une pull request. Pour les changements importants, merci d'en discuter d'abord via une issue.
+Contributions are welcome! Open an issue or a pull request. For major changes, please discuss them first in an issue.
 
-## Licence
+## License
 
-Ce projet est distribué sous licence MIT. Voir [LICENSE](LICENSE) pour les détails.
+This project is released under the MIT license. See [LICENSE](LICENSE) for details.
 
 ## Contact
 
-- Site : [www.rina.technology](https://www.rina.technology)
-- Email : [hello@rina.technology](mailto:hello@rina.technology)
-- GitHub : [github.com/siliconcorerina](https://github.com/siliconcorerina)
+- Website: [www.rina.technology](https://www.rina.technology)
+- Email: [hello@rina.technology](mailto:hello@rina.technology)
+- GitHub: [github.com/siliconcorerina](https://github.com/siliconcorerina)
