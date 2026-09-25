@@ -112,7 +112,7 @@ picked up.
 
 ### 6. Test from the app
 
-1. Open https://app.plateforme-rina.com
+1. Open https://app.www.rina.technology
 2. Toggle **Tâche** ON
 3. Type a real browser-able goal:
    - "Va sur https://news.ycombinator.com et donne-moi les 3 premiers titres"
@@ -142,8 +142,8 @@ cloudflared tunnel --url http://localhost:8787
 The cloudflared quick-tunnel URL CHANGES every time you restart it.
 For a stable URL, follow the Cloudflare Tunnel "named tunnel" guide
 (requires a free Cloudflare account + a registered domain — you
-already have plateforme-rina.com on Cloudflare, so you could point
-`agent.plateforme-rina.com` at your laptop). Out of scope here.
+already have www.rina.technology on Cloudflare, so you could point
+`agent.www.rina.technology` at your laptop). Out of scope here.
 
 ## When to graduate to a hosted worker
 
