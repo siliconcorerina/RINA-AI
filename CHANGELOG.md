@@ -73,7 +73,7 @@ Le format suit [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/) et le pr
 #### Demos
 - `demo/inference_example.py` : inference simple via `transformers`
 - `demo/chat_example.py` : REPL chat multi-tour avec streaming
-- `demo/api_client.py` : client REST + streaming SSE pour `api.plateforme-rina.com`
+- `demo/api_client.py` : client REST + streaming SSE pour `api.rina.technology`
 
 #### Extension VS Code
 - Bootstrap `vscode-extension/` (TypeScript, VS Code 1.85+)
