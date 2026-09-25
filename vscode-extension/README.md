@@ -2,7 +2,7 @@
 
 Assistant code RINA AI directement dans VS Code : explication, refactoring, generation.
 
-> Bootstrap initial. Les commandes communiquent avec l API hebergee sur `api.plateforme-rina.com`.
+> Bootstrap initial. Les commandes communiquent avec l API hebergee sur `api.rina.technology`.
 
 ## Compatible Cursor, Windsurf et autres forks VS Code
 
@@ -29,7 +29,7 @@ Apres installation, lance la palette de commandes (`Ctrl+Shift+P`) et choisis :
 - **RINA AI : Definir la cle API** — enregistre la cle dans le `SecretStorage` de VS Code
 
 Ou ouvre les Settings (`Ctrl+,`) et cherche `RINA AI` pour ajuster :
-- `rinaAI.baseUrl` (defaut : `https://api.plateforme-rina.com`)
+- `rinaAI.baseUrl` (defaut : `https://api.rina.technology`)
 - `rinaAI.model`
 - `rinaAI.temperature`
 - `rinaAI.maxTokens`
