@@ -14,4 +14,4 @@ assets/
 
 ## Marque
 
-Pour toute utilisation du logo ou des marques RINA AI, merci de contacter [hello@plateforme-rina.com](mailto:hello@plateforme-rina.com).
+Pour toute utilisation du logo ou des marques RINA AI, merci de contacter [hello@rina.technology](mailto:hello@rina.technology).
