@@ -25,7 +25,7 @@
     "url": "https://github.com/siliconcorerina/RINA-AI.git",
     "directory": "vscode-extension"
   },
-  "homepage": "https://plateforme-rina.com",
+  "homepage": "https://www.rina.technology",
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
@@ -70,7 +70,7 @@
       "properties": {
         "rinaAI.baseUrl": {
           "type": "string",
-          "default": "https://api.plateforme-rina.com",
+          "default": "https://api.rina.technology",
           "description": "Base URL de l API RINA AI"
         },
         "rinaAI.model": {
