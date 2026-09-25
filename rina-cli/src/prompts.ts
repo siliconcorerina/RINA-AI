@@ -11,7 +11,7 @@
  *
  * Bilingual: system prompts adapt to the user's preferred language
  * (`config.language === "fr"` or `"en"`). The user-facing assistant
- * UI on plateforme-rina.com is French; the editor surface is mostly
+ * UI on www.rina.technology is French; the editor surface is mostly
  * English by industry convention. Default to English, override to FR
  * if requested.
  */
