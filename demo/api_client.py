@@ -1,4 +1,4 @@
-"""Client pour l API RINA AI hebergee sur plateforme-rina.com.
+"""Client pour l API RINA AI hebergee sur www.rina.technology.
 
 Authentification via la variable d environnement RINA_API_KEY :
     export RINA_API_KEY=sk-...
@@ -17,7 +17,7 @@ import sys
 from collections.abc import Iterator
 from urllib import error, request
 
-DEFAULT_BASE_URL = "https://api.plateforme-rina.com"
+DEFAULT_BASE_URL = "https://api.rina.technology"
 DEFAULT_MODEL = "rina-coder-base"
 
 
@@ -39,7 +39,7 @@ def get_api_key() -> str:
     key = os.environ.get("RINA_API_KEY")
     if not key:
         print(
-            "RINA_API_KEY n'est pas defini. Recupere une cle sur " "https://plateforme-rina.com/account.",
+            "RINA_API_KEY n'est pas defini. Recupere une cle sur " "https://www.rina.technology/account.",
             file=sys.stderr,
         )
         raise SystemExit(2)
