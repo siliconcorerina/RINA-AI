@@ -1,6 +1,6 @@
 ;;; rina-ai.el --- RINA AI LSP integration for Emacs -*- lexical-binding: t; -*-
 ;;
-;; Author: Silicon Core <hello@plateforme-rina.com>
+;; Author: Silicon Core <hello@rina.technology>
 ;; URL: https://github.com/siliconcorerina/RINA-AI
 ;; Package-Requires: ((emacs "27.1"))
 ;; License: MIT
