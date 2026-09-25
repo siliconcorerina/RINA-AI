@@ -60,7 +60,7 @@ export function backendFromSpec(spec: string): Backend {
       `Invalid backend spec '${spec}'. Expected '<provider>:<model>' — ` +
         `e.g. 'openai:gpt-4o-mini', 'anthropic:claude-3-5-haiku-latest', ` +
         `'mistral:codestral-latest', 'deepseek:deepseek-chat', ` +
-        `'rina:https://api.plateforme-rina.com/v1'.`
+        `'rina:https://api.rina.technology/v1'.`
     );
   }
   const provider = spec.slice(0, sep).toLowerCase();
@@ -314,7 +314,7 @@ class DeepSeekBackend implements Backend {
 
 // ────────────────────────────────────────────────────────────────────
 // RINA AI — future OpenAI-compatible inference endpoint hosted at
-// plateforme-rina.com. The URL is the *base* (e.g. `https://api.plateforme-rina.com/v1`)
+// www.rina.technology. The URL is the *base* (e.g. `https://api.rina.technology/v1`)
 // so we just append `/chat/completions`.
 // ────────────────────────────────────────────────────────────────────
 
@@ -329,7 +329,7 @@ class RinaBackend implements Backend {
     this.apiKey = requireEnv(
       "RINA_API_KEY",
       "Set it in your shell, e.g. `export RINA_API_KEY=rina_...`. " +
-        "Get a key from https://plateforme-rina.com once the API is public."
+        "Get a key from https://www.rina.technology once the API is public."
     );
   }
 
