@@ -6,7 +6,7 @@ Si tu decouvres une faille de securite dans RINA AI, **merci de NE PAS ouvrir un
 
 Contacte-nous directement :
 
-- Email : [hello@plateforme-rina.com](mailto:hello@plateforme-rina.com)
+- Email : [hello@rina.technology](mailto:hello@rina.technology)
 - Sujet : `[Security] Description courte`
 
 Nous accusons reception sous **72h** et te tenons informe de la progression.
