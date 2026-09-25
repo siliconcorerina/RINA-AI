@@ -165,7 +165,7 @@ interface CallOptions {
 
 async function callApi(apiKey: string, opts: CallOptions): Promise<string> {
   const cfg = vscode.workspace.getConfiguration("rinaAI");
-  const baseUrl = cfg.get<string>("baseUrl", "https://api.plateforme-rina.com");
+  const baseUrl = cfg.get<string>("baseUrl", "https://api.rina.technology");
   const model = cfg.get<string>("model", "rina-coder-base");
   const temperature = cfg.get<number>("temperature", 0.2);
   const maxTokens = cfg.get<number>("maxTokens", 512);
