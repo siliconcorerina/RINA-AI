@@ -8,7 +8,7 @@ Exemples d'utilisation des modèles RINA AI pour des cas concrets : complétion,
 |---------|-------------|
 | `inference_example.py` | Inférence simple via `transformers` |
 | `chat_example.py`      | Conversation multi-tour (REPL local) |
-| `api_client.py`        | Client pour l'API plateforme-rina.com (REST + streaming) |
+| `api_client.py`        | Client pour l'API www.rina.technology (REST + streaming) |
 
 ## Prérequis
 
@@ -32,4 +32,4 @@ python demo/inference_example.py \
 
 ## Plus de démos
 
-Pour des intégrations avancées (extension d'IDE, API REST, agents), voir [plateforme-rina.com](https://plateforme-rina.com).
+Pour des intégrations avancées (extension d'IDE, API REST, agents), voir [www.rina.technology](https://www.rina.technology).
