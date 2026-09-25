@@ -5,7 +5,7 @@ description = "RINA AI - modèles et outils d'IA pour le code"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { file = "LICENSE" }
-authors = [{ name = "RINA AI", email = "hello@plateforme-rina.com" }]
+authors = [{ name = "RINA AI", email = "hello@rina.technology" }]
 
 [tool.ruff]
 line-length = 120
